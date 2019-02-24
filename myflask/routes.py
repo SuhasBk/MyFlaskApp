@@ -4,23 +4,25 @@ from myflask.forms import Search,NewHandle,LoginForm
 from myflask.models import Nice,Twitter
 from flask import Flask
 from myflask import app,db,ask,api
-import os,random,re,time
+import os,random,re,time,sys
 import requests
 from bs4 import BeautifulSoup
 from flask_restful import Resource, Api
 
 #Representational State Transfer:
-class GuruKul(Resource):
+class MyGurukul(Resource):
     def post(self):
         from subprocess import Popen,PIPE
         data = request.get_json()
-        if 'usn' in data and 'password' in data:
-            p=Popen(["guru.py",data['usn'],data['password']],stdout=PIPE,stderr=PIPE)
+        if 'usn' in data.keys() and 'password' in data.keys():
+            usn=data.get('usn')
+            passwd=data.get('password')
+            p = Popen("guru.py {} {} {}".format(usn,passwd,'a'),stdout=PIPE,stderr=PIPE,shell=True)
             out,err = p.communicate()
-            return {'request':data,'response':out},201
+            return {'request':data,'response':out.decode('utf-8')},201
         else:
             return {'request':data,'response':"JSON KeyError"},400
-api.add_resource(GuruKul,'/gurukul')
+api.add_resource(MyGurukul,'/gurukul')
 
 #ALEXA!!!!
 @app.route('/alexa')
