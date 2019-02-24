@@ -31,7 +31,7 @@ def alexa():
 
 @ask.launch
 def start_skill():
-    welcome = "Hello boss! Hyperbyte is online. I can tell you a famous quote. I can also give you meaning of a word. I can also mimic you if you want me to. I can also give you some knock knock jokes!"
+    welcome = "Hello boss! Hyperbyte is online. quote, for quotes! dict and the word, for dictionary! repeat, and the phrase to be repeated, for mimicry! knock knock, for knock knock jokes! imdb and the title, for movie ratings! These are all the fantastic stuffs Suhas programmed me to do."
     return question(welcome)
 
 @ask.intent("QuoteIntent")
@@ -77,6 +77,19 @@ def knock():
     joke = joke.replace('.','')
     print(joke.encode('utf-8').rstrip())
     return question(joke)
+
+@ask.intent("IMDbIntent", mapping={'title':'Title'})
+def imdb(title):
+    import subprocess
+    from subprocess import PIPE
+    p = subprocess.run(["imdb.py"],stdout=PIPE,stderr=PIPE,input='{}\n1\n'.format(title),encoding='ascii')
+    out = p.stdout
+    err = p.stderr
+    out = out.split('-----\n')[1]
+    if err == '':
+        return question(out)
+    else:
+        return statement("No such movie or tv series found....")
 #ALEXA!!!
 
 @app.route("/",methods=['GET','POST'])
