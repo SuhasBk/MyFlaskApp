@@ -13,9 +13,6 @@
           <source src="{{ post }}" type="video/mp4">
           </video>
 
-          {% elif 'you' in post.url or 'hub' in post.url%}
-          <iframe width="1060" height="315" src="{{ post }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
           {% elif 'XKCD' in title %}
           <center><img width="50%" height="50%" src="{{ post.url }}"></img></center>
 

@@ -3,10 +3,24 @@ from flask_ask import question,statement,session,delegate
 from myflask.forms import Search,NewHandle,LoginForm
 from myflask.models import Nice,Twitter
 from flask import Flask
-from myflask import app,db,ask
+from myflask import app,db,ask,api
 import os,random,re,time
 import requests
 from bs4 import BeautifulSoup
+from flask_restful import Resource, Api
+
+#Representational State Transfer:
+class GuruKul(Resource):
+    def post(self):
+        from subprocess import Popen,PIPE
+        data = request.get_json()
+        if 'usn' in data and 'password' in data:
+            p=Popen(["guru.py",data['usn'],data['password']],stdout=PIPE,stderr=PIPE)
+            out,err = p.communicate()
+            return {'request':data,'response':out},201
+        else:
+            return {'request':data,'response':"JSON KeyError"},400
+api.add_resource(GuruKul,'/gurukul')
 
 #ALEXA!!!!
 @app.route('/alexa')
@@ -97,71 +111,6 @@ def youtube():
         links = Nice.query.all()
         return render_template('vids.html',posts=links,title='YouTube')
     return render_template('home.html',title='YouTube',form=f)
-
-@app.route("/boom",methods=['GET','POST'])
-def boom():
-    try:
-        db.drop_all()
-        db.create_all()
-    except:
-        pass
-    form = Search()
-    if form.validate_on_submit():
-        k = form.search.data
-        try:
-            r=requests.get("http://xvideos.com/?k="+k)
-        except:
-            abort(404)
-        l=BeautifulSoup(r.text,'html.parser').select('a')
-
-        links=[]
-        for i in l:
-            try:
-                if '/video' in i.get('href'):
-                    if i.get('title')!=None:
-                        links.append([i.get("title"),i.get('href')])
-            except:
-                pass
-
-        for i in links[:5]:
-            try:
-                r1=requests.get("https://xvideos.com"+i[1])
-                url=re.findall("html5player.setVideoUrlHigh\('(.*)'\);",r1.text)[0]
-                vids = Nice(url=url)
-                db.session.add(vids)
-                db.session.commit()
-            except:
-                pass
-        links = Nice.query.all()
-        return render_template('vids.html',posts=links,title='XVideos')
-    return render_template('home.html',title='Boom',form=form)
-
-@app.route("/fap",methods=['GET','POST'])
-def fap():
-    try:
-        db.drop_all()
-        db.create_all()
-    except:
-        pass
-
-    r=requests.get("https://pornhub.net/")
-
-    a=BeautifulSoup(r.text,'html.parser').select('a')
-
-    v=[]
-    for i in a:
-        if i.get("href")!=None and 'viewkey' in i.get("href"):
-            key=re.findall(r'viewkey=(\w+)',i.get('href'))[0]
-            url = "https://pornhub.net/embed/"+key
-            v.append(url)
-
-    for i in set(v):
-        vids=Nice(url=i)
-        db.session.add(vids)
-        db.session.commit()
-
-    links = Nice.query.all()
-    return render_template('vids.html',posts=links,title='Videos')
 
 @app.route("/resume")
 def resume():
