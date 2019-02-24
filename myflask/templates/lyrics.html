@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<center><h2> {{ title }} RESULTS </h2></center><br>
+  {% for i,j in res%}
+    <article class="media content-section">
+        <div class="media-body">
+          <div class="article-metadata">
+            <a style="color:blue" href="{{ i }}" target="{{j}}">{{ j.decode('utf-8') }}</a>
+            <center><iframe width="100%" name="{{j}}" frameBorder="0"></iframe></center>
+          </div>
+        </div>
+    </article>
+  {% endfor %}
+
+{% endblock %}

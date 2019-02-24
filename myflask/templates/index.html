@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<center><h1> WELCOME TO MY WEBSITE! </h1><br><br>
+<h3><i> CLICK ON THE LINKS ON THE NAVIGATION BAR ABOVE TO NAVIGATE AROUND MY WEBSITE </i><h3><br>
+<div>
+<audio src="{{url_for('static',filename='song.mp3')}}" controls></audio>
+</div></center>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<center><h1>{{ title }}</h1></center>
+
+  <article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        <iframe width="1060" height="2000" src="{{ url_for('static',filename='my-resume.pdf') }}" allowfullscreen> </iframe>
+      </div>
+    </div>
+  </article>
+
+{% endblock content%}

@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<a style="color:white;"><img height="50px" width="50px" onclick="window.history.back();" src="http://icons.iconarchive.com/icons/custom-icon-design/flatastic-8/256/Go-back-icon.png"></img>Go Back</a><br>
+
+<center><h1> Files under {{folder|upper}} </h1><br></center>
+
+{% for f in files %}
+  <h6>{{f}}</h6>
+{% endfor %}
+
+{% endblock %}

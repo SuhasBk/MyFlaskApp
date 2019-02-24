@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<form method="POST" action="">
+  {{ form.hidden_tag() }}
+  <fieldset class="form-group">
+    <center><legend class="border-bottom-mb-4"> {{ title }} Generic Input </legend></center>
+    <center><div class="form-group">
+      {{ form.search.label(class="form-control-label") }}
+      {{ form.search(class="form-control form-control-lg") }}
+    </div></center>
+  </fieldset>
+    <center><div class="form-group">
+      {{ form.submit(class="btn btn-outline-info") }}
+    </div></center>
+</form>
+
+
+{% endblock content%}
