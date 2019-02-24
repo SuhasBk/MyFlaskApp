@@ -6,8 +6,8 @@ from flask import Flask
 from myflask import app,db,ask,api
 import os,random,re,time,sys
 import requests
+from flask_restful import Resource
 from bs4 import BeautifulSoup
-from flask_restful import Resource, Api
 
 #Representational State Transfer:
 class MyGurukul(Resource):
@@ -126,15 +126,18 @@ def xkcd():
     except:
         pass
 
-    r=requests.get("http://c.xkcd.com/random/comic/")
-    text=r.text
-    data=BeautifulSoup(text,'html.parser').select('img')[1].get('src')
+    try:
+        r=requests.get("http://c.xkcd.com/random/comic/")
+        text=r.text
+        data=BeautifulSoup(text,'html.parser').select('img')[1].get('src')
 
-    img=Nice(url='http:'+data)
-    db.session.add(img)
-    db.session.commit()
-    links = Nice.query.all()
-    return render_template('vids.html',posts=links,title='XKCD WebComics')
+        img=Nice(url='http:'+data)
+        db.session.add(img)
+        db.session.commit()
+        links = Nice.query.all()
+        return render_template('vids.html',posts=links,title='XKCD WebComics')
+    except:
+        return abort(500)
 
 @app.route("/lyrics",methods=['GET','POST'])
 def lyrics():
