@@ -11,6 +11,8 @@ from bs4 import BeautifulSoup
 
 #Representational State Transfer:
 class MyGurukul(Resource):
+    def get(self):
+        return {'response':"Woah!! How did you reach here? Please go back to what you were doing. No offence, but you don't belong here."}
     def post(self):
         from subprocess import Popen,PIPE
         data = request.get_json()
