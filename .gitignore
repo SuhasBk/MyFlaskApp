@@ -1,3 +1,4 @@
 site.db
 __pycache__/
 routes.pyc
+myflask/__pycache__/
