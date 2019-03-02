@@ -5,3 +5,6 @@ flask-bcrypt
 flask-login
 flask-ask
 flask-mail
+flask-restful
+requests
+bs4
