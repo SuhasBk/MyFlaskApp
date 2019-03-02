@@ -1,6 +1,7 @@
 flask
 flask-wtf
-sqlalchemy
+flask-sqlalchemy
 flask-bcrypt
 flask-login
 flask-ask
+flask-mail
