@@ -2,3 +2,5 @@ site.db
 __pycache__/
 routes.pyc
 myflask/__pycache__/
+forms.pyc
+models.pyc
