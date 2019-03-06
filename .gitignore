@@ -4,3 +4,4 @@ routes.pyc
 myflask/__pycache__/
 forms.pyc
 models.pyc
+run.pyc
