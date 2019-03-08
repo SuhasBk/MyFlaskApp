@@ -1,6 +1,9 @@
 flask
 flask-wtf
-sqlalchemy
+flask-sqlalchemy
 flask-bcrypt
 flask-login
 flask-ask
+beautifulsoup4
+requests
+flask-restful

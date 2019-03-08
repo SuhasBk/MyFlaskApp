@@ -1,3 +1,7 @@
 site.db
 __pycache__/
 routes.pyc
+__init__.pyc
+forms.pyc
+models.pyc
+run.pyc
