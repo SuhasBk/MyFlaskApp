@@ -4,6 +4,7 @@ flask-sqlalchemy
 flask-bcrypt
 flask-login
 flask-ask
-beautifulsoup4
-requests
+flask-mail
 flask-restful
+requests
+bs4
