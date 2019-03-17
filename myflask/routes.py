@@ -14,14 +14,15 @@ class MyGurukul(Resource):
     def get(self):
         return {'response':"Woah!! How did you reach here? Please go back to what you were doing. No offence, but you don't belong here."}
     def post(self):
-        from subprocess import Popen,PIPE
+        from subprocess import run,PIPE
         data = request.get_json()
         if 'usn' in data.keys() and 'password' in data.keys():
             usn=data.get('usn')
             passwd=data.get('password')
-            p = Popen("guru.py {} {} {}".format(usn,passwd,'a'),stdout=PIPE,stderr=PIPE,shell=True)
-            out,err = p.communicate()
-            return {'request':data,'response':out.decode('utf-8')},201
+            op = run(['guru.py','1nt16is116','suh080498','a'],input=b'exit',stdout=PIPE,shell=True)
+            out = op.stdout.decode('utf-8')
+            out = out.split('Please')[0]
+            return {'request':data,'response':out},201
         else:
             return {'request':data,'response':"JSON KeyError"},400
 api.add_resource(MyGurukul,'/gurukul')
