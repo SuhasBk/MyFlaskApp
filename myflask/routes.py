@@ -252,6 +252,10 @@ def files():
             return redirect(url_for('files'))
     return render_template("home.html",form=folder)
 
+@app.route("/test",methods=['GET','POST'])
+def test():
+    return render_template("test.html")
+
 @app.route("/r")
 def refresh():
     db.drop_all()
