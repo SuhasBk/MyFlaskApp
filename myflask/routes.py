@@ -19,7 +19,7 @@ class MyGurukul(Resource):
         if 'usn' in data.keys() and 'password' in data.keys():
             usn=data.get('usn')
             passwd=data.get('password')
-            op = run(['guru.py','1nt16is116','suh080498','a'],input=b'exit',stdout=PIPE,shell=True)
+            op = run('guru.py 1nt16is116 suh080498 a',input=b'exit',stdout=PIPE,shell=True)
             out = op.stdout.decode('utf-8')
             out = out.split('Please')[0]
             return {'request':data,'response':out},201
