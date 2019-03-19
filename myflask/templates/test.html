@@ -2,13 +2,17 @@
 <html>
   <head>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <title>Vue</title>
+    <title>Vue JS</title>
   </head>
   <body>
-    <div id="msg">
-      [[ message ]]
-      <button @click="click">Click Me</button>
-    </div>
+    <center>
+        <div id="msg">
+        [[ message ]]
+        <br>You have : [[count ]]
+        <br><button @click="click">Grab?</button>
+        <br><p id="left"> Left : [[ 5-count ]] </p>
+        </div>
+    </center>
     <script src="{{ url_for('static',filename='test.js') }}"></script>
   </body>
 </html>
