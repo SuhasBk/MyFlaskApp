@@ -1,5 +1,5 @@
 site.db
-__pycache__
+__pycache__/
 routes.pyc
 __init__.pyc
 forms.pyc
