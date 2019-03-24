@@ -25,7 +25,16 @@ class MyGurukul(Resource):
             return {'request':data,'response':out},201
         else:
             return {'request':data,'response':"JSON KeyError"},400
+
+class CricketLive(Resource):
+    def get(self):
+        from subprocess import run,PIPE
+        op = run('cric.py',shell=True,stdout=PIPE)
+        out = op.stdout.decode('utf-8')
+        return {'response':out},200
+
 api.add_resource(MyGurukul,'/gurukul')
+api.add_resource(CricketLive,'/cricket')
 
 #ALEXA!!!!
 @app.route('/alexa')
