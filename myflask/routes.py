@@ -4,22 +4,21 @@ from myflask.forms import Search,NewHandle,LoginForm
 from myflask.models import Nice,Twitter
 from flask import Flask
 from myflask import app,db,ask,api
-import os,random,re,time,sys
-import requests
+import os,random,re,time,sys,requests,markdown
 from flask_restful import Resource
 from bs4 import BeautifulSoup
+from subprocess import run,PIPE
 
 #Representational State Transfer:
 class MyGurukul(Resource):
     def get(self):
         return {'response':"Woah!! How did you reach here? Please go back to what you were doing. No offence, but you don't belong here."}
     def post(self):
-        from subprocess import run,PIPE
         data = request.get_json()
         if 'usn' in data.keys() and 'password' in data.keys():
             usn=data.get('usn')
             passwd=data.get('password')
-            op = run('guru.py 1nt16is116 suh080498 a',input=b'exit',stdout=PIPE,shell=True)
+            op = run('guru.py {} {}  a'.format(usn,passwd),input=b'exit',stdout=PIPE,shell=True)
             out = op.stdout.decode('utf-8')
             out = out.split('Please')[0]
             return {'request':data,'response':out},201
@@ -154,8 +153,7 @@ def xkcd():
     try:
         r=requests.get("http://c.xkcd.com/random/comic/")
         text=r.text
-        data=BeautifulSoup(text,'html.parser').select('img')[1].get('src')
-
+        data=BeautifulSoup(text,'html.parser').select('img')[3].get('src')
         img=Nice(url='http:'+data)
         db.session.add(img)
         db.session.commit()
@@ -249,18 +247,22 @@ def reddit():
         return render_template("reddit.html",data=content,sub=sub)
     return render_template("home.html",form=subr)
 
-@app.route("/files",methods=['GET','POST'])
-def files():
-    folder = Search()
-    if folder.validate_on_submit():
-        folder = folder.search.data
+@app.route("/ssh",methods=['GET','POST'])
+def ssh():
+    cmds = Search()
+    if cmds.validate_on_submit():
+        cmd = cmds.search.data
         try:
-            files = sorted(os.listdir(folder))
-            return render_template("files.html",files=files,folder=folder)
-        except:
-            flash("No such directory found! Try again...","info")
+            op = run(cmd,shell=True,stdout=PIPE,stderr=PIPE,input=b'0\nexit\n0')
+            if op.stderr:
+                raise ValueError
+            else:
+                data = op.stdout.decode('utf-8')
+                return render_template("commands.html",data=data)
+        except ValueError:
+            flash("That command did not run successfully","info")
             return redirect(url_for('files'))
-    return render_template("home.html",form=folder)
+    return render_template("home.html",form=cmds)
 
 @app.route("/test",methods=['GET','POST'])
 def test():

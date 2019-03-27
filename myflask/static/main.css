@@ -2,21 +2,16 @@ body {
   background: #fafafa;
   color: #333333;
   margin-top: 5rem;
-  background-image: url("back.jpg");
-  background-size: cover;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #00FF00;
+  /*color: #00FF00;*/
+  color: black;
   font-family: "Consolas";
 }
 
 legend,label,p {
-  color: white;
-}
-
-#back{
-  background-image: url("http://icons.iconarchive.com/icons/custom-icon-design/flatastic-8/256/Go-back-icon.png")
+  color: black;
 }
 
 .bg-steel {
@@ -101,7 +96,7 @@ a.article-title:hover {
 }
 
 #accounts {
-  color:white;
+  color:black;
   list-style-type: none;
   float:left;
   padding-left:400px
