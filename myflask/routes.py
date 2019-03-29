@@ -126,7 +126,7 @@ def youtube():
         reg = []
         for i in l:
             if('googleadservices' not in i.get("href") and 'https' not in i.get('href')):
-                reg.append('http://youtube.com/embed'+i.get("href").replace('watch?v=','')+"?cc_load_policy=1&rel=0")
+                reg.append('http://youtube.com/embed'+i.get("href").replace('watch?v=',''))
 
         vids=set(reg[:20])
 
@@ -245,7 +245,7 @@ def reddit():
         content=html['data']['children']
 
         return render_template("reddit.html",data=content,sub=sub)
-    return render_template("home.html",form=subr)
+    return render_template("home.html",form=subr,title = 'Reddit')
 
 @app.route("/ssh",methods=['GET','POST'])
 def ssh():
@@ -262,7 +262,7 @@ def ssh():
         except ValueError:
             flash("That command did not run successfully","info")
             return redirect(url_for('files'))
-    return render_template("home.html",form=cmds)
+    return render_template("home.html",form=cmds,title="Enter the commands below : ")
 
 @app.route("/test",methods=['GET','POST'])
 def test():

@@ -108,6 +108,7 @@ a.article-title:hover {
 }
 
 #reddit{
-  color :  #FF0000;
+  color : blue;
+  font-family: fantasy;
   font-size: 20px;
 }

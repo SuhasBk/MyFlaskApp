@@ -12,7 +12,7 @@
         <p> Your Accounts :<p>
 
         {% for i in range(1,handles|length) %}
-          <li><a style="color:cyan" href="{{ url_for('remove_handle',id=handles[i][1]) }}"> {{ handles[i][0] }} </a></li>
+          <li><a style="color:red" href="{{ url_for('remove_handle',id=handles[i][1]) }}"> {{ handles[i][0] }} </a></li>
         {% endfor %}<br>
 
         {% if handles|length > 1 %}
@@ -23,7 +23,7 @@
       </div>
         <div id="tweets">
           {% for handle in handles[::-1] %}
-          <a class="twitter-timeline" data-width="500" data-height="600" data-theme="light" href="https://twitter.com/{{handle[0]}}?ref_src=twsrc%5Etfw" ></a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+          <a class="twitter-timeline" data-width="500" data-height="600" data-theme="dark" href="https://twitter.com/{{handle[0]}}?ref_src=twsrc%5Etfw" ></a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
           {% endfor %}
         </div>
   {% endblock %}
