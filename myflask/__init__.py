@@ -9,6 +9,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY']='fhdusfhysrgygdsyfgsdyfgsdyfg'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['UPLOAD_FOLDER']='/'
 
 ask = Ask(app, "/alexa")
 

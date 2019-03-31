@@ -1,4 +1,4 @@
-from flask import render_template,url_for,flash,redirect,request,abort,jsonify
+from flask import render_template,url_for,flash,redirect,request,abort,jsonify,send_from_directory
 from flask_ask import question,statement,session,delegate
 from myflask.forms import Search,NewHandle,LoginForm
 from myflask.models import Nice,Twitter
@@ -211,7 +211,7 @@ def twitter():
     handles.extend(extras)
     return render_template('twitter.html',handles=handles,new=new)
 
-@app.route('/remove_handle/<id>',methods=['GET','POST'])
+@app.route('/remove_handle/<int:id>',methods=['GET','POST'])
 def remove_handle(id):
     if id != 0:
         handle = Twitter.query.get(id)
@@ -263,6 +263,11 @@ def ssh():
             flash("That command did not run successfully","info")
             return redirect(url_for('files'))
     return render_template("home.html",form=cmds,title="Enter the commands below : ")
+
+@app.route('/uploads/<path:filename>', methods=['GET', 'POST'])
+def download(filename):
+    uploads = app.config['UPLOAD_FOLDER']
+    return send_from_directory(directory=uploads, filename=filename, as_attachment=True)
 
 @app.route("/test",methods=['GET','POST'])
 def test():
