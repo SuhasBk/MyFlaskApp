@@ -121,14 +121,13 @@ def youtube():
         r = requests.get("http://youtube.com/results?search_query=" + '+'.join(search.split(' ')))
 
         s = BeautifulSoup(r.text, 'html.parser')
-        l = s.findAll('a',attrs={'aria-hidden':'true'})
+        l = s.select('div .yt-lockup-content')
+        urls = []
 
-        reg = []
         for i in l:
-            if('googleadservices' not in i.get("href") and 'https' not in i.get('href')):
-                reg.append('http://youtube.com/embed'+i.get("href").replace('watch?v=',''))
+            urls.append('http://youtube.com/embed'+i.find('a').get("href").replace('watch?v=',''))
 
-        vids=set(reg[:20])
+        vids=urls[:20]
 
         for i in vids:
             new = Nice(url=str(i))
