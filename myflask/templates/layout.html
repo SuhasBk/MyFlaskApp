@@ -32,7 +32,7 @@
               {% for route in routes %}
                 <a class="nav-item nav-link" href="{{ url_for(route) }}"> {{route.capitalize()}} </a>
               {% endfor %}
-              <a class="nav-item nav-link" href="{{url_for('twitter',id=0)}}"> Twitter </a>
+              <a class="nav-item nav-link" href="{{url_for('twitter',user='')}}"> Twitter </a>
               <a class="nav-item nav-link" href="https://mail.google.com" target="_blank"> Gmail </a>
               <a class="nav-item nav-link" href="https://facebook.com" target="_blank"> Facebook </a>
               <a class="nav-item nav-link" href="https://web.whatsapp.com" target="_blank"> WhatsApp </a>

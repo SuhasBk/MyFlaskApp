@@ -1,7 +1,7 @@
 from flask import render_template,url_for,flash,redirect,request,abort,jsonify,send_from_directory
-from flask_ask import question,statement,session,delegate
-from myflask.forms import Search,NewHandle,LoginForm
-from myflask.models import Nice,Twitter
+from flask_ask import question,statement
+from myflask.forms import Search,NewHandle,LoginForm,RegistrationForm
+from myflask.models import Nice,Users
 from flask import Flask
 from myflask import app,db,ask,api
 import os,random,re,time,sys,requests,markdown
@@ -110,32 +110,22 @@ def home():
 
 @app.route("/youtube",methods=['GET','POST'])
 def youtube():
-    try:
-        db.drop_all()
-        db.create_all()
-    except:
-        pass
     f = Search()
     if f.validate_on_submit():
         search = f.search.data
         r = requests.get("http://youtube.com/results?search_query=" + '+'.join(search.split(' ')))
 
         s = BeautifulSoup(r.text, 'html.parser')
-        l = s.findAll('a',attrs={'aria-hidden':'true'})
+        l = s.select('div .yt-lockup-content')
 
         reg = []
         for i in l:
-            if('googleadservices' not in i.get("href") and 'https' not in i.get('href')):
-                reg.append('http://youtube.com/embed'+i.get("href").replace('watch?v=',''))
+            #reg.append('http://youtube.com/embed'+i.get("href").replace('watch?v=',''))
+            reg.append('http://youtube.com/embed'+i.find('a').get('href').replace('watch?v=',''))
 
         vids=set(reg[:20])
 
-        for i in vids:
-            new = Nice(url=str(i))
-            db.session.add(new)
-            db.session.commit()
-        links = Nice.query.all()
-        return render_template('vids.html',posts=links,title='YouTube')
+        return render_template('vids.html',posts=vids,title='YouTube')
     return render_template('home.html',title='YouTube',form=f)
 
 @app.route("/resume")
@@ -164,11 +154,6 @@ def xkcd():
 
 @app.route("/lyrics",methods=['GET','POST'])
 def lyrics():
-    try:
-        db.drop_all()
-        db.create_all()
-    except:
-        pass
     form = Search()
     if form.validate_on_submit():
         flash('Click on the links below!','info')
@@ -188,51 +173,84 @@ def lyrics():
 def piano():
     return render_template('piano.html')
 
-@app.route("/twitter",methods=['GET','POST'])
-def twitter():
-    handles = [['None',0]]
+@app.route("/register",methods=['GET','POST'])
+def register():
+    rf = RegistrationForm()
+    if rf.validate_on_submit():
+        user = Users()
+        user.user = rf.email.data
+        user.passwd = rf.password.data
+        user.handles = rf.handles.data
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('login'))
+    return render_template('register.html',form=rf,purpose='Personalized Twitter!')
+
+@app.route("/login",methods=['GET','POST'])
+def login():
+    lf = LoginForm()
+
+    if request.method == 'POST':
+        if lf.validate_on_submit():
+            who = lf.email.data
+            user = Users.query.filter_by(user=who).first()
+
+            if user and lf.password.data == user.passwd:
+                return redirect(url_for('twitter',user=user.user))
+            else:
+                flash('Incorrect username/password','danger')
+        else:
+            return abort(401)
+
+    return render_template('login.html',purpose='Personalized Twitter!',form=lf)
+
+@app.route("/twitter",defaults={'user':''},methods=['GET','POST'])
+@app.route("/twitter/<user>",methods=['GET','POST'])
+def twitter(user):
+    if user=='':
+        return redirect(url_for('login'))
+
+    u = Users.query.filter_by(user=user).first()
+    handles = u.handles.split(',')
+
+    return render_template('twitter.html',handles=handles,user=u)
+
+@app.route('/add_handle/<user>',methods=['GET'])
+def add_handle(user):
+    u = Users.query.filter_by(user=user).first()
     new = NewHandle()
 
     if new.validate_on_submit():
         h = new.handle_name.data
         try:
-            add = Twitter(handle_name=h)
-            db.session.add(add)
+            if h in u.handles:
+                raise ValueError
+            u.handles+','+h
             db.session.commit()
-            flash('{} successfully added!'.format(h),'success')
-            extras = [[str(i),i.id] for i in Twitter.query.all()]
-            handles.extend(extras)
-            print(handles)
-            return render_template('twitter.html',handles=handles,new=new)
-        except:
+            return redirect(url_for('twitter',user=user))
+        except ValueError:
             flash('{} already exists!!!'.format(h),'danger')
 
-    extras = [[str(i),i.id] for i in Twitter.query.all()]
-    handles.extend(extras)
-    return render_template('twitter.html',handles=handles,new=new)
+    return render_template('add_handle.html',form=new)
 
-@app.route('/remove_handle/<int:id>',methods=['GET','POST'])
-def remove_handle(id):
-    if id != 0:
-        handle = Twitter.query.get(id)
-        try:    #integrity constraints... last element cannot be deleted!
-            db.session.delete(handle)
-            db.session.commit()
-            flash('{} removed!'.format(handle.handle_name),'danger')
-        except:
-            flash('{} removed!'.format(handle.handle_name),'danger')
-            db.drop_all()
-            db.create_all()
-        return redirect(url_for('twitter'))
-    else:
-        abort(404)
+@app.route('/remove_handle/<user>/<handle>',methods=['GET'])
+def remove_handle(user,handle):
+    u = Users.query.filter_by(user=user).first()
+    handles = u.handles.split(',')
+    if handle not in handles:
+        flash("{} does not exist!","danger")
+        return redirect(url_for('twitter',user=u))
+    handles.remove(handle)
+    u.handles = ','.join(handles)
+    db.session.commit()
+    return redirect(url_for('twitter',user=u))
 
 @app.route("/reddit",methods=['GET','POST'])
 def reddit():
     subr = Search()
     if subr.validate_on_submit():
         username='Suhasbk98'
-        passwd='Gandalfthewhite123'
+        passwd=os.environ.get('REDPWD')
         sub = subr.search.data
         user={'user':username,'passwd':passwd,'api_type':'json'}
 

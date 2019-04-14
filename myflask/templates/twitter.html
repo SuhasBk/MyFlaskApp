@@ -1,29 +1,24 @@
 {% extends 'layout.html' %}
   {% block content %}
+  <a href="{{url_for('register')}}"> Register </a><br>
+  <a href="{{url_for('login')}}">Login</a><br>
     <center><h1> WELCOME TO YOUR PERSONALIZED TWITTER </h1></center><br>
-      <form style="width:40%;float:left;" method="POST" action="">
-        {{ new.hidden_tag() }}
-        <legend> Add Handle : </legend>
-        {{ new.handle_name.label(class="form-control-label") }}<br><br>
-        {{ new.handle_name(class="form-control form-control-lg") }}<br><br>
-        {{ new.submit(class="btn btn-outline-info") }}<br><br>
-      </form>
       <div id="accounts">
         <p> Your Accounts :<p>
 
-        {% for i in range(1,handles|length) %}
-          <li><a style="color:red" href="{{ url_for('remove_handle',id=handles[i][1]) }}"> {{ handles[i][0] }} </a></li>
+        {% for i in range(handles|length) %}
+          <li><a style="color:red" href="{{ url_for('remove_handle',user=user,handle=handles[i]) }}"> {{ handles[i] }} </a></li>
         {% endfor %}<br>
 
-        {% if handles|length > 1 %}
-          <a href="{{url_for('refresh')}}"> Clear All? </a>
+        {% if handles|length > 0 %}
+          <a href="{{url_for('remove_handle',user=user,handle='*')}}"> Clear All? </a>
         {% else %}
           <a href="#"> *** No accounts in the list! Try adding some! ;) *** </p>
-        {% endif %}
+        {% endif %}<br>
       </div>
         <div id="tweets">
           {% for handle in handles[::-1] %}
-          <a class="twitter-timeline" data-width="500" data-height="600" data-theme="dark" href="https://twitter.com/{{handle[0]}}?ref_src=twsrc%5Etfw" ></a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+          <a class="twitter-timeline" data-width="500" data-height="600" data-theme="dark" href="https://twitter.com/{{handle}}?ref_src=twsrc%5Etfw" ></a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
           {% endfor %}
         </div>
   {% endblock %}
