@@ -117,13 +117,20 @@ def youtube():
 
         s = BeautifulSoup(r.text, 'html.parser')
         l = s.select('div .yt-lockup-content')
+<<<<<<< HEAD
+=======
+        urls = []
+>>>>>>> 7820b4b6b34f564e3a5d71d7ab90e9709f02b300
 
-        reg = []
         for i in l:
+<<<<<<< HEAD
             #reg.append('http://youtube.com/embed'+i.get("href").replace('watch?v=',''))
             reg.append('http://youtube.com/embed'+i.find('a').get('href').replace('watch?v=',''))
+=======
+            urls.append('http://youtube.com/embed'+i.find('a').get("href").replace('watch?v=',''))
+>>>>>>> 7820b4b6b34f564e3a5d71d7ab90e9709f02b300
 
-        vids=set(reg[:20])
+        vids=urls[:20]
 
         return render_template('vids.html',posts=vids,title='YouTube')
     return render_template('home.html',title='YouTube',form=f)
