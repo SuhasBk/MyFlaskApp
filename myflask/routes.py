@@ -1,7 +1,7 @@
 from flask import render_template,url_for,flash,redirect,request,abort,jsonify,send_from_directory
 from flask_ask import question,statement
 from myflask.forms import Search,NewHandle,LoginForm,RegistrationForm
-from myflask.models import Nice,Users
+from myflask.models import Users
 from flask import Flask
 from myflask import app,db,ask,api
 import os,random,re,time,sys,requests,markdown
@@ -120,7 +120,6 @@ def youtube():
         urls = []
 
         for i in l:
-            #reg.append('http://youtube.com/embed'+i.get("href").replace('watch?v=',''))
             reg.append('http://youtube.com/embed'+i.find('a').get('href').replace('watch?v=',''))
 
         vids=urls[:20]
@@ -135,20 +134,11 @@ def resume():
 @app.route("/xkcd",methods=['GET','POST'])
 def xkcd():
     try:
-        db.drop_all()
-        db.create_all()
-    except:
-        pass
-
-    try:
-        r=requests.get("http://c.xkcd.com/random/comic/")
-        text=r.text
-        data=BeautifulSoup(text,'html.parser').select('img')[3].get('src')
-        img=Nice(url='http:'+data)
-        db.session.add(img)
-        db.session.commit()
-        links = Nice.query.all()
-        return render_template('vids.html',posts=links,title='XKCD WebComics')
+        r=requests.get("https://c.xkcd.com/random/comic/")
+        data=BeautifulSoup(r.text,'html.parser').select('img')[3].get('src')
+        img='http:'+data
+        print(img)
+        return render_template('vids.html',img=img,title='XKCD WebComics')
     except:
         return abort(500)
 
@@ -215,17 +205,17 @@ def twitter(user):
 
     return render_template('twitter.html',handles=handles,user=u)
 
-@app.route('/add_handle/<user>',methods=['GET'])
+@app.route('/add_handle/<user>',methods=['GET','POST'])
 def add_handle(user):
-    u = Users.query.filter_by(user=user).first()
     new = NewHandle()
 
     if new.validate_on_submit():
         h = new.handle_name.data
         try:
+            u = Users.query.filter_by(user=user).first()
             if h in u.handles:
                 raise ValueError
-            u.handles+','+h
+            u.handles += h+','
             db.session.commit()
             return redirect(url_for('twitter',user=user))
         except ValueError:
@@ -237,12 +227,19 @@ def add_handle(user):
 def remove_handle(user,handle):
     u = Users.query.filter_by(user=user).first()
     handles = u.handles.split(',')
-    if handle not in handles:
-        flash("{} does not exist!","danger")
-        return redirect(url_for('twitter',user=u))
-    handles.remove(handle)
-    u.handles = ','.join(handles)
-    db.session.commit()
+
+    if handle == '*':
+        u.handles=''
+        db.session.commit()
+
+    elif handle not in handles:
+        flash("{} does not exist!".format(handle),"danger")
+
+    else:
+        handles.remove(handle)
+        u.handles = ','.join(handles)
+        db.session.commit()
+
     return redirect(url_for('twitter',user=u))
 
 @app.route("/reddit",methods=['GET','POST'])
@@ -264,23 +261,6 @@ def reddit():
 
         return render_template("reddit.html",data=content,sub=sub)
     return render_template("home.html",form=subr,title = 'Reddit')
-
-@app.route("/ssh",methods=['GET','POST'])
-def ssh():
-    cmds = Search()
-    if cmds.validate_on_submit():
-        cmd = cmds.search.data
-        try:
-            op = run(cmd,shell=True,stdout=PIPE,stderr=PIPE,input=b'0\nexit\n0')
-            if op.stderr:
-                raise ValueError
-            else:
-                data = op.stdout.decode('utf-8')
-                return render_template("commands.html",data=data)
-        except ValueError:
-            flash("That command did not run successfully","info")
-            return redirect(url_for('files'))
-    return render_template("home.html",form=cmds,title="Enter the commands below : ")
 
 @app.route('/uploads/<path:filename>', methods=['GET', 'POST'])
 def download(filename):

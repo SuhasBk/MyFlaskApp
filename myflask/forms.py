@@ -7,7 +7,7 @@ class Search(FlaskForm):
     submit = SubmitField('Search')
 
 class NewHandle(FlaskForm):
-    handle_name = StringField("Enter the '@' handle of a Twitter account...(Ex : if handle is '@handle_name', then type 'handle_name') : ",validators=[DataRequired()])
+    handle_name = StringField("Enter the '@' handle of a Twitter account...\n(Ex : if handle is '@handle_name', then type 'handle_name') : ",validators=[DataRequired()])
     submit = SubmitField('Add it to the list')
 
 class RegistrationForm(FlaskForm):
@@ -19,4 +19,4 @@ class RegistrationForm(FlaskForm):
 class LoginForm(FlaskForm):
     email = StringField('E-mail',validators=[DataRequired(),Email()])
     password=PasswordField('Password',validators=[DataRequired()])
-    submit=SubmitField('Login')
+    submit=SubmitField('Sign In')

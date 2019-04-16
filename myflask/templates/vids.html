@@ -3,22 +3,24 @@
 {% block content %}
 
 <center><h1> {{ title }} results</h1></center><br>
+{% if 'YouTube' in title %}
   {% for post in posts%}
     <article class="media content-section">
       <div class="media-body">
         <div class="article-metadata">
-
-          {% if 'YouTube' in title %}
           <iframe width="100%" height="315" src="{{ post }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-          {% elif 'XKCD' in title %}
-          <center><img width="50%" height="50%" src="{{ post.url }}"></img></center>
-
-          {% endif %}
-
         </div>
       </div>
     </article>
   {% endfor %}
+{% elif 'XKCD' in title %}
+<article class="media content-section">
+  <div class="media-body">
+    <div width="50%" height="80%" class="article-metadata">
+        <center><img src="{{ img }}"></img></center>
+    </div>
+  </div>
+</article>
+{% endif %}
 
 {% endblock content%}

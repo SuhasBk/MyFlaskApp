@@ -3,19 +3,21 @@
 <form method="POST" action="">
   {{ form.hidden_tag() }}
   <fieldset class="form-group">
-    <center><legend class="border-bottom-mb-4"> Login to access {{ purpose }} </legend>
+    <center><legend style="font-size:40px;" class="border-bottom-mb-4"> Login to access {{ purpose }} </legend></center>
     <div class="form-group">
-      {{ form.email.label(class="form-control-label") }}
+      {{ form.email.label(style="font-size:25px;", class="form-control-label") }}
       {{ form.email(class="form-control form-control-lg") }}
     </div>
     <div class="form-group">
-      {{ form.password.label(class="form-control-label") }}
-      (Please enter correct handle names seperated by a comma)
+      {{ form.password.label(style="font-size:25px;",class="form-control-label") }}
       {{ form.password(class="form-control form-control-lg") }}
     </div>
   </fieldset>
-    <center><div class="form-group">
+    <div style="display:inline-block;margin-right:950px;float:left;" class="form-group">
       {{ form.submit(class="btn btn-outline-info") }}
-    </div></center>
+    </div>
 </form>
+<div style="display:inline-block;">
+<button class="btn btn-outline-info"><a class="btn-outline-info" href="{{ url_for('register') }}"> Sign Up</a></button>
+</div>
 {% endblock %}

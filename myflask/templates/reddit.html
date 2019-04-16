@@ -1,12 +1,11 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  <center><h1> "{{sub}}" Results </h1><br>
-  <button onclick="window.history.back();"> GO BACK </button></center><br>
+  <center><h1> "{{sub}}" results </h1><br>
+  <button class="btn btn-outline-info" onclick="window.history.back();"> GO BACK </button></center><br>
   {% for i in range(1,data|length) %}
     <div class="article-content">
     <a id="reddit" href="{{ data[i]['data']['url'] }}" target="_blank"> {{ i|string }} - {{ data[i]['data']['title'] }} </a><br>
-    <!--<a href="#">boom</a>-->
     </div>
   {% endfor %}
 

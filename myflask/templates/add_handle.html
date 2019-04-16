@@ -1,7 +1,10 @@
-<form style="width:40%;float:left;" method="POST" action="">
-  {{ new.hidden_tag() }}
+{% extends "layout.html" %}
+{% block content%}
+<form style="float:left;" method="POST" action="">
+  {{ form.hidden_tag() }}
   <legend> Add Handle : </legend>
-  {{ new.handle_name.label(class="form-control-label") }}<br><br>
-  {{ new.handle_name(class="form-control form-control-lg") }}<br><br>
-  {{ new.submit(class="btn btn-outline-info") }}<br><br>
-</form>-
+  {{ form.handle_name.label(class="form-control-label") }}<br><br>
+  {{ form.handle_name(class="form-control form-control-lg") }}<br><br>
+  {{ form.submit(class="btn btn-outline-info") }}<br><br>
+</form>
+{% endblock %}
