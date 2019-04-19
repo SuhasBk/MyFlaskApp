@@ -3,7 +3,7 @@ from flask_ask import question,statement
 from myflask.forms import Search,NewHandle,LoginForm,RegistrationForm
 from myflask.models import Users
 from flask import Flask
-from myflask import app,db,ask,api
+from myflask import app,db,ask,api,bcrypt
 import os,random,re,time,sys,requests,markdown
 from flask_restful import Resource
 from bs4 import BeautifulSoup
@@ -169,7 +169,7 @@ def register():
     if rf.validate_on_submit():
         user = Users()
         user.user = rf.email.data
-        user.passwd = rf.password.data
+        user.passwd = bcrypt.generate_password_hash(rf.password.data)
         user.handles = rf.handles.data
         db.session.add(user)
         db.session.commit()
@@ -185,10 +185,12 @@ def login():
             who = lf.email.data
             user = Users.query.filter_by(user=who).first()
 
-            if user and lf.password.data == user.passwd:
-                return redirect(url_for('twitter',user=user.user))
-            else:
-                flash('Incorrect username/password','danger')
+            if user:
+                check = bcrypt.check_password_hash(user.passwd,lf.password.data)
+                if check:
+                    return redirect(url_for('twitter',user=user.user))
+
+            flash('Incorrect username/password','danger')
         else:
             return abort(401)
 

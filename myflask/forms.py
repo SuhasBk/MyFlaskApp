@@ -13,7 +13,7 @@ class NewHandle(FlaskForm):
 class RegistrationForm(FlaskForm):
     email = StringField('E-mail',validators=[DataRequired(),Email()])
     password=PasswordField('Password',validators=[DataRequired()])
-    handles=StringField('Handles To follow',validators=[DataRequired()])
+    handles=StringField('Handles To follow')
     submit=SubmitField('Register')
 
 class LoginForm(FlaskForm):
