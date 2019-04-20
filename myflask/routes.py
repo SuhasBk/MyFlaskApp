@@ -91,14 +91,10 @@ def knock():
 
 @ask.intent("IMDbIntent", mapping={'title':'Title'})
 def imdb(title):
-    p = run(["imdb.py"],stdout=PIPE,stderr=PIPE,input='{}\n1\n'.format(title),encoding='ascii')
-    out = p.stdout
-    err = p.stderr
+    p = run(["imdb.py",title],stdout=PIPE,input=b'1\n')
+    out = p.stdout.decode('utf-8')
     out = out.split('-----\n')[1]
-    if err == '':
-        return question(out)
-    else:
-        return statement("No such movie or tv series found....")
+    return question(out)
 #ALEXA!!!
 
 @app.route("/",methods=['GET','POST'])
