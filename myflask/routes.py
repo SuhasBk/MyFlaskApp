@@ -110,7 +110,7 @@ def youtube():
         urls = []
 
         for i in l:
-            reg.append('http://youtube.com/embed'+i.find('a').get('href').replace('watch?v=',''))
+            urls.append('http://youtube.com/embed'+i.find('a').get('href').replace('watch?v=',''))
 
         vids=urls[:20]
 
