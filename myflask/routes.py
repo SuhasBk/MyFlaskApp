@@ -62,13 +62,9 @@ def no_intent():
 
 @ask.intent('DictIntent', mapping={'word': 'Query'})
 def dictionary(word):
-    r=requests.get("https://www.dictionary.com/browse/{}".format(word))
-    s=BeautifulSoup(r.text,'html.parser')
-    try:
-        meaning=s.find('ol',attrs={'class':'css-zw8qdz e1hk9ate4'}).text.encode('utf-8').split('Explore Dictionary')[0]
-    except:
-        return question("No such word found! Sorry... try again")
-    return question('The meaning of {} is {}?'.format(word,meaning))
+    op = run(['dict.py',word],stdout=PIPE)
+    out = op.stdout.decode('utf-8')
+    return question(out)
 
 @ask.intent("RepIntent", mapping={'word': 'Phrase'})
 def repeat(word):
