@@ -6,4 +6,4 @@ flask-ask
 flask-restful
 flask-dynamo
 requests
-bs4
+beautifulsoup4

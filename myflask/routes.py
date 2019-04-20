@@ -91,9 +91,7 @@ def knock():
 
 @ask.intent("IMDbIntent", mapping={'title':'Title'})
 def imdb(title):
-    import subprocess
-    from subprocess import PIPE
-    p = subprocess.run(["imdb.py"],stdout=PIPE,stderr=PIPE,input='{}\n1\n'.format(title),encoding='ascii')
+    p = run(["imdb.py"],stdout=PIPE,stderr=PIPE,input='{}\n1\n'.format(title),encoding='ascii')
     out = p.stdout
     err = p.stderr
     out = out.split('-----\n')[1]
