@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
   {% block content %}
     <center><h1> WELCOME TO YOUR PERSONALIZED TWITTER </h1></center><br>
+    <a href="{{ url_for('user_update',user=user)}}"<button class="btn btn-outline-info">Update Account</button></a>
       <div id="accounts">
         <p> Your Accounts :<p>
         {% for i in range(handles|length) %}
@@ -9,18 +10,18 @@
         <br>
 
         <div style="display:inline-block;margin-width:10px;float:right;">
-            <button class="btn btn-outline-info"><a class="btn-outline-info" href="{{url_for('add_handle',user=user)}}"> Follow More? </a></button>
+            <button class="btn btn-outline-info"><a class="btn-outline-info" href="{{url_for('add_handle',user=user)}}"> Follow More </a></button>
         </div>
 
         {% if handles|length == 0 %}
         <p style="clear:both">  No accounts. Add some! </p>
         {% else %}
         <div style="display:inline-block;float:right;">
-          <a href="{{url_for('remove_handle',user=user,handle='*')}}"><button class="btn btn-outline-info">Clear All? </button></a>
+          <a href="{{url_for('remove_handle',user=user,handle='*')}}"><button class="btn btn-outline-info">Clear All </button></a>
         </div>
         {% endif %}<br>
       </div>
-      
+
     <div id="tweets">
       {% for handle in handles[::-1] %}
       <a class="twitter-timeline" data-width="500" data-height="600" data-theme="dark" href="https://twitter.com/{{handle}}?ref_src=twsrc%5Etfw" ></a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>

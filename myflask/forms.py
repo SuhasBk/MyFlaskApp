@@ -20,3 +20,8 @@ class LoginForm(FlaskForm):
     email = StringField('E-mail',validators=[DataRequired(),Email()])
     password=PasswordField('Password',validators=[DataRequired()])
     submit=SubmitField('Sign In')
+
+class UpdateForm(FlaskForm):
+    email = StringField('Update E-mail')
+    password = PasswordField('Update Password')
+    submit = SubmitField('Update')

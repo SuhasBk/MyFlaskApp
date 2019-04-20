@@ -1,6 +1,6 @@
 from flask import render_template,url_for,flash,redirect,request,abort,jsonify,send_from_directory
 from flask_ask import question,statement
-from myflask.forms import Search,NewHandle,LoginForm,RegistrationForm
+from myflask.forms import Search,NewHandle,LoginForm,RegistrationForm,UpdateForm
 from myflask.models import Users
 from flask import Flask
 from myflask import app,db,ask,api,bcrypt
@@ -194,6 +194,24 @@ def login():
 
     return render_template('login.html',purpose='Personalized Twitter!',form=lf)
 
+@app.route("/user_update/<user>",methods=['GET','POST'])
+def user_update(user):
+    uf = UpdateForm()
+
+    if uf.validate_on_submit():
+        u = Users.query.filter_by(user=user).first()
+        if uf.email.data or uf.password.data:
+            if uf.email.data != '':
+                u.user = uf.email.data
+            if uf.password.data != '':
+                u.passwd = bcrypt.generate_password_hash(uf.password.data)
+            db.session.commit()
+            flash('Account updated successfully','info')
+        else:
+            flash('Account unchanged!','info')
+        return redirect(url_for('twitter'))
+    return render_template('update.html',form=uf)
+
 @app.route("/twitter",defaults={'user':''},methods=['GET','POST'])
 @app.route("/twitter/<user>",methods=['GET','POST'])
 def twitter(user):
@@ -230,7 +248,6 @@ def remove_handle(user,handle):
 
     if handle == '*':
         u.handles=''
-        db.session.commit()
 
     elif handle not in handles:
         flash("{} does not exist!".format(handle),"danger")
@@ -238,8 +255,7 @@ def remove_handle(user,handle):
     else:
         handles.remove(handle)
         u.handles = ','.join(handles)
-        db.session.commit()
-
+    db.session.commit()
     return redirect(url_for('twitter',user=u))
 
 @app.route("/reddit",methods=['GET','POST'])
