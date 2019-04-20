@@ -2,9 +2,8 @@ flask
 flask-wtf
 flask-sqlalchemy
 flask-bcrypt
-flask-login
 flask-ask
-flask-mail
 flask-restful
+flask-dynamo
 requests
 bs4
