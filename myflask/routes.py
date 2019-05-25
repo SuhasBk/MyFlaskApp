@@ -4,7 +4,7 @@ from myflask.forms import Search,NewHandle,LoginForm,RegistrationForm,UpdateForm
 from myflask.models import Users
 from flask import Flask
 from myflask import app,db,ask,api,bcrypt
-import os,random,re,time,sys,requests,markdown
+import os,random,re,time,sys,requests
 from flask_restful import Resource
 from bs4 import BeautifulSoup
 from subprocess import run,PIPE
@@ -27,7 +27,6 @@ class MyGurukul(Resource):
 
 class CricketLive(Resource):
     def get(self):
-        from subprocess import run,PIPE
         op = run('cric.py',shell=True,stdout=PIPE)
         out = op.stdout.decode('utf-8')
         return {'response':out},200
@@ -125,7 +124,7 @@ def resume():
 def xkcd():
     try:
         r=requests.get("https://c.xkcd.com/random/comic/")
-        data=BeautifulSoup(r.text,'html.parser').select('img')[3].get('src')
+        data=BeautifulSoup(r.text,'html.parser').select('img')[2].get('src')
         img='http:'+data
         print(img)
         return render_template('vids.html',img=img,title='XKCD WebComics')
