@@ -1,9 +1,7 @@
 flask
-flask-ask
 flask-wtf
 flask-bcrypt
 flask-restful
-flask-dynamo
 flask-sqlalchemy
 requests
 beautifulsoup4
