@@ -3,8 +3,7 @@ from flask_ask import question,statement
 from myflask.forms import Search,NewHandle,LoginForm,RegistrationForm,UpdateForm
 from myflask.models import Users
 from flask import Flask
-from myflask import app,db,api,bcrypt
-#from myflask import ask
+from myflask import app,db,ask,api,bcrypt
 import os,random,re,time,sys,requests
 from flask_restful import Resource
 from bs4 import BeautifulSoup
