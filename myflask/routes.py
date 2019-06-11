@@ -7,7 +7,10 @@ from myflask import app,db,ask,api,bcrypt
 import os,random,re,time,sys,requests
 from flask_restful import Resource
 from bs4 import BeautifulSoup
+from myflask import socketio
 from subprocess import run,PIPE
+
+USERS = 0
 
 #Representational State Transfer:
 class MyGurukul(Resource):
@@ -69,7 +72,7 @@ def dictionary(word):
 def repeat(word):
     print(word)
     if word == None:
-        return question('What the fuck do you want me to repeat?')
+        return question('Whats that?')
     else:
         return question(word)
 
@@ -116,10 +119,12 @@ def youtube():
         return render_template('vids.html',posts=vids,title='YouTube')
     return render_template('home.html',title='YouTube',form=f)
 
+# display my resume:
 @app.route("/resume")
 def resume():
     return render_template('resume.html',title = 'My Resume')
 
+# random xkcd comic:
 @app.route("/xkcd",methods=['GET','POST'])
 def xkcd():
     try:
@@ -131,6 +136,7 @@ def xkcd():
     except:
         return abort(500)
 
+# lyrics scraper:
 @app.route("/lyrics",methods=['GET','POST'])
 def lyrics():
     form = Search()
@@ -148,10 +154,12 @@ def lyrics():
         return render_template('lyrics.html',res=res,title=form.search.data.upper()+' LYRICS')
     return render_template('home.html',form=form,title='Lyrics')
 
+# virtual piano renderer:
 @app.route("/piano",methods=['GET','POST'])
 def piano():
     return render_template('piano.html')
 
+# register new user:
 @app.route("/register",methods=['GET','POST'])
 def register():
     rf = RegistrationForm()
@@ -165,6 +173,7 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html',form=rf,purpose='Personalized Twitter!')
 
+# user login:
 @app.route("/login",methods=['GET','POST'])
 def login():
     lf = LoginForm()
@@ -185,6 +194,7 @@ def login():
 
     return render_template('login.html',purpose='Personalized Twitter!',form=lf)
 
+# update email and password of twitter users:
 @app.route("/user_update/<user>",methods=['GET','POST'])
 def user_update(user):
     uf = UpdateForm()
@@ -203,6 +213,7 @@ def user_update(user):
         return redirect(url_for('twitter'))
     return render_template('update.html',form=uf)
 
+# view twitter homepage with custom handles:
 @app.route("/twitter",defaults={'user':''},methods=['GET','POST'])
 @app.route("/twitter/<user>",methods=['GET','POST'])
 def twitter(user):
@@ -214,6 +225,7 @@ def twitter(user):
 
     return render_template('twitter.html',handles=handles,user=u)
 
+# add new twitter handles:
 @app.route('/add_handle/<user>',methods=['GET','POST'])
 def add_handle(user):
     new = NewHandle()
@@ -224,7 +236,7 @@ def add_handle(user):
             u = Users.query.filter_by(user=user).first()
             if h in u.handles:
                 raise ValueError
-            u.handles += h+','
+            u.handles += ','+h
             db.session.commit()
             return redirect(url_for('twitter',user=user))
         except ValueError:
@@ -232,6 +244,7 @@ def add_handle(user):
 
     return render_template('add_handle.html',form=new)
 
+# remove twitter handles:
 @app.route('/remove_handle/<user>/<handle>',methods=['GET'])
 def remove_handle(user,handle):
     u = Users.query.filter_by(user=user).first()
@@ -249,6 +262,7 @@ def remove_handle(user,handle):
     db.session.commit()
     return redirect(url_for('twitter',user=u))
 
+# subreddit scraper:
 @app.route("/reddit",methods=['GET','POST'])
 def reddit():
     subr = Search()
@@ -269,15 +283,31 @@ def reddit():
         return render_template("reddit.html",data=content,sub=sub)
     return render_template("home.html",form=subr,title = 'Reddit')
 
+# random file download from server:
 @app.route('/uploads/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
     uploads = app.config['UPLOAD_FOLDER']
     return send_from_directory(directory=uploads, filename=filename, as_attachment=True)
 
+@app.route("/chatapp",methods=['GET','POST'])
+def chatapp():
+    return render_template("chatapp.html",title="My Chat App")
+
+
+@socketio.on('event')
+def handle_my_event(json):
+    global USERS
+    USERS+=1
+    print(json,"Current number of users : "+str(USERS))
+    socketio.emit('my response',json)
+
+
+# for testing new features:
 @app.route("/test",methods=['GET','POST'])
 def test():
     return render_template("test.html")
 
+# reset database in case of any problems:
 @app.route("/r")
 def refresh():
     db.drop_all()

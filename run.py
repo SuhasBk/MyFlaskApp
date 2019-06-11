@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
-from myflask import app
-import webbrowser
+from myflask import socketio,app
 
 if __name__=='__main__':
-    app.run(host='localhost',debug=True,threaded=True)
+    socketio.run(app,host='localhost',debug=True)
