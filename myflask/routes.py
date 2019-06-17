@@ -9,6 +9,7 @@ from flask_restful import Resource
 from bs4 import BeautifulSoup
 from myflask import socketio
 from subprocess import run,PIPE
+import base64
 
 USERS = 0
 
