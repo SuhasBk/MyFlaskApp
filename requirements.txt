@@ -3,5 +3,6 @@ flask-wtf
 flask-bcrypt
 flask-restful
 flask-sqlalchemy
+Flask-SocketIO
 requests
 beautifulsoup4

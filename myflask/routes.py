@@ -8,10 +8,7 @@ import os,random,re,time,sys,requests
 from flask_restful import Resource
 from bs4 import BeautifulSoup
 from myflask import socketio
-from subprocess import run,PIPE
-import base64
-
-USERS = 0
+from subprocess import *
 
 #Representational State Transfer:
 class MyGurukul(Resource):
@@ -29,14 +26,7 @@ class MyGurukul(Resource):
         else:
             return {'request':data,'response':"JSON KeyError"},400
 
-class CricketLive(Resource):
-    def get(self):
-        op = run('cric.py',shell=True,stdout=PIPE)
-        out = op.stdout.decode('utf-8')
-        return {'response':out},200
-
 api.add_resource(MyGurukul,'/gurukul')
-api.add_resource(CricketLive,'/cricket')
 
 #ALEXA!!!!
 @app.route('/alexa')
@@ -297,9 +287,6 @@ def chatapp():
 
 @socketio.on('event')
 def handle_my_event(json):
-    global USERS
-    USERS+=1
-    print(json,"Current number of users : "+str(USERS))
     socketio.emit('my response',json)
 
 
