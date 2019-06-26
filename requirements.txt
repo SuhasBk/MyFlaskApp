@@ -4,5 +4,6 @@ flask-bcrypt
 flask-restful
 flask-sqlalchemy
 Flask-SocketIO
+gunicorn
 requests
 beautifulsoup4
