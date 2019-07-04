@@ -8,3 +8,4 @@ Flask-SocketIO
 gunicorn
 requests
 beautifulsoup4
+cryptography<2.2
