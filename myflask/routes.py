@@ -36,7 +36,9 @@ def alexa():
 @ask.launch
 def start_skill():
     welcome = "Hello boss! Hyperbyte is online. quote, for quotes! dict and the word, for dictionary! repeat, and the phrase to be repeated, for mimicry! knock knock, for knock knock jokes! imdb and the title, for movie ratings! These are all the fantastic stuffs Suhas programmed me to do."
-    return question(welcome)
+    j=question(welcome)
+    print(j)
+    return j
 
 @ask.intent("QuoteIntent")
 def yes_intent():
