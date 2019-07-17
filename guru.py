@@ -38,6 +38,7 @@ except(IndexError):
     d=input("Attendance ('a') OR Marks? ('m')\n")
 
 bin = os.environ['GOOGLE_CHROME_BIN']
+print(bin)
 options = Options()
 options.binary_location = bin
 b = webdriver.Chrome(chrome_options=options)
