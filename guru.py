@@ -39,12 +39,12 @@ except(IndexError):
 
 bin = os.environ['GOOGLE_CHROME_BIN']
 print(bin)
-options = Options()
-options.binary_location = bin
-options.headless = True
+chrome_options = Options()
+chrome_options.binary_location = bin
+chrome_options.headless = True
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--disable-dev-shm-usage')
-b = webdriver.Chrome(chrome_options=options)
+b = webdriver.Chrome(chrome_options=chrome_options)
 
 #collecting data based on selection type:
 def data():
