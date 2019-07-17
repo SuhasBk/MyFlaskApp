@@ -8,5 +8,6 @@ Flask-SocketIO
 gunicorn
 requests
 selenium
+PIL
 beautifulsoup4
 cryptography<2.2
