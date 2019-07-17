@@ -14,6 +14,6 @@ try:
 except AttributeError:
     print('No LIVE cricket matches happening')
     exit()
-
+print(str(len(live)))
 for i,j in enumerate(live,1):
     print(i,' - ',j.text.lstrip())
