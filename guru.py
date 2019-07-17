@@ -1,10 +1,6 @@
 #!/usr/bin/python3
 
 import time,sys,os,selenium
-
-# To let Python aware of chromedriver required.. The PATH variable is modified temporarily!
-os.environ['PATH'] += ':'+os.getcwd()
-
 from getpass import getpass
 from PIL import Image
 from selenium import webdriver
@@ -41,7 +37,10 @@ except(IndexError):
     pas=getpass("Enter the password (hidden) :\n")
     d=input("Attendance ('a') OR Marks? ('m')\n")
 
-b = webdriver.Chrome()
+bin = os.environ['GOOGLE_CHROME_BIN']
+options = Options()
+options.binary_location = bin
+b = webdriver.Chrome(chrome_options=options)
 
 #collecting data based on selection type:
 def data():
