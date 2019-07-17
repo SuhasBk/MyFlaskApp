@@ -13,20 +13,34 @@ from subprocess import *
 #Representational State Transfer:
 class MyGurukul(Resource):
     def get(self):
-        return {'response':"Woah!! How did you reach here? Please go back to what you were doing. No offence, but you don't belong here."}
+        return {'response':"This API call works with a POST request. The POST request must contain a JSON object with 'usn' key-value pair and 'password' key-value pair. This API returns a JSON object with 'response' key whose value contains the attendance of the student indicated by his/her gurukul USN and password."}
     def post(self):
         data = request.get_json()
         if 'usn' in data.keys() and 'password' in data.keys():
             usn=data.get('usn')
             passwd=data.get('password')
-            op = run('guru.py {} {}  a'.format(usn,passwd),input=b'exit',stdout=PIPE,shell=True)
+            op = run(['python3','guru.py',usn,passwd,'a'],input=b'exit',stdout=PIPE)
             out = op.stdout.decode('utf-8')
             out = out.split('Please')[0]
             return {'request':data,'response':out},201
         else:
             return {'request':data,'response':"JSON KeyError"},400
 
+class Dict(Resource):
+    def get(self):
+        return {'response':"This API call works with a POST request. The POST request must contain a JSON object with 'word' key and the *word* as the value. This API returns a JSON object with 'response' key whose value contains the meaning of the *word*."}
+    def post(self):
+        data = request.get_json()
+        if 'word' in data.keys():
+            word = data.get("word")
+            op = run(['python3','dict.py',word],stdout=PIPE)
+            out = op.stdout.decode('utf-8')
+            return {'request':data,'response':out},201
+        else:
+            return {'request':data,'response':"JSON KeyError"},400
+
 api.add_resource(MyGurukul,'/gurukul')
+api.add_resource(Dict,'/dictionary')
 
 #ALEXA!!!!
 @app.route('/alexa')

@@ -7,5 +7,6 @@ flask-sqlalchemy
 Flask-SocketIO
 gunicorn
 requests
+selenium
 beautifulsoup4
 cryptography<2.2
