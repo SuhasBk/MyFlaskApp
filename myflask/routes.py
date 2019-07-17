@@ -19,9 +19,12 @@ class MyGurukul(Resource):
         if 'usn' in data.keys() and 'password' in data.keys():
             usn=data.get('usn')
             passwd=data.get('password')
-            op = run(['python3','guru.py',usn,passwd],input=b'exit',stdout=PIPE)
+            op = run(['python3','guru.py',usn,passwd],input=b'exit',stdout=PIPE,stderr=PIPE)
             out = op.stdout.decode('utf-8')
             out = out.split('Please')[0]
+            err = op.stderr.decode('utf-8')
+            if len(err)>0:
+                return {'request':data,'response':err},201
             return {'request':data,'response':out},201
         else:
             return {'request':data,'response':"JSON KeyError"},400
@@ -39,8 +42,15 @@ class Dict(Resource):
         else:
             return {'request':data,'response':"JSON KeyError"},400
 
+class Cricket(Resource):
+    def get(self):
+        op = run(['python3','cric.py'],stdout=PIPE,input=b'\n')
+        out = op.stdout.decode('utf-8')
+        return {'response':out},201
+
 api.add_resource(MyGurukul,'/gurukul')
 api.add_resource(Dict,'/dictionary')
+api.add_resource(Cricket,'/cricket')
 
 #ALEXA!!!!
 @app.route('/alexa')
