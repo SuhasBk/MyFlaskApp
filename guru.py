@@ -42,6 +42,8 @@ print(bin)
 options = Options()
 options.binary_location = bin
 options.headless = True
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
 b = webdriver.Chrome(chrome_options=options)
 
 #collecting data based on selection type:
