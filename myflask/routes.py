@@ -45,6 +45,7 @@ class Dict(Resource):
 class Cricket(Resource):
     def get(self):
         op = run(['python3','cric.py'],stdout=PIPE)
+        print(op)
         out = op.stdout.decode('utf-8')
         return {'response':out},201
 
