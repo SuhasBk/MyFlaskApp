@@ -9,7 +9,7 @@ from getpass import getpass
 from PIL import Image
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
 from subprocess import call
 
 def debug(*args,**kwargs):
@@ -45,11 +45,11 @@ except(IndexError):
 if len(sys.argv[1:])<=3:
     options = Options()
     options.headless = True
-    b = webdriver.Chrome(options=options)
+    b = webdriver.Firefox(options=options)
 else:
     debug_mode = True
     print('Running in debugging mode')
-    b = webdriver.Chrome()
+    b = webdriver.Firefox()
 
 #collecting data based on selection type:
 def data():
