@@ -2,7 +2,7 @@
 import requests
 from bs4 import *
 
-base_url = "https://www.cricbuzz.com"
+base_url = "http://www.cricbuzz.com"
 headers = {'User-Agent':'pls let me in :('}
 
 r = requests.get(base_url+'/cricket-match/live-scores',headers=headers)
