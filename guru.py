@@ -41,15 +41,7 @@ except(IndexError):
     pas=getpass("Enter the password (hidden) :\n")
     d=input("Attendance ('a') OR Marks? ('m')\n")
 
-#headless : like a covert spy ;)
-if len(sys.argv[1:])<=3:
-    options = Options()
-    options.headless = True
-    b = webdriver.Chrome(options=options)
-else:
-    debug_mode = True
-    print('Running in debugging mode')
-    b = webdriver.Chrome()
+b = webdriver.Chrome()
 
 #collecting data based on selection type:
 def data():
