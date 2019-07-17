@@ -48,7 +48,7 @@ def data():
     #attendance:
     if d == 'a' or d == 'A':
         #fetch raw data:
-        u = b.find_elements_by_class_name('underline')  #Clicking the NAV link
+        u = b.find_elements_by_class_name('underline')
         u.pop().click()
         time.sleep(5)
 
