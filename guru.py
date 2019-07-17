@@ -41,6 +41,7 @@ bin = os.environ['GOOGLE_CHROME_BIN']
 print(bin)
 options = Options()
 options.binary_location = bin
+options.headless = True
 b = webdriver.Chrome(chrome_options=options)
 
 #collecting data based on selection type:
