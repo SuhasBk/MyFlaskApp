@@ -4,7 +4,6 @@ flask-wtf
 flask-bcrypt
 flask-restful
 flask-sqlalchemy
-Flask-SocketIO
 gunicorn
 requests
 selenium
