@@ -7,7 +7,6 @@ from myflask import app,db,ask,api,bcrypt
 import os,random,re,time,sys,requests
 from flask_restful import Resource
 from bs4 import BeautifulSoup
-from myflask import socketio
 from subprocess import *
 
 #Representational State Transfer:

@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_ask import Ask
 from flask_bcrypt import Bcrypt
 from flask_restful import Api
-from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 app.config['SECRET_KEY']='fhdusfhysrgygdsyfgsdyfgsdyfg'
@@ -18,7 +17,5 @@ api = Api(app)
 db=SQLAlchemy(app)
 
 bcrypt = Bcrypt(app)
-
-socketio = SocketIO(app)
 
 from myflask import routes
