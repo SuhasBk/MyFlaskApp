@@ -307,15 +307,6 @@ def download(filename):
     uploads = app.config['UPLOAD_FOLDER']
     return send_from_directory(directory=uploads, filename=filename, as_attachment=True)
 
-@app.route("/chatapp",methods=['GET','POST'])
-def chatapp():
-    return render_template("chatapp.html",title="My Chat App")
-
-
-@socketio.on('event')
-def handle_my_event(json):
-    socketio.emit('my response',json)
-
 
 # for testing new features:
 @app.route("/test",methods=['GET','POST'])
