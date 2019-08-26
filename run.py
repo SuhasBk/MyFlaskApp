@@ -1,5 +1,5 @@
 #!/usr/bin/python3
 
-from myflask import socketio,app
+from myflask import app
 if __name__=='__main__':
-    socketio.run(app,host='localhost',debug=True)
+    app.run(host='localhost',debug=True)
