@@ -30,7 +30,10 @@ class MyGurukul(Resource):
 
 class Dict(Resource):
     def get(self):
-        return {'response':"This API call works with a POST request. The POST request must contain a JSON object with 'word' key and the *word* as the value. This API returns a JSON object with 'response' key whose value contains the meaning of the *word*."}
+        word = request.args['word'].encode('utf-8')
+        op = run(['python3','dict.py',word],stdout=PIPE)
+        out = op.stdout.decode('utf-8')
+        return {'request':data,'response':out},201
     def post(self):
         data = request.get_json()
         if 'word' in data.keys():
