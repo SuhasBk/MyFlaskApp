@@ -44,13 +44,20 @@ class Dict(Resource):
 class Cricket(Resource):
     def get(self):
         op = run(['python3','cric.py'],stdout=PIPE)
-        print(op)
         out = op.stdout.decode('utf-8')
+        return {'response':out},201
+
+class Weather(Resource):
+    def get(self):
+        city = request.args['city'].encode('utf-8')
+        op = run(['python3','weather.py'],input=city,stdout=PIPE)
+        out = op.stdout.decode('utf-8').split('\n> ')[1]
         return {'response':out},201
 
 api.add_resource(MyGurukul,'/gurukul')
 api.add_resource(Dict,'/dictionary')
 api.add_resource(Cricket,'/cricket')
+api.add_resource(Weather,'/weather')
 
 #ALEXA!!!!
 @app.route('/alexa')
