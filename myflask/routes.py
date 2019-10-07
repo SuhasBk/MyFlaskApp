@@ -52,9 +52,11 @@ class Cricket(Resource):
 
 class Weather(Resource):
     def get(self):
-        city = request.args['city'].encode('utf-8')
-        op = run(['python3','weather.py'],input=city,stdout=PIPE)
-        out = op.stdout.decode('utf-8').split('\n> ')[1]
+        country = request.args['country']
+        city = request.args['city']
+        parameter = (country+'\n'+city).encode('utf-8')
+        op = run(['python3','weather.py'],input=parameter,stdout=PIPE)
+        out = op.stdout.decode('utf-8').split('\n> ')[2]
         return {'response':out},201
 
 api.add_resource(MyGurukul,'/gurukul')
