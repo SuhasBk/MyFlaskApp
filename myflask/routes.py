@@ -8,25 +8,30 @@ import os,random,re,time,sys,requests
 from flask_restful import Resource
 from bs4 import BeautifulSoup
 from subprocess import *
+import base64,json
 
 #Representational State Transfer:
-class MyGurukul(Resource):
+class DeccanPdf(Resource):
     def get(self):
-        return {'response':"This API call works with a POST request. The POST request must contain a JSON object with 'usn' key-value pair and 'password' key-value pair. This API returns a JSON object with 'response' key whose value contains the attendance of the student indicated by his/her gurukul USN and password."}
-    def post(self):
-        data = request.get_json()
-        if 'usn' in data.keys() and 'password' in data.keys():
-            usn=data.get('usn')
-            passwd=data.get('password')
-            op = run(['python3','guru.py',usn,passwd],input=b'exit',stdout=PIPE,stderr=PIPE)
-            out = op.stdout.decode('utf-8')
-            out = out.split('Please')[0]
-            err = op.stderr.decode('utf-8')
-            if len(err)>0:
-                return {'request':data,'response':err},201
-            return {'request':data,'response':out},201
-        else:
-            return {'request':data,'response':"JSON KeyError"},400
+        skip = False
+        name = time.ctime()[:10]+' epaper.pdf'
+
+        if name in iter(os.listdir()):
+            print("Epaper already downloaded")
+            skip = True
+            fname = name
+
+        if not skip:
+            op = run(['python3','deccan.py'],stdout=PIPE)
+            fname = op.stdout.decode('utf-8').strip()
+            if fname == '':
+                return 500
+
+        with open(fname,'rb') as f:
+            data = f.read()
+        data = base64.b64encode(data).decode('utf-8')
+        os.remove(fname)
+        return {'response':data}
 
 class Dict(Resource):
     def get(self):
@@ -59,7 +64,7 @@ class Weather(Resource):
         out = op.stdout.decode('utf-8').split('\n> ')[2]
         return {'response':out},201
 
-api.add_resource(MyGurukul,'/gurukul')
+api.add_resource(DeccanPdf,'/deccan')
 api.add_resource(Dict,'/dictionary')
 api.add_resource(Cricket,'/cricket')
 api.add_resource(Weather,'/weather')
