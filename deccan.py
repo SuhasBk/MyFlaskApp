@@ -36,10 +36,14 @@ class EPaper():
         self.browser.get("http://www.deccanheraldepaper.com/")
 
     def edition(self):
-        self.browser.find_element_by_id('btnPublicationsPanel').click()
-        edition = self.browser.find_element_by_id('pubFilterEdition')
-        edition.click()
-        edition.find_elements_by_tag_name('option')[1].click()
+        try:
+            self.browser.find_element_by_id('btnPublicationsPanel').click()
+            edition = self.browser.find_element_by_id('pubFilterEdition')
+            edition.click()
+            edition.find_elements_by_tag_name('option')[1].click()
+        except:
+            time.sleep(3)
+            self.edition()
 
     def download(self):
         next = True
@@ -79,7 +83,6 @@ class EPaper():
 
 try:
     deccan = EPaper()
-    time.sleep(3)
     deccan.edition()
     time.sleep(3)
     deccan.download()
