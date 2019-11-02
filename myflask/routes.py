@@ -47,7 +47,7 @@ class Dict(Resource):
             out = op.stdout.decode('utf-8')
             return {'response':out},201
         else:
-            return {'response':"JSON KeyError"},400
+            return {'response':"JSON Error"},400
 
 class Cricket(Resource):
     def get(self):
