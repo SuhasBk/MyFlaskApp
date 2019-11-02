@@ -154,8 +154,12 @@ def youtube():
     return render_template('home.html',title='YouTube',form=f)
 
 # display my resume:
-@app.route("/resume")
+@app.route("/resume",methods=['GET','POST'])
 def resume():
+    if request.method=='POST':
+        with open('myflask'+url_for('static',filename='my-resume.pdf'),'rb') as f:
+            data = f.read()
+        return data
     return render_template('resume.html',title = 'My Resume')
 
 # random xkcd comic:
