@@ -38,16 +38,16 @@ class Dict(Resource):
         word = request.args['word'].encode('utf-8')
         op = run(['python3','dict.py',word],stdout=PIPE)
         out = op.stdout.decode('utf-8')
-        return {'request':data,'response':out},201
+        return {'response':out},201
     def post(self):
         data = request.get_json()
-        if 'word' in data.keys():
+        if data!=None and 'word' in data.keys():
             word = data.get("word")
             op = run(['python3','dict.py',word],stdout=PIPE)
             out = op.stdout.decode('utf-8')
-            return {'request':data,'response':out},201
+            return {'response':out},201
         else:
-            return {'request':data,'response':"JSON KeyError"},400
+            return {'response':"JSON KeyError"},400
 
 class Cricket(Resource):
     def get(self):
