@@ -22,6 +22,6 @@ class LoginForm(FlaskForm):
     submit=SubmitField('Sign In')
 
 class UpdateForm(FlaskForm):
-    email = StringField('Update E-mail')
-    password = PasswordField('Update Password')
+    email = StringField('Update E-mail',validators=[DataRequired(),Email()])
+    password = PasswordField('Update Password',validators=[DataRequired()])
     submit = SubmitField('Update')
