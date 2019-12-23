@@ -16,6 +16,6 @@ try:
     meaning = ''
     for i in sections:
         meaning += i.text
-    print("Word : '{}'\n\nMeaning : {}".format(word,meaning))
+    print("Word : '{}'\n\nMeaning : {}".format(word,meaning.replace('\n'*10,'\n')))
 except AttributeError:
     print('No such word in my dictionary...')
