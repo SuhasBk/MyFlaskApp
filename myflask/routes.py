@@ -77,9 +77,7 @@ def alexa():
 @ask.launch
 def start_skill():
     welcome = "Hello boss! Hyperbyte is online. quote, for quotes! dict and the word, for dictionary! repeat, and the phrase to be repeated, for mimicry! knock knock, for knock knock jokes! imdb and the title, for movie ratings! These are all the fantastic stuffs Suhas programmed me to do."
-    j=question(welcome)
-    print(j)
-    return j
+    return question(welcome)
 
 @ask.intent("QuoteIntent")
 def yes_intent():
@@ -87,7 +85,7 @@ def yes_intent():
     p=BeautifulSoup(r.text,'html.parser').findAll('p',attrs={'class':''})
     quotes = []
     for i in range(0,len(p)-1,2):
-        quotes.append(p[i].text.encode('utf-8'))
+        quotes.append(p[i].text)
     quote = random.choice(quotes)
     return question(quote)
 
