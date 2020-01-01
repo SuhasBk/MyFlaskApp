@@ -81,7 +81,7 @@ def start_skill():
 
 @ask.intent("FeaturesIntent")
 def features_intent():
-    features = "Say quote, for quotes! Say dictionary followed by the word, to get its meaning! Say repeat, followed by phrase to be repeated, for mimicry! Say knock knock, for knock knock jokes! Say imdb and the title, for ratings! These are all the fantastic stuffs Suhas programmed me to do."
+    features = "Say quote, for quotes! Say repeat, followed by phrase to be repeated, for mimicry! Say knock knock, for knock knock jokes! Say imdb and the title, for ratings! These are all the fantastic stuffs Suhas programmed me to do."
     return question(features)
 
 @ask.intent("QuoteIntent")
