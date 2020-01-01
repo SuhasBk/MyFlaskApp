@@ -96,7 +96,7 @@ def no_intent():
 
 @ask.intent('DictIntent', mapping={'word': 'Query'})
 def dictionary(word):
-    op = run(['dict.py',word],stdout=PIPE)
+    op = run(['python3','dict.py',word],stdout=PIPE)
     out = op.stdout.decode('utf-8')
     return question(out)
 
@@ -121,7 +121,7 @@ def knock():
 
 @ask.intent("IMDbIntent", mapping={'title':'Title'})
 def imdb(title):
-    p = run(["imdb.py",title],stdout=PIPE,input=b'1\n')
+    p = run(['python3',"imdb.py",title],stdout=PIPE,input=b'1\n')
     out = p.stdout.decode('utf-8')
     out = out.split('-----\n')[1]
     return question(out)
