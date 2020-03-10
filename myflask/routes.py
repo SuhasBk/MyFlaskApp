@@ -7,31 +7,16 @@ from myflask import app,db,ask,api,bcrypt
 import os,random,re,time,sys,requests
 from flask_restful import Resource
 from bs4 import BeautifulSoup
-from subprocess import *
+from subprocess import run,PIPE
 import base64,json
 
 #Representational State Transfer:
-class DeccanPdf(Resource):
+class Pirate(Resource):
     def get(self):
-        skip = False
-        name = time.ctime()[:10]+' epaper.pdf'
-
-        if name in iter(os.listdir()):
-            print("Epaper already downloaded")
-            skip = True
-            fname = name
-
-        if not skip:
-            op = run(['python3','deccan.py'],stdout=PIPE)
-            fname = op.stdout.decode('utf-8').strip()
-            if fname == '':
-                return 500
-
-        with open(fname,'rb') as f:
-            data = f.read()
-        data = base64.b64encode(data).decode('utf-8')
-        os.remove(fname)
-        return {'response':data}
+        goods = request.args['goods']
+        op = run(['python3','pirate.py',goods],stdout=PIPE)
+        out = op.stdout.decode('utf-8')
+        return {'response':out},201
 
 class Dict(Resource):
     def get(self):
@@ -64,7 +49,7 @@ class Weather(Resource):
         out = op.stdout.decode('utf-8').split('\n> ')[2]
         return {'response':out},201
 
-api.add_resource(DeccanPdf,'/deccan')
+api.add_resource(Pirate,'/pirate')
 api.add_resource(Dict,'/dictionary')
 api.add_resource(Cricket,'/cricket')
 api.add_resource(Weather,'/weather')
