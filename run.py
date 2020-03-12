@@ -2,4 +2,4 @@
 
 from myflask import app
 if __name__=='__main__':
-    app.run(host='localhost',debug=True,threaded=True)
+    app.run(host='192.168.0.101',debug=True,threaded=True)
