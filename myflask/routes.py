@@ -11,11 +11,14 @@ from subprocess import run,PIPE
 import base64,json
 
 #Representational State Transfer:
-class Pirate(Resource):
+class CoronaApi(Resource):
     def get(self):
-        goods = request.args['goods']
-        op = run(['python3','pirate.py',goods],stdout=PIPE)
-        out = op.stdout.decode('utf-8')
+        run(['python3','corona_status_report.py'],stdout=PIPE)
+        pdf = open(f"myflask/static/report.pdf","rb")
+        contents = pdf.read()
+        out = base64.b64encode(contents).decode('utf-8')
+        pdf.close()
+        os.remove(f"myflask/static/report.pdf")
         return {'response':out},201
 
 class Dict(Resource):
@@ -49,7 +52,7 @@ class Weather(Resource):
         out = op.stdout.decode('utf-8').split('\n> ')[2]
         return {'response':out},201
 
-api.add_resource(Pirate,'/pirate')
+api.add_resource(CoronaApi,'/coronastats')
 api.add_resource(Dict,'/dictionary')
 api.add_resource(Cricket,'/cricket')
 api.add_resource(Weather,'/weather')
@@ -317,9 +320,10 @@ def download(filename):
 
 
 # for testing new features:
-@app.route("/test",methods=['GET','POST'])
-def test():
-    return render_template("test.html")
+@app.route("/corona",methods=['GET'])
+def corona():
+    run(['python3', 'corona_status_report.py'], stdout=PIPE)
+    return render_template("corona.html", name="report.pdf")
 
 # reset database in case of any problems:
 @app.route("/r")
