@@ -4,3 +4,4 @@ __init__.pyc
 forms.pyc
 models.pyc
 run.pyc
+.vscode/
