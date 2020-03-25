@@ -9,8 +9,23 @@ from flask_restful import Resource
 from bs4 import BeautifulSoup
 from subprocess import run,PIPE
 import base64,json
+from datetime import date
 
 #Representational State Transfer:
+class DeccanApi(Resource):
+    def get(self):
+        r = run(["python3", "deccan.py"], env={'HIDDEN_ID': "BATMAN", 'PATH': os.environ['PATH']},stderr=PIPE)
+
+        if r.returncode == 42:
+            return {'response':"Dependencies not resolved !!!"}
+
+        name = '_'.join(str(date.today()).split('-')[::-1])+'_epaper.pdf'
+        pdf = open(name, "rb")
+        contents = pdf.read()
+        out = base64.b64encode(contents).decode('utf-8')
+        pdf.close()
+        return {'response': out}, 201
+        
 class CoronaApi(Resource):
     def get(self):
         run(['python3','corona_status_report.py'],stdout=PIPE)
@@ -37,12 +52,6 @@ class Dict(Resource):
         else:
             return {'response':"JSON Error"},400
 
-class Cricket(Resource):
-    def get(self):
-        op = run(['python3','cric.py'],stdout=PIPE)
-        out = op.stdout.decode('utf-8')
-        return {'response':out},201
-
 class Weather(Resource):
     def get(self):
         country = request.args['country']
@@ -54,8 +63,8 @@ class Weather(Resource):
 
 api.add_resource(CoronaApi,'/coronastats')
 api.add_resource(Dict,'/dictionary')
-api.add_resource(Cricket,'/cricket')
 api.add_resource(Weather,'/weather')
+api.add_resource(DeccanApi,'/deccan')
 
 #ALEXA!!!!
 @app.route('/alexa')
@@ -106,7 +115,7 @@ def knock():
     r=requests.get("https://thoughtcatalog.com/melanie-berliet/2015/09/40-ridiculous-knock-knock-jokes-thatll-get-you-a-laugh-on-demand/")
     s = BeautifulSoup(r.text,'html.parser')
     k = s.find('div',attrs={'class':'box-content'}).text
-    jokes = re.split('[\d+]',k)
+    jokes = re.split(r'[\d+]',k)
     joke = random.choice(jokes)
     joke = joke.replace('.','')
     print(joke.encode('utf-8').rstrip())
