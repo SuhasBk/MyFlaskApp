@@ -9,4 +9,5 @@ requests
 selenium
 Pillow
 beautifulsoup4
+PyPDF2
 cryptography<2.2
