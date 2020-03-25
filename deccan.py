@@ -43,7 +43,7 @@ class EPaper:
             log_path = 'NUL'
 
         try:
-            self.browser = webdriver.Firefox(options=op,firefox_profile=fp,service_log_path=log_path)
+            self.browser = webdriver.Firefox(firefox_profile=fp,service_log_path=log_path)
             self.browser.get("http://www.deccanheraldepaper.com/")
         except:
             exit(42)
