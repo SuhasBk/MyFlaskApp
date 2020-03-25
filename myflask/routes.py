@@ -17,7 +17,7 @@ class DeccanApi(Resource):
         r = run(["python3", "deccan.py"], env={'HIDDEN_ID': "BATMAN", 'PATH': os.environ['PATH']})
 
         if r.returncode == 42:
-            return {'response':"Dependencies not resolved !!!"}
+            return {'response':"Dependencies not resolved !!!"}, 500
 
         name = '_'.join(str(date.today()).split('-')[::-1])+'_epaper.pdf'
         pdf = open(name, "rb")
