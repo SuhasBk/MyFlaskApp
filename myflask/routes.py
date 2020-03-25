@@ -14,7 +14,7 @@ from datetime import date
 #Representational State Transfer:
 class DeccanApi(Resource):
     def get(self):
-        r = run(["python3", "deccan.py"], env={'HIDDEN_ID': "BATMAN", 'PATH': os.environ['PATH']},stderr=PIPE)
+        r = run(["python3", "deccan.py"], env={'HIDDEN_ID': "BATMAN", 'PATH': os.environ['PATH']})
 
         if r.returncode == 42:
             return {'response':"Dependencies not resolved !!!"}
