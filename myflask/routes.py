@@ -3,68 +3,11 @@ from flask_ask import question,statement
 from myflask.forms import Search,NewHandle,LoginForm,RegistrationForm,UpdateForm
 from myflask.models import Users
 from flask import Flask
-from myflask import app,db,ask,api,bcrypt
+from myflask import app,db,bcrypt,ask
 import os,random,re,time,sys,requests
-from flask_restful import Resource
 from bs4 import BeautifulSoup
 from subprocess import run,PIPE
-import base64,json
-from datetime import date
-
-#Representational State Transfer:
-class DeccanApi(Resource):
-    def get(self):
-        r = run(["python3", "deccan.py"], env={'HIDDEN_ID': "BATMAN", 'PATH': os.environ['PATH']})
-
-        if r.returncode == 42:
-            return {'response':"Dependencies not resolved !!!"}, 500
-
-        name = '_'.join(str(date.today()).split('-')[::-1])+'_epaper.pdf'
-        pdf = open(name, "rb")
-        contents = pdf.read()
-        out = base64.b64encode(contents).decode('utf-8')
-        pdf.close()
-        return {'response': out}, 201
-        
-class CoronaApi(Resource):
-    def get(self):
-        run(['python3','corona_status_report.py'],stdout=PIPE)
-        pdf = open(f"myflask/static/report.pdf","rb")
-        contents = pdf.read()
-        out = base64.b64encode(contents).decode('utf-8')
-        pdf.close()
-        os.remove(f"myflask/static/report.pdf")
-        return {'response':out},201
-
-class Dict(Resource):
-    def get(self):
-        word = request.args['word'].encode('utf-8')
-        op = run(['python3','dict.py',word],stdout=PIPE)
-        out = op.stdout.decode('utf-8')
-        return {'response':out},201
-    def post(self):
-        data = request.get_json()
-        if data!=None and 'word' in data.keys():
-            word = data.get("word")
-            op = run(['python3','dict.py',word],stdout=PIPE)
-            out = op.stdout.decode('utf-8')
-            return {'response':out},201
-        else:
-            return {'response':"JSON Error"},400
-
-class Weather(Resource):
-    def get(self):
-        country = request.args['country']
-        city = request.args['city']
-        parameter = (country+'\n'+city).encode('utf-8')
-        op = run(['python3','weather.py'],input=parameter,stdout=PIPE)
-        out = op.stdout.decode('utf-8').split('\n> ')[2]
-        return {'response':out},201
-
-api.add_resource(CoronaApi,'/coronastats')
-api.add_resource(Dict,'/dictionary')
-api.add_resource(Weather,'/weather')
-api.add_resource(DeccanApi,'/deccan')
+import myflask.api
 
 #ALEXA!!!!
 @app.route('/alexa')

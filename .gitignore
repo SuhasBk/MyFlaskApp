@@ -1,7 +1,3 @@
 __pycache__/
-routes.pyc
-__init__.pyc
-forms.pyc
-models.pyc
-run.pyc
+myflask/*.pyc
 .vscode/

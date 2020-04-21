@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 import requests
+import sys
 from bs4 import *
 
-country = input("Enter the country:\n> ")
-city = input(f"Enter any city in {country}:\n> ")
+country = sys.argv[1]
+city = sys.argv[2]
 
 headers = {'user-agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0'}
 r = requests.get(f"https://www.timeanddate.com/weather/{country}/{city}",headers=headers)
