@@ -60,8 +60,17 @@ class Weather(Resource):
         out = op.stdout.decode('utf-8')
         return {'response': out}, 201
 
+class IMDB(Resource):
+    def get(self):
+        title = request.args.get('title')
+        p = run(['python3',"imdb.py",title],stdout=PIPE,input=b'1\n')
+        out = p.stdout.decode('utf-8')
+        out = out.split('-----\n')[1]
+        return {'response':out},201
+
 
 api.add_resource(CoronaApi, '/coronastats')
 api.add_resource(Dict, '/dictionary')
 api.add_resource(Weather, '/weather')
 api.add_resource(DeccanApi, '/deccan')
+api.add_resource(IMDB,'/imdb')
