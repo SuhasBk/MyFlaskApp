@@ -1,9 +1,9 @@
+from . import app, db, bcrypt, ask
 from flask import render_template,url_for,flash,redirect,request,abort,jsonify,send_from_directory
 from flask_ask import question,statement
 from myflask.forms import Search,NewHandle,LoginForm,RegistrationForm,UpdateForm
 from myflask.models import Users
 from flask import Flask
-from myflask import app,db,bcrypt,ask
 import os,random,re,time,sys,requests
 from bs4 import BeautifulSoup
 from subprocess import run,PIPE
@@ -271,11 +271,16 @@ def download(filename):
     return send_from_directory(directory=uploads, filename=filename, as_attachment=True)
 
 
-# for testing new features:
+# get latest corona report from WHO:
 @app.route("/corona",methods=['GET'])
 def corona():
     run(['python3', 'corona_status_report.py'], stdout=PIPE)
     return render_template("corona.html", name="report.pdf")
+
+# for testing:
+@app.route("/test",methods=["GET"])
+def test():
+    return render_template("test.html")
 
 # reset database in case of any problems:
 @app.route("/r")
