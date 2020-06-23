@@ -282,8 +282,8 @@ def corona():
 def test():
     return render_template("test.html")
 
-# reset database in case of any problems:
-@app.route("/r")
+# hard reset database in case of schema problems:
+@app.route("/reset/true")
 def refresh():
     db.drop_all()
     db.create_all()

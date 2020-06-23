@@ -8,20 +8,10 @@ from subprocess import run, PIPE
 from flask import request
 
 #Representational State Transfer:
-class DeccanApi(Resource):
+class ApiDoc(Resource):
     def get(self):
-        r = run(["python3", "deccan.py"], env={'HIDDEN_ID': "BATMAN", 'PATH': os.environ['PATH']})
-
-        if r.returncode == 42:
-            return {'response': "Dependencies not resolved !!!"}, 500
-
-        name = '_'.join(str(date.today()).split('-')[::-1])+'_epaper.pdf'
-        pdf = open(name, "rb")
-        contents = pdf.read()
-        out = base64.b64encode(contents).decode('utf-8')
-        pdf.close()
-        return {'response': out}, 201
-
+        data = "1. Corona WHO situation report -> (GET) /api/coronastats\n2. English dictionary -> (GET,POST) /api/dictionary?word=<'word'>\n3. Weather updates -> (GET) /api/weather?country=<'country_name'>&city=<'city_name'>\n4. IMDb ratings -> (GET) /api/imdb?title=<'title'>."
+        return {'response' : data}
 
 class CoronaApi(Resource):
     def get(self):
@@ -68,9 +58,8 @@ class IMDB(Resource):
         out = out.split('-----\n')[1]
         return {'response':out},201
 
-
-api.add_resource(CoronaApi, '/coronastats')
-api.add_resource(Dict, '/dictionary')
-api.add_resource(Weather, '/weather')
-api.add_resource(DeccanApi, '/deccan')
-api.add_resource(IMDB,'/imdb')
+api.add_resource(ApiDoc, '/api')
+api.add_resource(CoronaApi, '/api/coronastats')
+api.add_resource(Dict, '/api/dictionary')
+api.add_resource(Weather, '/api/weather')
+api.add_resource(IMDB,'/api/imdb')
