@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 from myflask import app
 import sys
 
@@ -9,4 +8,4 @@ if __name__=='__main__':
     except IndexError:
         ip = "localhost"
     
-    app.run(host=ip,debug=True,threaded=True)
+    app.run(host=ip,debug=True)

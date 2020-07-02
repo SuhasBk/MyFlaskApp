@@ -1,5 +1,5 @@
 from . import app, db, bcrypt, ask
-from flask import render_template,url_for,flash,redirect,request,abort,jsonify,send_from_directory
+from flask import render_template,url_for,flash,redirect,request,abort,jsonify
 from flask_ask import question,statement
 from myflask.forms import Search,NewHandle,LoginForm,RegistrationForm,UpdateForm
 from myflask.models import Users
@@ -263,13 +263,6 @@ def reddit():
 
         return render_template("reddit.html",data=content,sub=sub)
     return render_template("home.html",form=subr,title = 'Reddit')
-
-# random file download from server:
-@app.route('/uploads/<path:filename>', methods=['GET', 'POST'])
-def download(filename):
-    uploads = app.config['UPLOAD_FOLDER']
-    return send_from_directory(directory=uploads, filename=filename, as_attachment=True)
-
 
 # get latest corona report from WHO:
 @app.route("/corona",methods=['GET'])
