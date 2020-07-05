@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 from flask import (Flask, abort, flash, jsonify, redirect, render_template,request, url_for)
 import myflask.api
 from myflask.forms import (LoginForm, NewHandle, RegistrationForm, Search,UpdateForm)
-from myflask.models import Account, Users
+from myflask.models import Users
 from . import app, bcrypt, db
 
 @app.route("/",methods=['GET','POST'])
@@ -213,55 +213,28 @@ def corona():
     return render_template("corona.html", name="report.pdf")
 
 # Deccan Herald E-Paper mail service:
-def send_paper(recepient_email,sender_email,sender_password):
+def send_paper(recepient_email):
     if 'epaper.pdf' in os.listdir():
         raw_time = os.stat('epaper.pdf').st_mtime
         mod_time = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(raw_time))
         if str(datetime.datetime.today().date()) == mod_time.split()[0]:
-            run(['python3', 'deccan.py', recepient_email,sender_email,sender_password,'file_exists'], stdout=PIPE)
+            run(['python3', 'deccan.py', recepient_email,'file_exists'], stdout=PIPE)
         else:
             os.remove('epaper.pdf')
-            run(['python3', 'deccan.py', recepient_email,sender_email,sender_password], stdout=PIPE)
+            run(['python3', 'deccan.py', recepient_email], stdout=PIPE)
     else:
-        run(['python3', 'deccan.py', recepient_email,sender_email,sender_password], stdout=PIPE)
+        run(['python3', 'deccan.py', recepient_email], stdout=PIPE)
 
 @app.route("/deccan",methods=["GET","POST"])
 def deccan():
     if request.method == 'POST':
-        try:            
-            account = Account.query.limit(1).all()[0]
-            
-            recipient_email = request.form.get('mail')
-            sender_email = account.email
-            sender_password = account.passwd
+        recipient_email = request.form.get('mail')
 
-            Thread(target=send_paper,args=(recipient_email,sender_email,sender_password,)).start()
-            
-            return f"<title>Success</title><h1>Today's epaper will be sent to <em>{recipient_email}</em> within the next 5-10 minutes.</h1><br><h2>Thank you for your patience</h2>"
-        except:
-            return f"<title>Error</title><h1 style='color:red;'>Admin account not setup.</h1><br><br><h3>Register your own at <a href='{url_for('admin')}'>Account setup</a></h3>"
+        Thread(target=send_paper,args=(recipient_email,)).start()
+        
+        return f"<title>Success</title><h1>Today's epaper will be sent to <em>{recipient_email}</em> within the next 5-10 minutes.</h1><br><h2>Thank you for your patience</h2>"
     else:
         return render_template("deccan_mail.html")
-
-@app.route("/admin",methods=["GET","POST"])
-def admin():
-    if request.method == 'POST':
-        email = request.form.get('mail')
-        password = request.form.get('pwd')
-
-        account = Account()
-        account.email = email
-        account.passwd = password
-
-        try:
-            db.session.add(account)
-        except:
-            return "<h1>An account is already registered for sending mails... Can't override...</h1>"
-        else:
-            db.session.commit()
-            return f"<h1 style='color:green'>All set! This email account will be used for sending mails...</h1><br><br><h2>Go back to <a href='{url_for('deccan')}'>Deccan Herald epaper</a></h2>"
-    else:
-        return render_template("admin.html")
 
 # hard reset database in case of schema problems:
 @app.route("/reset/true")

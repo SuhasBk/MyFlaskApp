@@ -132,8 +132,8 @@ def mail(file_name):
         part.add_header("Content-Disposition",f"attachment; filename={file_name}")
         message.attach(part)
 
-        sender_email = sys.argv[2]
-        sender_password = sys.argv[3]
+        sender_email = "kowligi1998@gmail.com"
+        sender_password = os.environ.get('MYPWD')
 
         recepients = sys.argv[1]
         message["From"] = sender_email
