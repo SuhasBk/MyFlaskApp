@@ -20,18 +20,6 @@ class Deccan:
     def __init__(self):
         TEMP_FOLDER = "temp_files"
         download_dir = os.path.join(os.getcwd(), TEMP_FOLDER)
-        
-        # fp = webdriver.FirefoxProfile()
-        # mime_types = "application/pdf,application/vnd.adobe.xfdf,application/vnd.fdf,application/vnd.adobe.xdp+xml"
-        # fp.set_preference("browser.download.folderList", 2)
-        # fp.set_preference("browser.download.manager.showWhenStarting", False)        
-        # fp.set_preference("browser.helperApps.neverAsk.saveToDisk", mime_types)
-        # fp.set_preference("plugin.disable_full_page_plugin_for_types", mime_types)
-        # fp.set_preference("pdfjs.disabled", True)
-        # fp.set_preference("browser.download.dir", download_dir)
-        # op = FirefoxOptions()
-        # op.headless = True
-        # self.browser = webdriver.Firefox(firefox_profile=fp,options=op,service_log_path="/dev/null")
 
         self.merger = PdfFileMerger()
         self.order = []
@@ -40,10 +28,12 @@ class Deccan:
         self.file_name = ""
 
         chrome_options = Options()
+        chrome_options.add_argument("--window-size=1920,1080")
         chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--log-level=3")
 
         chrome_options.add_experimental_option('prefs',  {
             "download.default_directory": download_dir,
@@ -52,8 +42,14 @@ class Deccan:
             "plugins.always_open_pdf_externally": True
         })
 
-        self.browser = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),options=chrome_options, service_log_path="NUL")
+        log_path = "NUL" if sys.platform.startswith('win') else '/dev/null'
 
+        if os.environ.get("CHROMEDRIVER_PATH"):
+            self.browser = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),options=chrome_options, service_log_path=log_path)
+        else:
+            self.browser = webdriver.Chrome(options=chrome_options, service_log_path=log_path)
+
+        print("Chrome browser initialized")
         try:
             os.mkdir(TEMP_FOLDER)
         except FileExistsError:
@@ -161,18 +157,18 @@ def mail(file_name):
 def main():
     try:
         if 'file_exists' in sys.argv:
-            mail('epaper.pdf')
+            pass
         else:
             deccan = Deccan()
             deccan.edition()
             deccan.download()
-            mail(deccan.file_name)
     finally:
         try:
             shutil.rmtree(deccan.folder_name)
             deccan.browser.quit()
         except:
             pass
+        mail('epaper.pdf')
 
 if __name__ == '__main__':
     main()
