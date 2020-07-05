@@ -33,20 +33,22 @@ class Deccan:
         op.headless = True
 
         # heroku selenium configurations:
-        gecko_cloud_path = os.environ.get('GECKODRIVER_PATH',None)
-        firefox_cloud_path = os.environ.get('FIREFOX_BIN', None)
+        # gecko_cloud_path = os.environ.get('GECKODRIVER_PATH',None)
+        # firefox_cloud_path = os.environ.get('FIREFOX_BIN', None)
 
-        if gecko_cloud_path and firefox_cloud_path:
-            self.browser = webdriver.Firefox(executable_path=gecko_cloud_path,options=op,firefox_profile=fp,service_log_path="/dev/null",firefox_binary=firefox_cloud_path)
-        else:
-            print("Running on local machine... phew..")
-            self.browser = webdriver.Firefox(options=op,firefox_profile=fp,service_log_path="/dev/null")
+        # if gecko_cloud_path and firefox_cloud_path:
+        #     self.browser = webdriver.Firefox(executable_path=gecko_cloud_path,options=op,firefox_profile=fp,service_log_path="/dev/null",firefox_binary=firefox_cloud_path)
+        # else:
+        #     print("Running on local machine... phew..")
+        #     self.browser = webdriver.Firefox(options=op,firefox_profile=fp,service_log_path="/dev/null")
 
         self.merger = PdfFileMerger()
         self.order = []
         self.date = ""
         self.folder_name = TEMP_FOLDER = "temp_files"
         self.file_name = ""
+
+        self.browser = webdriver.Firefox(options=op,firefox_profile=fp,service_log_path="/dev/null")
 
         try:
             os.mkdir(TEMP_FOLDER)
