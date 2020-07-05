@@ -12,7 +12,6 @@ from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-# from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.chrome.options import Options
 
 class Deccan:
@@ -64,12 +63,13 @@ class Deccan:
             data_menu = self.browser.find_element_by_id(id)
             data = data_menu.find_elements_by_tag_name('option')[1:]
 
-            unit = data[DEFAULT_VALUE]
-
             if param == 'date':
+                unit = data[DEFAULT_VALUE]
                 s = unit.get_attribute('value')
                 self.date = (s[6:]+'_'+s[4:6]+'_'+s[:4])
-                self.file_name = 'epaper.pdf'
+                self.file_name = f'epaper{sys.argv[2]}.pdf'
+            else:
+                unit = data[int(sys.argv[2])]
 
             unit.click()
             return
@@ -162,13 +162,14 @@ def main():
             deccan = Deccan()
             deccan.edition()
             deccan.download()
+        print("Successfully downloaded! Sending file...")
     finally:
         try:
             shutil.rmtree(deccan.folder_name)
             deccan.browser.quit()
         except:
             pass
-        mail('epaper.pdf')
+        mail(f'epaper{sys.argv[2]}.pdf')
 
 if __name__ == '__main__':
     main()

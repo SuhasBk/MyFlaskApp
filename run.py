@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 from myflask import app
 import sys
+import os
 
 if __name__=='__main__':
     try:
@@ -8,4 +9,6 @@ if __name__=='__main__':
     except IndexError:
         ip = "localhost"
     
-    app.run(host=ip,debug=True)
+    debug = True if os.environ.get("HIDDEN_ID") == 'BATMAN' else False
+
+    app.run(host=ip,debug=debug)

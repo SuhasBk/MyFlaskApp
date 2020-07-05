@@ -213,24 +213,25 @@ def corona():
     return render_template("corona.html", name="report.pdf")
 
 # Deccan Herald E-Paper mail service:
-def send_paper(recepient_email):
-    if 'epaper.pdf' in os.listdir():
-        raw_time = os.stat('epaper.pdf').st_mtime
+def send_paper(recepient_email,edition):
+    if f'epaper{edition}.pdf' in os.listdir():
+        raw_time = os.stat(f'epaper{edition}.pdf').st_mtime
         mod_time = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(raw_time))
         if str(datetime.datetime.today().date()) == mod_time.split()[0]:
-            run(['python3', 'deccan.py', recepient_email,'file_exists'], stdout=PIPE)
+            run(['python3', 'deccan.py', recepient_email,edition,'file_exists'], stdout=PIPE)
         else:
-            os.remove('epaper.pdf')
-            run(['python3', 'deccan.py', recepient_email], stdout=PIPE)
+            os.remove(f'epaper{edition}.pdf')
+            run(['python3', 'deccan.py', recepient_email,edition], stdout=PIPE)
     else:
-        run(['python3', 'deccan.py', recepient_email], stdout=PIPE)
+        run(['python3', 'deccan.py', recepient_email,edition], stdout=PIPE)
 
 @app.route("/deccan",methods=["GET","POST"])
 def deccan():
     if request.method == 'POST':
         recipient_email = request.form.get('mail')
+        edition = request.form.get('edition')
 
-        Thread(target=send_paper,args=(recipient_email,)).start()
+        Thread(target=send_paper,args=(recipient_email,edition,)).start()
         
         return f"<title>Success</title><h1>Today's epaper will be sent to <em>{recipient_email}</em> within the next 5-10 minutes.</h1><br><h2>Thank you for your patience</h2>"
     else:
