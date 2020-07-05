@@ -13,7 +13,6 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
-from pyvirtualdisplay import Display
 
 class Deccan:
 
@@ -150,10 +149,9 @@ def main():
         if 'file_exists' in sys.argv:
             mail('epaper.pdf')
         else:
-            with Display():
-                deccan = Deccan()
-                deccan.edition()
-                deccan.download()
+            deccan = Deccan()
+            deccan.edition()
+            deccan.download()
             mail(deccan.file_name)
     finally:
         try:
@@ -161,7 +159,6 @@ def main():
             deccan.browser.quit()
         except:
             pass
-
 
 if __name__ == '__main__':
     main()

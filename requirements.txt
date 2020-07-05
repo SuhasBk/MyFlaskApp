@@ -11,4 +11,3 @@ Pillow
 beautifulsoup4
 PyPDF2
 cryptography<2.2
-pyvirtualdisplay

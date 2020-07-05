@@ -219,6 +219,9 @@ def send_paper(recepient_email,sender_email,sender_password):
         mod_time = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(raw_time))
         if str(datetime.datetime.today().date()) == mod_time.split()[0]:
             run(['python3', 'deccan.py', recepient_email,sender_email,sender_password,'file_exists'], stdout=PIPE)
+        else:
+            os.remove('epaper.pdf')
+            run(['python3', 'deccan.py', recepient_email,sender_email,sender_password], stdout=PIPE)
     else:
         run(['python3', 'deccan.py', recepient_email,sender_email,sender_password], stdout=PIPE)
 
