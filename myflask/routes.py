@@ -13,71 +13,7 @@ from flask_ask import question, statement
 import myflask.api
 from myflask.forms import (LoginForm, NewHandle, RegistrationForm, Search,UpdateForm)
 from myflask.models import Account, Users
-from . import app, ask, bcrypt, db
-
-
-#ALEXA!!!!
-@app.route('/alexa')
-def alexa():
-    return render_template('alexa.html')
-
-@ask.launch
-def start_skill():
-    welcome = "Hello human! Hyperbyte is online. Say features, to see what Suhas has programmed me to do!"
-    return question(welcome)
-
-@ask.intent("FeaturesIntent")
-def features_intent():
-    features = "Say quote, for quotes! Say repeat, followed by phrase to be repeated, for mimicry! Say knock knock, for knock knock jokes! Say imdb and the title, for ratings! These are all the fantastic stuffs Suhas programmed me to do."
-    return question(features)
-
-@ask.intent("QuoteIntent")
-def yes_intent():
-    r=requests.get("https://www.eduro.com/")
-    p=BeautifulSoup(r.text,'html.parser').findAll('p',attrs={'class':''})
-    quotes = []
-    for i in range(0,len(p)-1,2):
-        quotes.append(p[i].text)
-    quote = random.choice(quotes)
-    return question(quote)
-
-@ask.intent("NoIntent")
-def no_intent():
-    bye_text = "Bye buddy... Thanks for checking me out."
-    return statement(bye_text)
-
-@ask.intent('DictIntent', mapping={'word': 'Query'})
-def dictionary(word):
-    op = run(['python3','dict.py',word],stdout=PIPE)
-    out = op.stdout.decode('utf-8')
-    return question(out)
-
-@ask.intent("RepIntent", mapping={'word': 'Phrase'})
-def repeat(word):
-    print(word)
-    if word == None:
-        return question('Whats that?')
-    else:
-        return question(word)
-
-@ask.intent("KnockIntent")
-def knock():
-    r=requests.get("https://thoughtcatalog.com/melanie-berliet/2015/09/40-ridiculous-knock-knock-jokes-thatll-get-you-a-laugh-on-demand/")
-    s = BeautifulSoup(r.text,'html.parser')
-    k = s.find('div',attrs={'class':'box-content'}).text
-    jokes = re.split(r'[\d+]',k)
-    joke = random.choice(jokes)
-    joke = joke.replace('.','')
-    print(joke.encode('utf-8').rstrip())
-    return question(joke)
-
-@ask.intent("IMDbIntent", mapping={'title':'Title'})
-def imdb(title):
-    p = run(['python3',"imdb.py",title],stdout=PIPE,input=b'1\n')
-    out = p.stdout.decode('utf-8')
-    out = out.split('-----\n')[1]
-    return question(out)
-#ALEXA!!!
+from . import app, bcrypt, db
 
 @app.route("/",methods=['GET','POST'])
 @app.route("/home",methods=['GET','POST'])

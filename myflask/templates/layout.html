@@ -31,7 +31,7 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarToggle">
             <!-- Navbar Right Side -->
-            {% set routes = ['corona','lyrics','piano','xkcd','youtube','resume','reddit'] %}
+            {% set routes = ['corona','deccan','lyrics','piano','xkcd','youtube','resume','reddit'] %}
             <div class="navbar-nav">
               {% for route in routes %}
                 <a class="nav-item nav-link" href="{{ url_for(route) }}"> {{route.capitalize()}} </a>
