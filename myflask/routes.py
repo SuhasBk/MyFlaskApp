@@ -1,13 +1,20 @@
-from . import app, db, bcrypt, ask
-from flask import render_template,url_for,flash,redirect,request,abort,jsonify
-from flask_ask import question,statement
-from myflask.forms import Search,NewHandle,LoginForm,RegistrationForm,UpdateForm
-from myflask.models import Users
-from flask import Flask
-import os,random,re,time,sys,requests
+import datetime
+import os
+import random
+import re
+import sys
+import time
+from subprocess import PIPE, run
+from threading import Thread
+import requests
 from bs4 import BeautifulSoup
-from subprocess import run,PIPE
+from flask import (Flask, abort, flash, jsonify, redirect, render_template,request, url_for)
+from flask_ask import question, statement
 import myflask.api
+from myflask.forms import (LoginForm, NewHandle, RegistrationForm, Search,UpdateForm)
+from myflask.models import Account, Users
+from . import app, ask, bcrypt, db
+
 
 #ALEXA!!!!
 @app.route('/alexa')
@@ -109,9 +116,9 @@ def resume():
 @app.route("/xkcd",methods=['GET','POST'])
 def xkcd():
     try:
-        r=requests.get("https://c.xkcd.com/random/comic/")
+        r = requests.get("https://c.xkcd.com/random/comic/")
         data=BeautifulSoup(r.text,'html.parser').select('img')[2].get('src')
-        img='http:'+data
+        img = 'http:'+data
         print(img)
         return render_template('vids.html',img=img,title='XKCD WebComics')
     except:
@@ -270,10 +277,53 @@ def corona():
     run(['python3', 'corona_status_report.py'], stdout=PIPE)
     return render_template("corona.html", name="report.pdf")
 
-# for testing:
-@app.route("/test",methods=["GET"])
-def test():
-    return render_template("test.html")
+# Deccan Herald E-Paper mail service:
+def send_paper(recepient_email,sender_email,sender_password):
+    if 'epaper.pdf' in os.listdir():
+        raw_time = os.stat('epaper.pdf').st_mtime
+        mod_time = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(raw_time))
+        if str(datetime.datetime.today().date()) == mod_time.split()[0]:
+            op = run(['python3', 'deccan.py', recepient_email,sender_email,sender_password,'file_exists'], stdout=PIPE)
+    else:
+        op = run(['python3', 'deccan.py', recepient_email,sender_email,sender_password], stdout=PIPE)
+
+@app.route("/deccan",methods=["GET","POST"])
+def deccan():
+    if request.method == 'POST':
+        try:            
+            account = Account.query.limit(1).all()[0]
+            
+            recipient_email = request.form.get('mail')
+            sender_email = account.email
+            sender_password = account.passwd
+
+            Thread(target=send_paper,args=(recipient_email,sender_email,sender_password,)).start()
+            
+            return f"<title>Success</title><h1>Today's epaper will be sent to <em>{recipient_email}</em> within the next 5-10 minutes.</h1><br><h2>Thank you for your patience</h2>"
+        except:
+            return f"<title>Error</title><h1 style='color:red;'>Admin account not setup.</h1><br><br><h3>Register your own at <a href='{url_for('admin')}'>Account setup</a></h3>"
+    else:
+        return render_template("deccan_mail.html")
+
+@app.route("/admin",methods=["GET","POST"])
+def admin():
+    if request.method == 'POST':
+        email = request.form.get('mail')
+        password = request.form.get('pwd')
+
+        account = Account()
+        account.email = email
+        account.passwd = password
+
+        try:
+            db.session.add(account)
+        except:
+            return "<h1>An account is already registered for sending mails... Can't override...</h1>"
+        else:
+            db.session.commit()
+            return f"<h1 style='color:green'>All set! This email account will be used for sending mails...</h1><br><br><h2>Go back to <a href='{url_for('deccan')}'>Deccan Herald epaper</a></h2>"
+    else:
+        return render_template("admin.html")
 
 # hard reset database in case of schema problems:
 @app.route("/reset/true")

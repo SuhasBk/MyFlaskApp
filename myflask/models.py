@@ -8,3 +8,7 @@ class Users(db.Model):
 
     def __repr__(self):
         return self.user
+
+class Account(db.Model):
+    email = db.Column(db.String(60),nullable=False,primary_key=True)
+    passwd = db.Column(db.String(60), nullable=False)
