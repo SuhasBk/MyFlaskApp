@@ -9,7 +9,6 @@ from threading import Thread
 import requests
 from bs4 import BeautifulSoup
 from flask import (Flask, abort, flash, jsonify, redirect, render_template,request, url_for)
-from flask_ask import question, statement
 import myflask.api
 from myflask.forms import (LoginForm, NewHandle, RegistrationForm, Search,UpdateForm)
 from myflask.models import Account, Users
@@ -219,9 +218,9 @@ def send_paper(recepient_email,sender_email,sender_password):
         raw_time = os.stat('epaper.pdf').st_mtime
         mod_time = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(raw_time))
         if str(datetime.datetime.today().date()) == mod_time.split()[0]:
-            op = run(['python3', 'deccan.py', recepient_email,sender_email,sender_password,'file_exists'], stdout=PIPE)
+            run(['python3', 'deccan.py', recepient_email,sender_email,sender_password,'file_exists'], stdout=PIPE)
     else:
-        op = run(['python3', 'deccan.py', recepient_email,sender_email,sender_password], stdout=PIPE)
+        run(['python3', 'deccan.py', recepient_email,sender_email,sender_password], stdout=PIPE)
 
 @app.route("/deccan",methods=["GET","POST"])
 def deccan():
