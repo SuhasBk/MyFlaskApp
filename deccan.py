@@ -12,7 +12,8 @@ from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
+# from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.chrome.options import Options
 
 class Deccan:
 
@@ -20,27 +21,17 @@ class Deccan:
         TEMP_FOLDER = "temp_files"
         download_dir = os.path.join(os.getcwd(), TEMP_FOLDER)
         
-        fp = webdriver.FirefoxProfile()
-        mime_types = "application/pdf,application/vnd.adobe.xfdf,application/vnd.fdf,application/vnd.adobe.xdp+xml"
-        fp.set_preference("browser.download.folderList", 2)
-        fp.set_preference("browser.download.manager.showWhenStarting", False)        
-        fp.set_preference("browser.helperApps.neverAsk.saveToDisk", mime_types)
-        fp.set_preference("plugin.disable_full_page_plugin_for_types", mime_types)
-        fp.set_preference("pdfjs.disabled", True)
-        fp.set_preference("browser.download.dir", download_dir)
-
-        op = FirefoxOptions()
-        op.headless = True
-
-        # heroku selenium configurations:
-        # gecko_cloud_path = os.environ.get('GECKODRIVER_PATH',None)
-        # firefox_cloud_path = os.environ.get('FIREFOX_BIN', None)
-
-        # if gecko_cloud_path and firefox_cloud_path:
-        #     self.browser = webdriver.Firefox(executable_path=gecko_cloud_path,options=op,firefox_profile=fp,service_log_path="/dev/null",firefox_binary=firefox_cloud_path)
-        # else:
-        #     print("Running on local machine... phew..")
-        #     self.browser = webdriver.Firefox(options=op,firefox_profile=fp,service_log_path="/dev/null")
+        # fp = webdriver.FirefoxProfile()
+        # mime_types = "application/pdf,application/vnd.adobe.xfdf,application/vnd.fdf,application/vnd.adobe.xdp+xml"
+        # fp.set_preference("browser.download.folderList", 2)
+        # fp.set_preference("browser.download.manager.showWhenStarting", False)        
+        # fp.set_preference("browser.helperApps.neverAsk.saveToDisk", mime_types)
+        # fp.set_preference("plugin.disable_full_page_plugin_for_types", mime_types)
+        # fp.set_preference("pdfjs.disabled", True)
+        # fp.set_preference("browser.download.dir", download_dir)
+        # op = FirefoxOptions()
+        # op.headless = True
+        # self.browser = webdriver.Firefox(firefox_profile=fp,options=op,service_log_path="/dev/null")
 
         self.merger = PdfFileMerger()
         self.order = []
@@ -48,7 +39,20 @@ class Deccan:
         self.folder_name = TEMP_FOLDER = "temp_files"
         self.file_name = ""
 
-        self.browser = webdriver.Firefox(options=op,firefox_profile=fp,service_log_path="/dev/null")
+        chrome_options = Options()
+        chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--no-sandbox")
+
+        chrome_options.add_experimental_option('prefs',  {
+            "download.default_directory": download_dir,
+            "download.prompt_for_download": False,
+            "download.directory_upgrade": True,
+            "plugins.always_open_pdf_externally": True
+        })
+
+        self.browser = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),options=chrome_options, service_log_path="NUL")
 
         try:
             os.mkdir(TEMP_FOLDER)
