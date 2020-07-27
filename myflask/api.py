@@ -10,7 +10,12 @@ from flask import request
 #Representational State Transfer:
 class ApiDoc(Resource):
     def get(self):
-        data = "1. Corona WHO situation report -> (GET) /api/coronastats\n2. English dictionary -> (GET,POST) /api/dictionary?word=<'word'>\n3. Weather updates -> (GET) /api/weather?country=<'country_name'>&city=<'city_name'>\n4. IMDb ratings -> (GET) /api/imdb?title=<'title'>."
+        data = {
+            'Corona WHO situation report': {'GET':'/api/coronastats'},
+            'English dictionary': {'GET' : '/api/dictionary?word=<"word">', 'POST':['/api/dictionary','word']},
+            'Weather' : {'GET': '/api/weather?country=<"country_name">&city=<"city_name">'},
+            'IMDb' : {'GET': '/api/imdb?title=<"title">'}
+        }
         return {'response' : data}
 
 class CoronaApi(Resource):

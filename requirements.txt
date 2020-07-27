@@ -1,5 +1,6 @@
 email_validator
 flask
+flask_cors
 flask-wtf
 flask-bcrypt
 flask-restful
