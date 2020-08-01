@@ -28,7 +28,7 @@ class Deccan:
         self.edition_number = edition_number
 
         chrome_options = Options()
-        chrome_options.add_argument("--window-size=1920,1080")
+        # chrome_options.add_argument("--window-size=1920,1080")
         chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
         chrome_options.add_argument("--headless")
         chrome_options.add_argument("--disable-dev-shm-usage")
@@ -48,6 +48,8 @@ class Deccan:
             self.browser = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),options=chrome_options, service_log_path=log_path)
         else:
             self.browser = webdriver.Chrome(options=chrome_options, service_log_path=log_path)
+
+        self.browser.set_window_size(1440, 1000)
 
         try:
             os.mkdir(TEMP_FOLDER)
