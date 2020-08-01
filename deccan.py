@@ -79,8 +79,8 @@ class Deccan:
             choose('pubFilterEdition', 'city')
             time.sleep(2)
             choose('pubFilterPubDate', 'date', 7)
-        except:
-            return False
+        except Exception as e:
+            return False, e
 
         time.sleep(3)
         return True
@@ -139,8 +139,9 @@ def main():
                 os.remove(pdf_file_name)
         else:
             deccan = Deccan(edition_number)
-            if not deccan.edition():
-                raise Exception('Cannot download files...')
+            result = deccan.edition()
+            if not result[0]:
+                raise Exception(result[1])
             deccan.download()
 
         print(pdf_file_name)
