@@ -79,7 +79,7 @@ class Deccan:
 
         try:
             choose('pubFilterEdition', 'city')
-            time.sleep(2)
+            time.sleep(5)
             choose('pubFilterPubDate', 'date', 7)
         except Exception as e:
             return False, e
