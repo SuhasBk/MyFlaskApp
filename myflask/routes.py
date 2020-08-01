@@ -8,7 +8,7 @@ from subprocess import PIPE, run
 from threading import Thread
 import requests
 from bs4 import BeautifulSoup
-from flask import (Flask, abort, flash, jsonify, redirect, render_template,request, url_for)
+from flask import (Flask, abort, flash, jsonify, redirect, render_template,request, url_for, send_file)
 import myflask.api
 from myflask.forms import (LoginForm, NewHandle, RegistrationForm, Search,UpdateForm)
 from myflask.models import Users
@@ -212,30 +212,13 @@ def corona():
     run(['python3', 'corona_status_report.py'], stdout=PIPE)
     return render_template("corona.html", name="report.pdf")
 
-# Deccan Herald E-Paper mail service:
-def send_paper(recepient_email,edition):
-    if f'epaper{edition}.pdf' in os.listdir():
-        raw_time = os.stat(f'epaper{edition}.pdf').st_mtime
-        mod_time = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(raw_time))
-        if str(datetime.datetime.today().date()) == mod_time.split()[0]:
-            run(['python3', 'deccan.py', recepient_email,edition,'file_exists'], stdout=PIPE)
-        else:
-            os.remove(f'epaper{edition}.pdf')
-            run(['python3', 'deccan.py', recepient_email,edition], stdout=PIPE)
-    else:
-        run(['python3', 'deccan.py', recepient_email,edition], stdout=PIPE)
-
 @app.route("/deccan",methods=["GET","POST"])
 def deccan():
-    if request.method == 'POST':
-        recipient_email = request.form.get('mail')
-        edition = request.form.get('edition')
+    return render_template("deccan.html")
 
-        Thread(target=send_paper,args=(recipient_email,edition,)).start()
-        
-        return f"<title>Success</title><h1>Today's epaper will be sent to <em>{recipient_email}</em> within the next 5-10 minutes.</h1><br><h2>Thank you for your patience</h2>"
-    else:
-        return render_template("deccan_mail.html")
+@app.route("/locate/<string:file>", methods=['GET'])
+def sendpdf(file):
+    return send_file(f'../{file}')
 
 # hard reset database in case of schema problems:
 @app.route("/reset/true")

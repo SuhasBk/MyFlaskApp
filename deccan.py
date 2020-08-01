@@ -16,7 +16,7 @@ from selenium.webdriver.chrome.options import Options
 
 class Deccan:
 
-    def __init__(self):
+    def __init__(self, edition_number):
         TEMP_FOLDER = "temp_files"
         download_dir = os.path.join(os.getcwd(), TEMP_FOLDER)
 
@@ -25,6 +25,7 @@ class Deccan:
         self.date = ""
         self.folder_name = TEMP_FOLDER = "temp_files"
         self.file_name = ""
+        self.edition_number = edition_number
 
         chrome_options = Options()
         chrome_options.add_argument("--window-size=1920,1080")
@@ -41,14 +42,13 @@ class Deccan:
             "plugins.always_open_pdf_externally": True
         })
 
-        log_path = "NUL" if sys.platform.startswith('win') else '/dev/null'
+        log_path = '/dev/null'
 
         if os.environ.get("CHROMEDRIVER_PATH"):
             self.browser = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),options=chrome_options, service_log_path=log_path)
         else:
             self.browser = webdriver.Chrome(options=chrome_options, service_log_path=log_path)
 
-        print("Chrome browser initialized")
         try:
             os.mkdir(TEMP_FOLDER)
         except FileExistsError:
@@ -56,7 +56,8 @@ class Deccan:
 
         self.browser.get("http://www.deccanheraldepaper.com/")
 
-    def edition(self, REFRESH_COUNT=0):
+    def edition(self):
+
         def choose(id, param, limit=None):
             DEFAULT_VALUE = 0
             self.browser.find_element_by_id('btnPublicationsPanel').click()
@@ -67,9 +68,9 @@ class Deccan:
                 unit = data[DEFAULT_VALUE]
                 s = unit.get_attribute('value')
                 self.date = (s[6:]+'_'+s[4:6]+'_'+s[:4])
-                self.file_name = f'epaper{sys.argv[2]}.pdf'
+                self.file_name = f'epaper{self.edition_number}.pdf'
             else:
-                unit = data[int(sys.argv[2])]
+                unit = data[int(self.edition_number)]
 
             unit.click()
             return
@@ -79,15 +80,10 @@ class Deccan:
             time.sleep(2)
             choose('pubFilterPubDate', 'date', 7)
         except:
-            REFRESH_COUNT += 1
-            if REFRESH_COUNT >= 10:
-                self.browser.refresh()
-                self.edition(REFRESH_COUNT=0)
-            time.sleep(3)
-            self.edition(REFRESH_COUNT)
+            return False
 
         time.sleep(3)
-        return
+        return True
 
     def download(self):
         next = True
@@ -105,7 +101,6 @@ class Deccan:
             # Download each page of paper to the temporary folder as an individual pdf file
             for i in pages:
                 f = os.path.join(self.folder_name, i.get_attribute('src')[-10:]).replace('png', 'pdf')
-                print('\r', count, ' : ', f, end='')
                 self.browser.execute_script("arguments[0].click();", i)
                 self.order.append(f)
                 count += 1
@@ -130,46 +125,32 @@ class Deccan:
         self.merger.write(self.file_name)
         self.merger.close()
 
-def mail(file_name):
-        message = MIMEMultipart()
-        part = MIMEBase("application", "octet-stream")
-        message["Subject"] = f"Deccan Herald E-Paper on {str(datetime.date.today())}"
-
-        with open(file_name,"rb") as f:
-            part.set_payload(f.read())
-
-        encoders.encode_base64(part)
-        part.add_header("Content-Disposition",f"attachment; filename={file_name}")
-        message.attach(part)
-
-        sender_email = "kowligi1998@gmail.com"
-        sender_password = os.environ.get('MYPWD')
-
-        recepients = sys.argv[1]
-        message["From"] = sender_email
-        message.attach(MIMEText("\n\n\nhttps://github.com/SuhasBk/ePapers/"))
-        final_payload = message.as_string()
-
-        with smtplib.SMTP_SSL("smtp.gmail.com",465) as server:
-            server.login(sender_email,sender_password)
-            server.sendmail(sender_email,recepients,final_payload)
-
 def main():
     try:
-        if 'file_exists' in sys.argv:
-            pass
+        edition_number = sys.argv[1]
+        pdf_file_name = f'epaper{edition_number}.pdf'
+
+        if pdf_file_name in os.listdir():
+            raw_time = os.stat(pdf_file_name).st_mtime
+            mod_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(raw_time))
+            if str(datetime.datetime.today().date()) == mod_time.split()[0]:
+                pass
+            else:
+                os.remove(pdf_file_name)
         else:
-            deccan = Deccan()
-            deccan.edition()
+            deccan = Deccan(edition_number)
+            if not deccan.edition():
+                raise Exception('Cannot download files...')
             deccan.download()
-        print("Successfully downloaded! Sending file...")
+
+        print(pdf_file_name)
     finally:
         try:
             shutil.rmtree(deccan.folder_name)
             deccan.browser.quit()
         except:
             pass
-        mail(f'epaper{sys.argv[2]}.pdf')
+        
 
 if __name__ == '__main__':
     main()
