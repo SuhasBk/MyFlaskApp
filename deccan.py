@@ -51,7 +51,7 @@ class Deccan:
             chrome_options.add_argument("--headless")
             self.browser = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),options=chrome_options, service_log_path=log_path)
         else:
-            # chrome_options.add_argument("--headless")
+            chrome_options.add_argument("--headless")
             self.browser = webdriver.Chrome(options=chrome_options, service_log_path=log_path)
 
         self.browser.set_window_size(1440, 1000)
@@ -98,7 +98,7 @@ class Deccan:
         except Exception as e:
             return False, e
 
-        time.sleep(3)
+        time.sleep(2)
         return True, ''
 
     def download(self):
@@ -160,7 +160,6 @@ def main():
                 raise Exception(result[1])
             deccan.download()
 
-        print(pdf_file_name)
     finally:
         try:
             shutil.rmtree(deccan.folder_name)

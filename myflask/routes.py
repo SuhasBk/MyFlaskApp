@@ -210,14 +210,14 @@ def reddit():
 @app.route("/corona",methods=['GET'])
 def corona():
     run(['python3', 'corona_status_report.py'], stdout=PIPE)
-    return render_template("corona.html", name="report.pdf")
+    return send_file('./static/report.pdf')
 
 @app.route("/deccan",methods=["GET","POST"])
 def deccan():
     return render_template("deccan.html")
 
 @app.route("/locate/<string:file>", methods=['GET'])
-def sendpdf(file):
+def locate(file):
     return send_file(f'../{file}')
 
 # hard reset database in case of schema problems:

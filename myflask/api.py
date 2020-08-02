@@ -2,11 +2,14 @@ import os
 import base64
 import json
 import time
+from threading import Thread
 from datetime import date
 from flask_restful import Resource
 from myflask import api
 from subprocess import run, PIPE
 from flask import request
+
+GLOBAL_ERROR_MESSAGE = ''
 
 #Representational State Transfer:
 class ApiDoc(Resource):
@@ -30,11 +33,34 @@ class CoronaApi(Resource):
         os.remove(f"myflask/static/report.pdf")
         return {'response': out}, 201
 
+class FileExists(Resource):
+    def get(self):
+        global GLOBAL_ERROR_MESSAGE
+        file_name = request.args.get('file')
+
+        if file_name in os.listdir():
+            return {'response': True}, 200
+        elif GLOBAL_ERROR_MESSAGE:
+            return {'response': False, 'errors': GLOBAL_ERROR_MESSAGE}
+        else:
+            return {'response': False}, 200
+
 class DeccanApi(Resource):
+
     def get(self):
         edition = request.args.get('edition')
+
+        def spinoff():
+            global GLOBAL_ERROR_MESSAGE
+            op = run(['python3', 'deccan.py', edition], stdout=PIPE, stderr=PIPE)
+            errors = op.stderr.decode('utf-8')
+
+            if errors:
+                GLOBAL_ERROR_MESSAGE = errors
+
         
         if not edition:
+
             return { 'response': { '/api/deccan?edition=': {
                 0: 'Bangalore',
                 1: 'Davanagere',
@@ -47,17 +73,11 @@ class DeccanApi(Resource):
                 8: 'Uttara Kannada, Belagavi City'
             }}}, 200
         else:
-            op = run(['python3', 'deccan.py', edition], stdout=PIPE, stderr=PIPE)
 
-            pdf_file_name = op.stdout.decode('utf-8').strip()
-            errors = op.stderr.decode('utf-8').strip()
-            
-            if errors:
-                return {'response': False, 'message': 'Something went wrong, try again later!', 'data': errors}, 500
-            else:
-                contents = open(pdf_file_name,"rb").read()
-                out = base64.b64encode(contents).decode('utf-8')
-                return {'response': True, 'file_name': pdf_file_name, 'data': out}, 200
+            thread = Thread(target=spinoff)
+            thread.start()
+
+            return {'response': f'epaper{edition}.pdf'}, 200
 
 class Dict(Resource):
     def get(self):
@@ -96,5 +116,6 @@ api.add_resource(ApiDoc, '/api')
 api.add_resource(CoronaApi, '/api/coronastats')
 api.add_resource(DeccanApi, '/api/deccan')
 api.add_resource(Dict, '/api/dictionary')
+api.add_resource(FileExists, '/api/find')
 api.add_resource(Weather, '/api/weather')
 api.add_resource(IMDB,'/api/imdb')
