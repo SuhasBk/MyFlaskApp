@@ -13,6 +13,10 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from selenium.webdriver.chrome.options import Options
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 
 class Deccan:
 
@@ -30,7 +34,6 @@ class Deccan:
         chrome_options = Options()
         # chrome_options.add_argument("--window-size=1920,1080")
         chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-        chrome_options.add_argument("--headless")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--log-level=3")
@@ -45,8 +48,10 @@ class Deccan:
         log_path = '/dev/null'
 
         if os.environ.get("CHROMEDRIVER_PATH"):
+            chrome_options.add_argument("--headless")
             self.browser = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"),options=chrome_options, service_log_path=log_path)
         else:
+            # chrome_options.add_argument("--headless")
             self.browser = webdriver.Chrome(options=chrome_options, service_log_path=log_path)
 
         self.browser.set_window_size(1440, 1000)
@@ -57,12 +62,20 @@ class Deccan:
             pass
 
         self.browser.get("http://www.deccanheraldepaper.com/")
+    
+    def wait_and_find(self, element, selector, root):
+        try:
+            WebDriverWait(root,20).until(EC.element_to_be_clickable((selector,element)))
+        except TimeoutException as e:
+            raise Exception("Something is nasty"+e+'\n'+element)
 
     def edition(self):
 
         def choose(id, param, limit=None):
             DEFAULT_VALUE = 0
-            self.browser.find_element_by_id('btnPublicationsPanel').click()
+            # self.wait_and_find(self.browser.find_element_by_id('btnPublicationsPanel'), By.ID, self.browser)
+            # self.browser.find_element_by_id('btnPublicationsPanel').click()
+            self.browser.execute_script("arguments[0].click()", self.browser.find_element_by_id('btnPublicationsPanel'))
             data_menu = self.browser.find_element_by_id(id)
             data = data_menu.find_elements_by_tag_name('option')[1:]
 
@@ -78,6 +91,7 @@ class Deccan:
             return
 
         try:
+            time.sleep(5)
             choose('pubFilterEdition', 'city')
             time.sleep(5)
             choose('pubFilterPubDate', 'date', 7)
@@ -85,7 +99,7 @@ class Deccan:
             return False, e
 
         time.sleep(3)
-        return True
+        return True, ''
 
     def download(self):
         next = True
