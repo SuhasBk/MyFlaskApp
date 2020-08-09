@@ -11,27 +11,65 @@ from flask import request
 
 GLOBAL_ERROR_MESSAGE = ''
 
-#Representational State Transfer:
+# Representational State Transfer:
 class ApiDoc(Resource):
     def get(self):
         data = {
-            'Corona WHO situation report': {'GET':'/api/coronastats'},
-            'English dictionary': {'GET' : '/api/dictionary?word=<"word">', 'POST':['/api/dictionary','word']},
-            'Weather' : {'GET': '/api/weather?country=<"country_name">&city=<"city_name">'},
-            'IMDb' : {'GET': '/api/imdb?title=<"title">'},
-            'Deccan Herald E-Paper' : {'GET' : ['/api/deccan', '/api/deccan?edition={0-8}']}
+            'Corona WHO situation report': {
+                'GET request': {
+                    'endpoint': '/api/coronastats',
+                    'description': 'returns base64 encoded PDF'
+                }
+            },
+            'English dictionary': {
+                'GET request' : {
+                    'endpoint': '/api/dictionary?word=<word>',
+                    'description': 'returns meaning of the word as a string'
+                },
+                'POST request': {
+                    'endpoint': '/api/dictionary',
+                    'body': 'word',
+                    'description': 'returns meaning of the word as a string'
+                }
+            },
+            'Weather details' : {
+                'GET request': {
+                    'endpoint': '/api/weather?country=<country_name>&city=<city_name>',
+                    'description': 'returns weather details as a string'
+                }
+            },
+            'IMDb ratings' : {
+                'GET request': {
+                    'endpoint': '/api/imdb?title=<title>',
+                    'description': 'returns title\'s rating as a string'
+                }
+            },
+            'Deccan Herald E-Paper' : {
+                'GET request 1' : {
+                    'endpoint': '/api/deccan',
+                    'description': 'returns DH edition details',
+                },
+                'GET request 2': {
+                    'endpoint': '/api/deccan?edition={0-8}',
+                    'description': 'starts a background thread to download PDF, returns file name as a string'
+                }
+            },
+            'Check if file exists in server' : {
+                'GET request': {
+                    'endpoint': '/api/find?file=<file_name>',
+                    'description': 'returns true if file_name exists else false'
+                }
+            }
         }
         return {'response' : data}
 
 class CoronaApi(Resource):
     def get(self):
         run(['python3', 'corona_status_report.py'], stdout=PIPE)
-        pdf = open(f"myflask/static/report.pdf", "rb")
-        contents = pdf.read()
+        contents = open(f"myflask/static/report.pdf", "rb").read()
         out = base64.b64encode(contents).decode('utf-8')
-        pdf.close()
         os.remove(f"myflask/static/report.pdf")
-        return {'response': out}, 201
+        return { 'response': out }, 201
 
 class FileExists(Resource):
     def get(self):
@@ -58,33 +96,34 @@ class DeccanApi(Resource):
             if errors:
                 GLOBAL_ERROR_MESSAGE = errors
 
-        
         if not edition:
-
-            return { 'response': { '/api/deccan?edition=': {
-                0: 'Bangalore',
-                1: 'Davanagere',
-                2: 'Gadag, Haveri, Ballari',
-                3: 'Hubballi-Dharwad',
-                4: 'Kalaburgi',
-                5: 'Kolar, Chikkaballapur, Tumkuru',
-                6: 'Mangaluru',
-                7: 'Mysuru',
-                8: 'Uttara Kannada, Belagavi City'
-            }}}, 200
+            return { 
+                'response': { 
+                    '/api/deccan?edition=': {
+                        0: 'Bangalore',
+                        1: 'Davanagere',
+                        2: 'Gadag, Haveri, Ballari',
+                        3: 'Hubballi-Dharwad',
+                        4: 'Kalaburgi',
+                        5: 'Kolar, Chikkaballapur, Tumkuru',
+                        6: 'Mangaluru',
+                        7: 'Mysuru',
+                        8: 'Uttara Kannada, Belagavi City'
+                    }
+                }
+            }, 200
         else:
-
-            thread = Thread(target=spinoff)
-            thread.start()
-
-            return {'response': f'epaper{edition}.pdf'}, 200
+            Thread(target=spinoff).start()
+            return {
+                'response': f'epaper{edition}.pdf'
+            }, 200
 
 class Dict(Resource):
     def get(self):
         word = request.args.get('word')
         op = run(['python3', 'dict.py', word],stdout=PIPE)
-        out = op.stdout.decode('utf-8')
-        return {'response': out}, 201
+        out = op.stdout.decode('utf-8').strip()
+        return { 'response': out }, 201
 
     def post(self):
         data = request.get_json()
@@ -101,7 +140,7 @@ class Weather(Resource):
         country = request.args['country']
         city = request.args['city']
         op = run(['python3', 'weather.py',country,city], stdout=PIPE)
-        out = op.stdout.decode('utf-8')
+        out = op.stdout.decode('utf-8').strip()
         return {'response': out}, 201
 
 class IMDB(Resource):
@@ -109,8 +148,8 @@ class IMDB(Resource):
         title = request.args.get('title')
         p = run(['python3',"imdb.py",title],stdout=PIPE,input=b'1\n')
         out = p.stdout.decode('utf-8')
-        out = out.split('-----\n')[1]
-        return {'response':out},201
+        out = out.split('-----\n')[1].strip()
+        return {'response':out}, 201
 
 api.add_resource(ApiDoc, '/api')
 api.add_resource(CoronaApi, '/api/coronastats')
