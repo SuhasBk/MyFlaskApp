@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import requests
 import sys
-from bs4 import *
+from bs4 import BeautifulSoup
 
 country = sys.argv[1]
 city = sys.argv[2]

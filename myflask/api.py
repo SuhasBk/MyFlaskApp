@@ -59,6 +59,12 @@ class ApiDoc(Resource):
                     'endpoint': '/api/find?file=<file_name>',
                     'description': 'returns true if file_name exists else false'
                 }
+            },
+            'World Clock': {
+                'GET request': {
+                    'endpoint': '/api/clock?city=<city>',
+                    'description': 'returns current time and date as string in any city in the world.'
+                }
             }
         }
         return {'response' : data}
@@ -69,7 +75,7 @@ class CoronaApi(Resource):
         contents = open(f"myflask/static/report.pdf", "rb").read()
         out = base64.b64encode(contents).decode('utf-8')
         os.remove(f"myflask/static/report.pdf")
-        return { 'response': out }, 201
+        return { 'response': out }, 200
 
 class FileExists(Resource):
     def get(self):
@@ -123,7 +129,7 @@ class Dict(Resource):
         word = request.args.get('word')
         op = run(['python3', 'dict.py', word],stdout=PIPE)
         out = op.stdout.decode('utf-8').strip()
-        return { 'response': out }, 201
+        return { 'response': out }, 200
 
     def post(self):
         data = request.get_json()
@@ -135,26 +141,34 @@ class Dict(Resource):
         else:
             return {'response': "JSON Error"}, 400
 
-class Weather(Resource):
-    def get(self):
-        country = request.args['country']
-        city = request.args['city']
-        op = run(['python3', 'weather.py',country,city], stdout=PIPE)
-        out = op.stdout.decode('utf-8').strip()
-        return {'response': out}, 201
-
 class IMDB(Resource):
     def get(self):
         title = request.args.get('title')
-        p = run(['python3',"imdb.py",title],stdout=PIPE,input=b'1\n')
+        p = run(['python3', "imdb.py", title], stdout=PIPE, input=b'1\n')
         out = p.stdout.decode('utf-8')
         out = out.split('-----\n')[1].strip()
-        return {'response':out}, 201
+        return {'response': out}, 200
+
+class Weather(Resource):
+    def get(self):
+        country = request.args.get('country')
+        city = request.args.get('city')
+        op = run(['python3', 'weather.py',country,city], stdout=PIPE)
+        out = op.stdout.decode('utf-8').strip()
+        return {'response': out}, 200
+
+class WorldClock(Resource):
+    def get(self):
+        city = request.args.get('city')
+        op = run(['python3', 'world_clock.py', city], stdout=PIPE)
+        out = op.stdout.decode('utf-8').replace('\t',', ').strip()
+        return {'response': out}, 200
 
 api.add_resource(ApiDoc, '/api')
 api.add_resource(CoronaApi, '/api/coronastats')
 api.add_resource(DeccanApi, '/api/deccan')
 api.add_resource(Dict, '/api/dictionary')
+api.add_resource(IMDB, '/api/imdb')
 api.add_resource(FileExists, '/api/find')
 api.add_resource(Weather, '/api/weather')
-api.add_resource(IMDB,'/api/imdb')
+api.add_resource(WorldClock, '/api/clock')
