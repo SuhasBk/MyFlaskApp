@@ -2,7 +2,6 @@
 import requests
 from bs4 import BeautifulSoup
 import sys,re
-from fake_useragent import UserAgent
 
 try:
     if len(sys.argv[1:]) < 1:
@@ -11,9 +10,7 @@ try:
 except:
     city = input("Enter any city in the world:\n> ")
 
-headers = {'User-Agent':UserAgent().random}
-
-r = requests.post("https://worldtimeserver.com/search.aspx?searchfor={}".format(city),headers=headers)
+r = requests.post("https://worldtimeserver.com/search.aspx?searchfor={}".format(city))
 if r.ok != True:
     print(r.ok)
 s = BeautifulSoup(r.text,'html.parser')
