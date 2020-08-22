@@ -1,7 +1,7 @@
 email_validator
 magic-wormhole
 flask
-flask_cors
+flask-cors
 flask-wtf
 flask-bcrypt
 flask-restful
