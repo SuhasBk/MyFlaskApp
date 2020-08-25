@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content%}
+<div style="margin-top:10%;">
 <form style="float:left;" method="POST" action="">
   {{ form.hidden_tag() }}
   <legend> Add Handle : </legend>
@@ -7,4 +8,5 @@
   {{ form.handle_name(class="form-control form-control-lg") }}<br><br>
   {{ form.submit(class="btn btn-outline-info") }}<br><br>
 </form>
+</div>
 {% endblock %}

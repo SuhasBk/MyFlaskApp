@@ -9,12 +9,13 @@
     <link rel="stylesheet" href="../static/deccan.css" type="text/css">
 </head>
 <body>
-    <h1 class="text-center">Deccan Herald E-Paper</h1>
-    <div id="displayElement" style="margin-top:8%;" class="container text-center">
+    <a href="http://deccanherald.com" target="_blank"><img class="logo" src="http://deccanheraldepaper.com/lib.custom/custom-logo.png"></a>
+    <h1 class="heading text-center">DECCAN HERALD E-PAPER</h1>
+    <div id="displayElement" class="container text-center">
         <form method="POST" action="#">
             <div class="form-group">
-                <label>Choose your edition : &nbsp</label>
-                <select id="edition" name="edition" style="width:175px;">
+                <label class="info">Choose your edition : </label><br>
+                <select id="edition" name="edition">
                     <option  value="0:Bangalore" selected>Bangalore</option>
                     <option  value="1:Davanagere">Davanagere</option>
                     <option  value="2:Gadag, Haveri, Ballari">Gadag, Haveri, Ballari</option>
@@ -25,9 +26,15 @@
                     <option  value="7:Mysuru">Mysuru</option>
                     <option  value="8:Uttara Kannada, Belagavi City">Uttara Kannada, Belagavi City</option>
                 </select>
-            </div>
-            <button type="submit" class="btn btn-primary" onclick="getPaper()">Get Today's Paper</button>
+            </div><br>
+            <button id="submitbtn" type="submit" class="btn btn-info" onclick="getPaper()">Get Today's Paper</button>
         </form>
+    </div>
+
+    <div class="footer">
+        <a href="http://deccanheraldepaper.com/" target="_blank">E-Paper Source</a>
+        <a href="https://github.com/SuhasBk/DH-epaper" target="_blank">Source Code</a>
+        <a href="https://deccanherald.com" target="_blank">Official Website</a>
     </div>
 </body>
 </html>

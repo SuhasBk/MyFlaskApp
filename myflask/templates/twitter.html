@@ -1,5 +1,6 @@
 {% extends 'layout.html' %}
   {% block content %}
+  <div style="margin-top:10%;">
     <center><h1> WELCOME TO YOUR PERSONALIZED TWITTER </h1></center><br>
     <a href="{{ url_for('user_update',user=user)}}"<button class="btn btn-outline-info">Update Account</button></a>
       <div id="accounts">
@@ -27,4 +28,5 @@
       <a class="twitter-timeline" data-width="500" data-height="600" data-theme="dark" href="https://twitter.com/{{handle}}?ref_src=twsrc%5Etfw" ></a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
       {% endfor %}
     </div>
+  </div>
   {% endblock %}

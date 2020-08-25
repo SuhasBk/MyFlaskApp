@@ -1,16 +1,17 @@
 {% extends "layout.html" %}
 
 {% block content %}
+<div style="margin-top:10%;">
 <center><h2> {{ title }} RESULTS </h2></center><br>
   {% for i,j in res%}
     <article class="media content-section">
         <div class="media-body">
           <div class="article-metadata">
-            <center><iframe width="100%" name="{{j}}" frameBorder="0"></iframe></center>
-            <a style="color:blue" href="{{ i }}" target="{{j}}">{{ j }}</a>
+            <iframe width="100%" name="{{ j }}" frameBorder="0"></iframe>
+            <a style="color:blue" href="{{ i }}" target="{{ j }}">{{ j }}</a>
           </div>
         </div>
     </article>
   {% endfor %}
-
+</div>
 {% endblock %}

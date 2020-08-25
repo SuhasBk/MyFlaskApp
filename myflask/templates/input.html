@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div style="margin-top: 15%;">
+  <form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+      <center><legend class="border-bottom-mb-4"> {{ title }} User Input </legend></center>
+      <div class="form-group">
+        {{ form.search.label(class="form-control-label") }}
+        {{ form.search(class="form-control form-control-lg") }}
+      </div>
+    </fieldset>
+      <div class="form-group" style="text-align: center;">
+        {{ form.submit(class="btn btn-outline-info btn-dark") }}
+      </div>
+  </form>
+</div>
+
+{% endblock content%}

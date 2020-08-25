@@ -9,19 +9,19 @@ function getPaper() {
     var editionCity = editionWithCity[1];
 
     displayElement.innerHTML = 
-    `<div>
-        Fetching ePaper for ${editionCity}... This may take 3-5 minutes... Go get coffee or something!<br>Please wait...
+    `<div class="info">
+        Please wait...<br>Fetching ePaper for ${editionCity}... This may take 3-5 minutes... Go get coffee or something!<br>
     </div>
     <div class="loader">Loading...</div>`;
 
-    fetch(`http://${window.location.host}/api/deccan?edition=${editionNumber}`)
-    .then(response => { 
-        return response.json();
-    })
-    .then(data => {
-        fileName = data['response'];
-        timer = setInterval(checkIfDone, 20000);
-    });
+    // fetch(`http://${window.location.host}/api/deccan?edition=${editionNumber}`)
+    // .then(response => { 
+    //     return response.json();
+    // })
+    // .then(data => {
+    //     fileName = data['response'];
+    //     timer = setInterval(checkIfDone, 20000);
+    // });
 
     console.log("waiting for API");
 }

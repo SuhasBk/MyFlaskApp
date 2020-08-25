@@ -2,6 +2,9 @@ import os
 import base64
 import json
 import time
+import requests
+from yt import fetch_urls
+from bs4 import BeautifulSoup
 from threading import Thread
 from datetime import date
 from flask_restful import Resource
@@ -15,12 +18,6 @@ GLOBAL_ERROR_MESSAGE = ''
 class ApiDoc(Resource):
     def get(self):
         data = {
-            'Corona WHO situation report': {
-                'GET request': {
-                    'endpoint': '/api/coronastats',
-                    'description': 'returns base64 encoded PDF'
-                }
-            },
             'English dictionary': {
                 'GET request' : {
                     'endpoint': '/api/dictionary?word=<word>',
@@ -28,7 +25,7 @@ class ApiDoc(Resource):
                 },
                 'POST request': {
                     'endpoint': '/api/dictionary',
-                    'body': 'word',
+                    'json_body': '{word : <word>}',
                     'description': 'returns meaning of the word as a string'
                 }
             },
@@ -54,7 +51,7 @@ class ApiDoc(Resource):
                     'description': 'starts a background thread to download PDF, returns file name as a string'
                 }
             },
-            'Check if file exists in server' : {
+            'Check if a file exists in server' : {
                 'GET request': {
                     'endpoint': '/api/find?file=<file_name>',
                     'description': 'returns true if file_name exists else false'
@@ -65,29 +62,22 @@ class ApiDoc(Resource):
                     'endpoint': '/api/clock?city=<city>',
                     'description': 'returns current time and date as string in any city in the world.'
                 }
+            },
+            'Random XKCD comic': {
+                'GET request': {
+                    'endpoint': '/api/xkcd',
+                    'description': 'returns a random XKCD comic image url.'
+                }
+            },
+            'YouTube URLS': {
+                'POST request': {
+                    'endpoint': '/api/yt',
+                    'json_body': '{ search_term: <search_term> }',
+                    'description': 'returns 10 youtube embed urls based on search results.'
+                }
             }
         }
         return {'response' : data}
-
-class CoronaApi(Resource):
-    def get(self):
-        run(['python3', 'corona_status_report.py'], stdout=PIPE)
-        contents = open(f"myflask/static/report.pdf", "rb").read()
-        out = base64.b64encode(contents).decode('utf-8')
-        os.remove(f"myflask/static/report.pdf")
-        return { 'response': out }, 200
-
-class FileExists(Resource):
-    def get(self):
-        global GLOBAL_ERROR_MESSAGE
-        file_name = request.args.get('file')
-
-        if file_name in os.listdir():
-            return {'response': True}, 200
-        elif GLOBAL_ERROR_MESSAGE:
-            return {'response': False, 'errors': GLOBAL_ERROR_MESSAGE}
-        else:
-            return {'response': False}, 200
 
 class DeccanApi(Resource):
 
@@ -141,6 +131,18 @@ class Dict(Resource):
         else:
             return {'response': "JSON Error"}, 400
 
+class FileExists(Resource):
+    def get(self):
+        global GLOBAL_ERROR_MESSAGE
+        file_name = request.args.get('file')
+
+        if file_name in os.listdir():
+            return {'response': True}, 200
+        elif GLOBAL_ERROR_MESSAGE:
+            return {'response': False, 'errors': GLOBAL_ERROR_MESSAGE}
+        else:
+            return {'response': False}, 200
+
 class IMDB(Resource):
     def get(self):
         title = request.args.get('title')
@@ -164,11 +166,34 @@ class WorldClock(Resource):
         out = op.stdout.decode('utf-8').replace('\t',', ').strip()
         return {'response': out}, 200
 
+class XKCDApi(Resource):
+    def get(self):
+        try:
+            xkcd_http = requests.get("https://c.xkcd.com/random/comic/")
+            url = BeautifulSoup(xkcd_http.text, 'html.parser').select('img')[2].get('src')
+            img = 'http:'+url
+            return {'success': True, 'img': img}
+        except:
+            return {'success': False}
+
+class YouTubeApi(Resource):
+    def post(self):
+        data = request.get_json()
+        search_term = data['search_term']
+        urls = fetch_urls(search_term)[:10]
+
+        if urls:
+            return {'success':True, 'urls': json.dumps(urls)}
+        else:
+            return {'success':False}
+
+
 api.add_resource(ApiDoc, '/api')
-api.add_resource(CoronaApi, '/api/coronastats')
 api.add_resource(DeccanApi, '/api/deccan')
 api.add_resource(Dict, '/api/dictionary')
 api.add_resource(IMDB, '/api/imdb')
 api.add_resource(FileExists, '/api/find')
 api.add_resource(Weather, '/api/weather')
 api.add_resource(WorldClock, '/api/clock')
+api.add_resource(XKCDApi, '/api/xkcd')
+api.add_resource(YouTubeApi, '/api/yt')

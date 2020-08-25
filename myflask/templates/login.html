@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+<div style="margin-top:10%;">
 <form method="POST" action="">
   {{ form.hidden_tag() }}
   <fieldset class="form-group">
@@ -19,5 +20,6 @@
 </form>
 <div style="display:inline-block;">
 <button class="btn btn-outline-info"><a class="btn-outline-info" href="{{ url_for('register') }}"> Sign Up</a></button>
+</div>
 </div>
 {% endblock %}

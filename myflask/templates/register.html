@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+<div style="margin-top:10%;">
 <form method="POST" action="">
   {{ form.hidden_tag() }}
   <fieldset class="form-group">
@@ -22,4 +23,5 @@
       {{ form.submit(class="btn btn-outline-info") }}
     </div></center>
 </form>
+</div>
 {% endblock %}

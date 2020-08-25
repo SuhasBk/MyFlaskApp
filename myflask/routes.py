@@ -4,6 +4,7 @@ import random
 import re
 import sys
 import time
+import json
 from subprocess import PIPE, run
 from threading import Thread
 import requests
@@ -21,42 +22,38 @@ def home():
 
 @app.route("/youtube",methods=['GET','POST'])
 def youtube():
-    f = Search()
-    if f.validate_on_submit():
-        search = f.search.data
-        r = requests.get("http://youtube.com/results?search_query=" + '+'.join(search.split(' ')))
+    form = Search()
 
-        s = BeautifulSoup(r.text, 'html.parser')
-        l = s.select('div .yt-lockup-content')
-        urls = []
+    if form.validate_on_submit():
+        search_term = form.search.data
 
-        for i in l:
-            urls.append('http://youtube.com/embed'+i.find('a').get('href').replace('watch?v=',''))
+        data = {'search_term': search_term}
+        yt_api = requests.post(f"{request.url_root}api/yt", json=data)
+        yt_api_response = yt_api.json()
 
-        vids=urls[:20]
+        if yt_api_response['success']:
+            vids = json.loads(yt_api_response['urls'])
+            return render_template('vids.html',posts=vids,title='YouTube')
+        else:
+            return abort(500)
 
-        return render_template('vids.html',posts=vids,title='YouTube')
-    return render_template('home.html',title='YouTube',form=f)
+    return render_template('input.html',title='YouTube',form=form)
 
 # display my resume:
 @app.route("/resume",methods=['GET','POST'])
 def resume():
-    if request.method=='POST':
-        with open('myflask'+url_for('static',filename='my-resume.pdf'),'rb') as f:
-            data = f.read()
-        return data
-    return render_template('resume.html',title = 'My Resume')
+    return send_file("static/my-resume.pdf")
 
 # random xkcd comic:
 @app.route("/xkcd",methods=['GET','POST'])
 def xkcd():
-    try:
-        r = requests.get("https://c.xkcd.com/random/comic/")
-        data=BeautifulSoup(r.text,'html.parser').select('img')[2].get('src')
-        img = 'http:'+data
-        print(img)
-        return render_template('vids.html',img=img,title='XKCD WebComics')
-    except:
+    xkcd_api = requests.get(f"{request.url_root}api/xkcd")
+    xkcd_api_response = xkcd_api.json()
+    
+    if xkcd_api_response['success']:
+        img = xkcd_api_response['img']
+        return render_template('vids.html', img=img, title='XKCD WebComics')
+    else:
         return abort(500)
 
 # lyrics scraper:
@@ -75,7 +72,7 @@ def lyrics():
                 s=s.replace(*r)
             res.append([i.find('a').get('href'),s])
         return render_template('lyrics.html',res=res,title=form.search.data.upper()+' LYRICS')
-    return render_template('home.html',form=form,title='Lyrics')
+    return render_template('input.html',form=form,title='Lyrics')
 
 # virtual piano renderer:
 @app.route("/piano",methods=['GET','POST'])
@@ -204,13 +201,7 @@ def reddit():
         content=html['data']['children']
 
         return render_template("reddit.html",data=content,sub=sub)
-    return render_template("home.html",form=subr,title = 'Reddit')
-
-# get latest corona report from WHO:
-@app.route("/corona",methods=['GET'])
-def corona():
-    run(['python3', 'corona_status_report.py'], stdout=PIPE)
-    return send_file('./static/report.pdf')
+    return render_template("input.html",form=subr,title = 'Reddit')
 
 @app.route("/deccan",methods=["GET","POST"])
 def deccan():
