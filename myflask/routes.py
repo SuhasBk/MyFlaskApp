@@ -24,7 +24,7 @@ def home():
 def youtube():
     form = Search()
 
-    if form.validate_on_submit():
+    if form.validate_on_submit() or request.method == 'POST':
         search_term = form.search.data
 
         data = {'search_term': search_term}
@@ -60,7 +60,7 @@ def xkcd():
 @app.route("/lyrics",methods=['GET','POST'])
 def lyrics():
     form = Search()
-    if form.validate_on_submit():
+    if form.validate_on_submit() or request.method == 'POST':
         flash('Click on the links below!','info')
         r=requests.get("https://search.azlyrics.com/search.php?q="+'+'.join(form.search.data.split()))
         s=BeautifulSoup(r.text,'html.parser')
@@ -83,14 +83,18 @@ def piano():
 @app.route("/register",methods=['GET','POST'])
 def register():
     rf = RegistrationForm()
-    if rf.validate_on_submit():
+    if rf.validate_on_submit() or request.method == 'POST':
         user = Users()
         user.user = rf.email.data
         user.passwd = bcrypt.generate_password_hash(rf.password.data)
         user.handles = rf.handles.data
-        db.session.add(user)
-        db.session.commit()
-        return redirect(url_for('login'))
+        try:
+            db.session.add(user)
+            db.session.commit()
+        except:
+            flash("Username/email already exists... Please try again...", "danger")
+        else:
+            return redirect(url_for('login'))
     return render_template('register.html',form=rf,purpose='Personalized Twitter!')
 
 # user login:
@@ -105,13 +109,11 @@ def login():
 
             if user:
                 check = bcrypt.check_password_hash(user.passwd,lf.password.data)
+                
                 if check:
                     return redirect(url_for('twitter',user=user.user))
 
-            flash('Incorrect username/password','danger')
-        else:
-            return abort(401)
-
+        flash('Incorrect username/password.. Try again or sign up now!','danger')
     return render_template('login.html',purpose='Personalized Twitter!',form=lf)
 
 # update email and password of twitter users:
@@ -119,7 +121,7 @@ def login():
 def user_update(user):
     uf = UpdateForm()
 
-    if uf.validate_on_submit():
+    if uf.validate_on_submit() or request.method == 'POST':
         u = Users.query.filter_by(user=user).first()
         if uf.email.data or uf.password.data:
             if uf.email.data != '':
@@ -143,14 +145,14 @@ def twitter(user):
     u = Users.query.filter_by(user=user).first()
     handles = u.handles.split(',')
 
-    return render_template('twitter.html',handles=handles,user=u)
+    return render_template('twitter.html',handles=handles,user=u,title="Personalized Twitter")
 
 # add new twitter handles:
 @app.route('/add_handle/<user>',methods=['GET','POST'])
 def add_handle(user):
     new = NewHandle()
 
-    if new.validate_on_submit():
+    if new.validate_on_submit() or request.method == 'POST':
         h = new.handle_name.data
         try:
             u = Users.query.filter_by(user=user).first()
@@ -186,7 +188,7 @@ def remove_handle(user,handle):
 @app.route("/reddit",methods=['GET','POST'])
 def reddit():
     subr = Search()
-    if subr.validate_on_submit():
+    if subr.validate_on_submit() or request.method == 'POST':
         username='Suhasbk98'
         passwd=os.environ.get('REDPWD')
         sub = subr.search.data
@@ -201,7 +203,7 @@ def reddit():
         content=html['data']['children']
 
         return render_template("reddit.html",data=content,sub=sub)
-    return render_template("input.html",form=subr,title = 'Reddit')
+    return render_template("input.html",form=subr,title='Reddit')
 
 @app.route("/deccan",methods=["GET","POST"])
 def deccan():

@@ -4,7 +4,7 @@
 <form method="POST" action="">
   {{ form.hidden_tag() }}
   <fieldset class="form-group">
-    <center><legend class="border-bottom-mb-4"> Register to access {{purpose}} </legend><br><br></center>
+    <center><legend class="border-bottom-mb-4"> Register here to access {{purpose}} </legend><br><br></center>
     <div class="form-group">
       {{ form.email.label(class="form-control-label") }}
       {{ form.email(class="form-control form-control-lg") }}
@@ -15,12 +15,15 @@
     </div>
     <div class="form-group">
       {{ form.handles.label(class="form-control-label") }}<br>
-      <center>(Please enter correct handle names seperated by a comma)</center>
+      <div class="alert alert-info">
+        Ex : if handle is '@handle_name', then type 'handle_name'
+        Please enter correct handle names seperated by a comma.
+      </div>
       {{ form.handles(class="form-control form-control-lg") }}
     </div>
   </fieldset>
     <center><div class="form-group">
-      {{ form.submit(class="btn btn-outline-info") }}
+      {{ form.submit(class="btn btn-info btn-outline") }}
     </div></center>
 </form>
 </div>

@@ -4,7 +4,7 @@
 <form method="POST" action="">
   {{ form.hidden_tag() }}
   <fieldset class="form-group">
-    <center><legend style="font-size:40px;" class="border-bottom-mb-4"> Login to access {{ purpose }} </legend></center>
+    <center><legend style="font-size:40px;" class="border-bottom-mb-4"> Login to access your {{ purpose }} </legend></center>
     <div class="form-group">
       {{ form.email.label(style="font-size:25px;", class="form-control-label") }}
       {{ form.email(class="form-control form-control-lg") }}
@@ -15,11 +15,11 @@
     </div>
   </fieldset>
     <div style="display:inline-block;margin-right:950px;float:left;" class="form-group">
-      {{ form.submit(class="btn btn-outline-info") }}
+      {{ form.submit(class="btn btn-info btn-outline") }}
     </div>
 </form>
 <div style="display:inline-block;">
-<button class="btn btn-outline-info"><a class="btn-outline-info" href="{{ url_for('register') }}"> Sign Up</a></button>
+<a href="{{ url_for('register') }}"><button class="btn btn-info btn-outline">Sign Up</button</a>
 </div>
 </div>
 {% endblock %}

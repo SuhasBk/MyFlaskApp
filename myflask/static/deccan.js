@@ -12,7 +12,7 @@ function getPaper() {
     `<div class="info">
         Please wait...<br>Fetching ePaper for ${editionCity}... This may take 3-5 minutes... Go get coffee or something!<br>
     </div>
-    <div class="loader">Loading...</div>`;
+    <div class="lds-dual-ring"></div>`;
 
     fetch(`http://${window.location.host}/api/deccan?edition=${editionNumber}`)
     .then(response => { 
