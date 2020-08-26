@@ -14,14 +14,14 @@ function getPaper() {
     </div>
     <div class="loader">Loading...</div>`;
 
-    // fetch(`http://${window.location.host}/api/deccan?edition=${editionNumber}`)
-    // .then(response => { 
-    //     return response.json();
-    // })
-    // .then(data => {
-    //     fileName = data['response'];
-    //     timer = setInterval(checkIfDone, 20000);
-    // });
+    fetch(`http://${window.location.host}/api/deccan?edition=${editionNumber}`)
+    .then(response => { 
+        return response.json();
+    })
+    .then(data => {
+        fileName = data['response'];
+        timer = setInterval(checkIfDone, 20000);
+    });
 
     console.log("waiting for API");
 }
