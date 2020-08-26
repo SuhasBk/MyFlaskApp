@@ -69,40 +69,25 @@ class Deccan:
             return root.find_elements(selector, element)
         except TimeoutException:
             raise Exception("Internal Server Error")
-
-    def edition(self):
-
-        def choose(id, param, limit=None):
-            DEFAULT_VALUE = 0
-
-            # self.browser.find_element_by_id('btnPublicationsPanel').click()
+    
+    def choose_edition(self):
+        time.sleep(3)
+        self.file_name = f'epaper{self.edition_number}.pdf'
+        
+        try:
             pub_btn = self.wait_and_find('btnPublicationsPanel', By.ID, self.browser)[0]
             self.browser.execute_script("arguments[0].click()", pub_btn)
 
-            data_menu = self.browser.find_element_by_id(id)
+            data_menu = self.browser.find_element_by_id('pubFilterEdition')
             data = data_menu.find_elements_by_tag_name('option')[1:]
 
-            if param == 'date':
-                unit = data[DEFAULT_VALUE]
-                s = unit.get_attribute('value')
-                self.date = (s[6:]+'_'+s[4:6]+'_'+s[:4])
-                self.file_name = f'epaper{self.edition_number}.pdf'
-            else:
-                unit = data[int(self.edition_number)]
+            city = data[int(self.edition_number)]
+            self.browser.execute_script("arguments[0].click();", city)
 
-            unit.click()
-            return
-
-        try:
-            time.sleep(5)
-            choose('pubFilterEdition', 'city')
-            time.sleep(5)
-            choose('pubFilterPubDate', 'date', 7)
+            time.sleep(2)
+            return True, ''
         except Exception as e:
             return False, e
-
-        time.sleep(2)
-        return True, ''
 
     def download(self):
         next = True
@@ -156,7 +141,7 @@ def main():
                 os.remove(pdf_file_name)
         else:
             deccan = Deccan(edition_number)
-            result = deccan.edition()
+            result = deccan.choose_edition()
             if not result[0]:
                 raise Exception(result[1])
             deccan.download()

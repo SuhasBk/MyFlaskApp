@@ -20,7 +20,7 @@ function getPaper() {
     })
     .then(data => {
         fileName = data['response'];
-        timer = setInterval(checkIfDone, 20000);
+        timer = setInterval(checkIfDone, 10000);
     });
 
     console.log("waiting for API");
