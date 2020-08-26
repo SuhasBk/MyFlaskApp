@@ -108,7 +108,7 @@ class Deccan:
             # Press the 'download' button and get a list of number of pages
             try:
                 self.browser.find_element_by_id('btnPrintSave').click()
-                time.sleep(2)
+                time.sleep(1)
                 pages = self.browser.find_elements_by_class_name('thumbImage2')
             except:
                 time.sleep(3)
@@ -120,12 +120,10 @@ class Deccan:
                 self.browser.execute_script("arguments[0].click();", i)
                 self.order.append(f)
                 count += 1
-                time.sleep(1)
 
             # Go back and click on 'next' button to download remaining pages
-            time.sleep(1)
             self.browser.find_element_by_id('printSavePanel').send_keys(Keys.ESCAPE)
-            time.sleep(2)
+            time.sleep(1)
             try:
                 self.browser.find_element_by_id('btn-next').click()
             except:
