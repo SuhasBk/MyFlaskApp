@@ -32,7 +32,6 @@ class Deccan:
         self.edition_number = edition_number
 
         chrome_options = Options()
-        # chrome_options.add_argument("--window-size=1920,1080")
         chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--no-sandbox")
@@ -82,7 +81,8 @@ class Deccan:
             data = data_menu.find_elements_by_tag_name('option')[1:]
 
             city = data[int(self.edition_number)]
-            self.browser.execute_script("arguments[0].click();", city)
+            time.sleep(1)
+            city.click()
 
             time.sleep(2)
             return True, ''
