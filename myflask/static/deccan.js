@@ -10,7 +10,7 @@ function getPaper() {
 
     displayElement.innerHTML = 
     `<div class="info">
-        Please wait...<br>Fetching ePaper for ${editionCity}... This may take 3-5 minutes... Go get coffee or something!<br>
+        Please wait...<br>Fetching ePaper for ${editionCity}... This may take 2-3 minutes... Go get coffee or something!<br>
     </div>
     <div class="lds-dual-ring"></div>`;
 
