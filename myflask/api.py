@@ -6,7 +6,7 @@ import requests
 from yt import fetch_urls
 from bs4 import BeautifulSoup
 from threading import Thread
-from datetime import date
+from datetime import datetime
 from flask_restful import Resource
 from myflask import api
 from subprocess import run, PIPE
@@ -82,11 +82,12 @@ class ApiDoc(Resource):
 class DeccanApi(Resource):
 
     def get(self):
-        edition = request.args.get('edition')
+        edition = request.args.get('edition', '0')
+        city = request.args.get('city', 'Bengaluru').replace(', ','-')
 
         def spinoff():
             global GLOBAL_ERROR_MESSAGE
-            op = run(['python3', 'deccan.py', edition], stdout=PIPE, stderr=PIPE)
+            op = run(['python3', 'deccan.py', edition, city], stdout=PIPE, stderr=PIPE)
             errors = op.stderr.decode('utf-8')
 
             if errors:
@@ -95,7 +96,7 @@ class DeccanApi(Resource):
         if not edition:
             return { 
                 'response': { 
-                    '/api/deccan?edition=': {
+                    '/api/deccan?edition=<edition_number>&city=<city_name>': {
                         0: 'Bangalore',
                         1: 'Davanagere',
                         2: 'Gadag, Haveri, Ballari',
@@ -110,8 +111,11 @@ class DeccanApi(Resource):
             }, 200
         else:
             Thread(target=spinoff).start()
+            today_date = '-'.join(str(datetime.today().date()).split('-')[::-1])
+            file_name = f'{today_date}_{city}.pdf'
+            
             return {
-                'response': f'epaper{edition}.pdf'
+                'response': file_name
             }, 200
 
 class Dict(Resource):
@@ -139,7 +143,9 @@ class FileExists(Resource):
         if file_name in os.listdir():
             return {'response': True}, 200
         elif GLOBAL_ERROR_MESSAGE:
-            return {'response': False, 'errors': GLOBAL_ERROR_MESSAGE}
+            errors = GLOBAL_ERROR_MESSAGE
+            GLOBAL_ERROR_MESSAGE = ''
+            return {'response': False, 'errors': errors}
         else:
             return {'response': False}, 200
 

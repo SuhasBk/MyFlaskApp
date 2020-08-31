@@ -1,22 +1,19 @@
 #!/usr/bin/python3
-import time
 import os
 import shutil
 import sys
-import datetime
-import smtplib
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+import time
+from datetime import datetime
+
 from PyPDF2 import PdfFileMerger
-from email import encoders
-from email.mime.base import MIMEBase
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from selenium.webdriver.chrome.options import Options
+from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 class Deccan:
 
@@ -69,9 +66,11 @@ class Deccan:
         except TimeoutException:
             raise Exception("Internal Server Error")
     
+    def set_file_name(self, file_name):
+        self.file_name = file_name
+    
     def choose_edition(self):
         time.sleep(3)
-        self.file_name = f'epaper{self.edition_number}.pdf'
         
         try:
             pub_btn = self.wait_and_find('btnPublicationsPanel', By.ID, self.browser)[0]
@@ -130,20 +129,27 @@ class Deccan:
 def main():
     try:
         edition_number = sys.argv[1]
-        pdf_file_name = f'epaper{edition_number}.pdf'
+        city = sys.argv[2]
+
+        today_date = '-'.join(str(datetime.today().date()).split('-')[::-1])
+        pdf_file_name = f'{today_date}_{city}.pdf'
 
         if pdf_file_name in os.listdir():
-            raw_time = os.stat(pdf_file_name).st_mtime
-            mod_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(raw_time))
-            if str(datetime.datetime.today().date()) == mod_time.split()[0]:
-                pass
-            else:
-                os.remove(pdf_file_name)
+            # raw_time = os.stat(pdf_file_name).st_mtime
+            # mod_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(raw_time))
+            # if str(datetime.datetime.today().date()) == mod_time.split()[0]:
+            #     pass
+            # else:
+            #     os.remove(pdf_file_name)
+            pass
         else:
             deccan = Deccan(edition_number)
+            deccan.set_file_name(pdf_file_name)
+
             result = deccan.choose_edition()
             if not result[0]:
                 raise Exception(result[1])
+
             deccan.download()
 
     finally:

@@ -14,7 +14,7 @@ function getPaper() {
     </div>
     <div class="lds-dual-ring"></div>`;
 
-    fetch(`http://${window.location.host}/api/deccan?edition=${editionNumber}`)
+    fetch(`http://${window.location.host}/api/deccan?edition=${editionNumber}&city=${editionCity}`)
     .then(response => { 
         return response.json();
     })
