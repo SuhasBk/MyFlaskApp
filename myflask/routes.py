@@ -74,11 +74,6 @@ def lyrics():
         return render_template('lyrics.html',res=res,title=form.search.data.upper()+' LYRICS')
     return render_template('input.html',form=form,title='Lyrics')
 
-# virtual piano renderer:
-@app.route("/piano",methods=['GET','POST'])
-def piano():
-    return render_template('piano.html')
-
 # register new user:
 @app.route("/register",methods=['GET','POST'])
 def register():
@@ -204,14 +199,6 @@ def reddit():
 
         return render_template("reddit.html",data=content,sub=sub)
     return render_template("input.html",form=subr,title='Reddit')
-
-@app.route("/deccan",methods=["GET","POST"])
-def deccan():
-    return render_template("deccan.html")
-
-@app.route("/locate/<string:file>", methods=['GET'])
-def locate(file):
-    return send_file(f'../{file}')
 
 # hard reset database in case of schema problems:
 @app.route("/reset/true")

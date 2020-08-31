@@ -41,16 +41,6 @@ class ApiDoc(Resource):
                     'description': 'returns title\'s rating as a string'
                 }
             },
-            'Deccan Herald E-Paper' : {
-                'GET request 1' : {
-                    'endpoint': '/api/deccan',
-                    'description': 'returns DH edition details',
-                },
-                'GET request 2': {
-                    'endpoint': '/api/deccan?edition={0-8}',
-                    'description': 'starts a background thread to download PDF, returns file name as a string'
-                }
-            },
             'Check if a file exists in server' : {
                 'GET request': {
                     'endpoint': '/api/find?file=<file_name>',
@@ -78,45 +68,6 @@ class ApiDoc(Resource):
             }
         }
         return {'response' : data}
-
-class DeccanApi(Resource):
-
-    def get(self):
-        edition = request.args.get('edition', '0')
-        city = request.args.get('city', 'Bengaluru').replace(', ','-')
-
-        def spinoff():
-            global GLOBAL_ERROR_MESSAGE
-            op = run(['python3', 'deccan.py', edition, city], stdout=PIPE, stderr=PIPE)
-            errors = op.stderr.decode('utf-8')
-
-            if errors:
-                GLOBAL_ERROR_MESSAGE = errors
-
-        if not edition:
-            return { 
-                'response': { 
-                    '/api/deccan?edition=<edition_number>&city=<city_name>': {
-                        0: 'Bangalore',
-                        1: 'Davanagere',
-                        2: 'Gadag, Haveri, Ballari',
-                        3: 'Hubballi-Dharwad',
-                        4: 'Kalaburgi',
-                        5: 'Kolar, Chikkaballapur, Tumkuru',
-                        6: 'Mangaluru',
-                        7: 'Mysuru',
-                        8: 'Uttara Kannada, Belagavi City'
-                    }
-                }
-            }, 200
-        else:
-            Thread(target=spinoff).start()
-            today_date = '-'.join(str(datetime.today().date()).split('-')[::-1])
-            file_name = f'{today_date}_{city}.pdf'
-            
-            return {
-                'response': file_name
-            }, 200
 
 class Dict(Resource):
     def get(self):
@@ -195,7 +146,6 @@ class YouTubeApi(Resource):
 
 
 api.add_resource(ApiDoc, '/api')
-api.add_resource(DeccanApi, '/api/deccan')
 api.add_resource(Dict, '/api/dictionary')
 api.add_resource(IMDB, '/api/imdb')
 api.add_resource(FileExists, '/api/find')
