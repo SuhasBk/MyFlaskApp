@@ -65,9 +65,28 @@ class ApiDoc(Resource):
                     'json_body': '{ search_term: <search_term> }',
                     'description': 'returns 10 youtube embed urls based on search results.'
                 }
+            },
+            'Covid 19 India Live Data': {
+                'GET request': {
+                    'endpoint': '/api/covid?state=<state>&city=<city>',
+                    'description': 'returns COVID-19 related data for a particular state and city in India'
+                }
             }
         }
         return {'response' : data}
+
+class CovidIndia(Resource):
+    def get(self):
+        state = request.args.get('state')
+        city = request.args.get('city')
+
+        if(state and city):
+            op = run(['python3', 'covid_india.py', state, city], stdout=PIPE)
+            out = op.stdout.decode('utf-8')
+            return {'response': out}, 200
+        else:
+            return {'response': "Missing parameters"}, 400
+
 
 class Dict(Resource):
     def get(self):
@@ -146,6 +165,7 @@ class YouTubeApi(Resource):
 
 
 api.add_resource(ApiDoc, '/api')
+api.add_resource(CovidIndia, '/api/covid')
 api.add_resource(Dict, '/api/dictionary')
 api.add_resource(IMDB, '/api/imdb')
 api.add_resource(FileExists, '/api/find')
