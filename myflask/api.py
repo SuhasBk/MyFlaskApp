@@ -82,10 +82,10 @@ class CovidIndia(Resource):
 
         if(state and city):
             op = run(['python3', 'covid_india.py', state, city], stdout=PIPE)
-            out = op.stdout.decode('utf-8')
-            return {'response': out}, 200
+            out = op.stdout.decode('utf-8').strip()
+            return out, 200
         else:
-            return {'response': "Missing parameters"}, 400
+            return "Missing parameters", 400
 
 
 class Dict(Resource):
