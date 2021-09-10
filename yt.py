@@ -10,5 +10,5 @@ def fetch_urls(search_term):
         exit()
 
     urls = re.findall('{"videoId":"(\w+)"', r.text)
-    urls = list(map(lambda x: 'http://youtube.com/embed/' + x, (sorted(set(urls), key=urls.index))))
+    urls = list(map(lambda x: 'https://youtube.com/embed/' + x, (sorted(set(urls), key=urls.index))))
     return urls
