@@ -1,12 +1,8 @@
 import os
-import base64
 import json
-import time
 import requests
 from yt import fetch_urls
 from bs4 import BeautifulSoup
-from threading import Thread
-from datetime import datetime
 from flask_restful import Resource
 from myflask import api
 from subprocess import run, PIPE
