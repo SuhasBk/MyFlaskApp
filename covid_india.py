@@ -9,7 +9,7 @@ def abort(msg):
 def fetch():
     global data1, data2
     api1 = requests.get("https://api.covid19india.org/v2/state_district_wise.json", headers=headers)
-    api2 = requests.get("https://api.covid19india.org/v3/data.json", headers=headers)
+    api2 = requests.get("https://data.covid19india.org/v4/min/data.min.json", headers=headers)
 
     data1 = api1.json()
     data2 = api2.json()
