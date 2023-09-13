@@ -48,10 +48,12 @@ def resume():
 @app.route("/xkcd",methods=['GET','POST'])
 def xkcd():
     xkcd_api = requests.get(f"{request.url_root}api/xkcd")
-    xkcd_api_response = xkcd_api.json()
     
-    if xkcd_api_response['success']:
-        img = xkcd_api_response['img']
+    if xkcd_api.ok:
+        img = ''
+        xkcd_api_response = xkcd_api.json()
+        if xkcd_api_response['success']:
+            img = xkcd_api_response['img']
         return render_template('vids.html', img=img, title='XKCD WebComics')
     else:
         return abort(500)
@@ -198,7 +200,7 @@ def reddit():
         content=html['data']['children']
 
         return render_template("reddit.html",data=content,sub=sub)
-    return render_template("input.html",form=subr,title='Reddit')
+    return render_template("input.html",form=subr,title='Subreddit')
 
 # hard reset database in case of schema problems:
 @app.route("/reset/true")

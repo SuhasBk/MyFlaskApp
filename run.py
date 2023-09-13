@@ -9,7 +9,7 @@ if __name__=='__main__':
         port = sys.argv[2]
     except IndexError:
         ip = "localhost"
-        port = 5000
+        port = 8000
     
     debug = True if os.environ.get("HIDDEN_ID") == 'BATMAN' else False
 
