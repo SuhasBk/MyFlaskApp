@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Link to Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Suhas Kowligi - Portfolio</title>
+    <style>
+        /* Custom CSS for text alignment */
+        header, h2 {
+            text-align: center;
+        }
+
+        body {
+            text-align: justify;
+            background-image: url("{{url_for('static', filename='portfolio-bg.jpg')}}"); /* Replace with your image URL */
+            background-size: cover;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-position: center;
+            color: #ffffff; /* Set text color to white for better readability */
+        }
+
+        hr {
+            background-color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="container">
+        <h1 class="mt-4">Suhas B Kowligi</h1>
+        <p class="lead">Computer Science Graduate Student</p>
+        <p>Email: <a href="mailto:sxk7070@mavs.uta.edu">sxk7070@mavs.uta.edu</a></p>
+        <p>Website: <a href="https://suhasbk.onrender.com/portfolio" target="_blank">https://suhasbk.onrender.com</a></p>
+        <p>Phone: 682-406-8550</p>
+        <p>Location: Arlington, TX</p>
+    </header><hr>
+
+    <section id="education" class="container mt-4">
+        <h2>Education</h2>
+        <div class="education-item">
+            <h3 class="mt-3">Master of Science in Computer Science</h3>
+            <p>University of Texas, Arlington, TX</p>
+            <p>Aug 2023</p>
+        </div>
+        <div class="education-item">
+            <h3 class="mt-3">Bachelor of Engineering in Information Science</h3>
+            <p>Nitte Meenakshi Institute of Technology, Bangalore, India</p>
+            <p>2016 - 2020</p>
+            <p>GPA: 9.03</p>
+        </div>
+    </section><hr>
+
+    <section id="work" class="container mt-4">
+        <h2>Experience</h2>
+        <div class="work-item">
+            <h3 class="mt-3">Senior Engineer</h3>
+            <p>Brillio, Bangalore, India</p>
+            <p>Sep 2020 - Aug 2023</p>
+            <ul>
+                <li>Full Stack Java Developer in a Cell Site Management project for Verizon.</li>
+                <li>Automated data integration with external vendors of Verizon using Shell Scripting on AWS Linux
+                    servers.</li>
+                <li>Streamlined inventory search using optimized SQL queries and UI performance for faster and accurate
+                    results.</li>
+                <li>Guided junior team members to debug micro-service architecture.</li>
+            </ul>
+        </div>
+    </section><hr>
+
+    <section id="skills" class="container mt-4">
+        <h2>Skills</h2>
+        <div class="skill-item">
+            <h3 class="mt-3">Programming Languages</h3>
+            <p>Java, Python, JavaScript, SQL</p>
+        </div>
+        <div class="skill-item">
+            <h3 class="mt-3">Tools and Frameworks</h3>
+            <p>Spring Boot, Flask, Django, React, jQuery, Selenium, Docker, PL/SQL, Mongo, Git, JIRA, WebSocket, Kafka, Jinja</p>
+        </div>
+        </div>
+    </section><hr>
+
+    <section id="projects" class="container mt-4">
+        <h2>Projects</h2>
+        <div class="project-item">
+            <h3 class="mt-3">StompChat</h3>
+            <p>Developed and deployed a Spring Boot based group chat application over WebSocket API. Utilized STOMP text
+                based protocol for transferring messages between client and server via a broker.</p>
+            <p>URL: <a href="https://chatstomp.fly.dev" target="_blank">https://chatstomp.fly.dev</a></p>
+        </div>
+        <div class="project-item">
+            <h3 class="mt-3">YouTube Data Scraper</h3>
+            <p>Developed a Python script with BeautifulSoup to fetch YouTube search results along with video URLs for streaming
+                and other metadata.</p>
+            <p>URL: <a href="https://suhasbk.onrender.com"target="_blank">https://suhasbk.onrender.com</a></p>
+        </div>
+        <div class="project-item">
+            <h3 class="mt-3">CLI Music Player</h3>
+            <p>Created a Java - Selenium CLI application, which opens the YT Music/Saavn website in background process
+                and allows user to play, pause, repeat, fetch song lyrics and download songs from command-line.</p>
+            <p>URL: <a href="https://github.com/SuhasBk/CLIPlayer" target="_blank">https://github.com/SuhasBk/CLIPlayer</a></p>
+        </div> 
+        
+        <div class="project-item">
+            <h3 class="mt-3">ePaper Scraping</h3>
+            <p>Built a Spring Boot web application for fetching publicly available PDFs of local newspapers. Added email
+                service, subscription service based on users’ city preference along with a Telegram Bot - @HtToi_bot</p>
+            <p>URL: <a href="https://epapers.onrender.com" target="_blank">https://epapers.onrender.com</a></p>
+        </div>
+    </section><hr>
+
+    <section id="awards" class="container mt-4">
+        <h2>Achievements</h2>
+        <div class="award-item">
+            <h3 class="mt-3">Machine Learning-Based Ensemble Network Security - Publication</h3>
+            <p>Nov 2021</p>
+            <p>Awarded by Springer Journal</p>
+            <p>Summary: <a href="https://link.springer.com/chapter/10.1007/978-981-16-3342-3_1"
+                    target="_blank">https://link.springer.com/chapter/10.1007/978-981-16-3342-3_1</a></p>
+        </div>
+        <div class="award-item">
+            <h3 class="mt-3">Employee of the Quarter</h3>
+            <p>Sep 2021</p>
+            <p>Awarded by Brillio</p>
+        </div>
+        <div class="award-item">
+            <h3 class="mt-3">Employee of the Month</h3>
+            <p>Oct 2022</p>
+            <p>Awarded by Brillio</p>
+        </div>
+    </section><hr>
+
+    <!-- Link to Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Add smooth scrolling to all links
+            $("a").on('click', function (event) {
+                if (this.hash !== "") {
+                    event.preventDefault();
+
+                    // Store hash
+                    var hash = this.hash;
+
+                    // Using jQuery's animate() method to add smooth page scroll
+                    $('html, body').animate({
+                        scrollTop: $(hash).offset().top
+                    }, 500, function () {
+                        // Add hash (#) to URL when done scrolling (default click behavior)
+                        window.location.hash = hash;
+                    });
+                } // End if
+            });
+        });
+    </script>
+</body>
+
+</html>

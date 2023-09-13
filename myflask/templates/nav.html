@@ -8,7 +8,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarToggle">
                 <!-- Navbar Right Side -->
-                {% set routes = ['resume', 'xkcd','youtube', 'reddit'] %} <!--, 'lyrics'-->
+                {% set routes = ['portfolio', 'resume', 'xkcd','youtube', 'reddit'] %} <!--, 'lyrics'-->
                 <div class="navbar-nav">
                     {% for route in routes %}
                     <a class="nav-item nav-link" href="{{ url_for(route) }}"> {{route | upper}} </a>

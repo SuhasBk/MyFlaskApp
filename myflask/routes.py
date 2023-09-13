@@ -58,6 +58,10 @@ def xkcd():
     else:
         return abort(500)
 
+@app.route("/portfolio", methods=['GET'])
+def portfolio():
+    return render_template('portfolio.html')
+
 # lyrics scraper:
 @app.route("/lyrics",methods=['GET','POST'])
 def lyrics():
