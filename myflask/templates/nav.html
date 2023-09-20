@@ -8,12 +8,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarToggle">
                 <!-- Navbar Right Side -->
-                {% set routes = ['xkcd','youtube', 'reddit', 'portfolio'] %} <!--, 'lyrics', 'resume'-->
+                {% set routes = ['xkcd','youtube', 'reddit'] %} <!--, 'lyrics', 'resume'-->
                 <div class="navbar-nav">
                     {% for route in routes %}
                     <a class="nav-item nav-link" href="{{ url_for(route) }}"> {{route | upper}} </a>
                     {% endfor %}
                     <!-- <a class="nav-item nav-link" href="{{url_for('twitter',user='')}}">PERSONALIZED-TWITTER</a> -->
+                    <a class="nav-item nav-link" href="https://chatstomp.onrender.com/">CHATSTOMP</a>
+                    <a class="nav-item nav-link" href="{{ url_for('portfolio') }}">PORTFOLIO</a>
                     <a class="nav-item nav-link" href="https://drive.google.com/file/d/1wDLuXtxKjuxr-RzIDFP4-GdRqCx7JfFs/view" target="_blank">RESUME</a>
                     <a class="nav-item nav-link" href="https://github.com/SuhasBk/" target="_blank">GITHUB</a>
                     <a class="nav-item nav-link" href="https://www.linkedin.com/in/suhas-kowligi-b39a9415a/" target="_blank">LINKEDIN</a>
