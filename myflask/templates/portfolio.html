@@ -4,179 +4,386 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Link to Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Suhas Kowligi - Portfolio</title>
+    <title>Suhas Kowligi</title>
+
+    <!-- Bootstrap CSS Link -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="icon" href="https://i.pinimg.com/originals/77/f7/ff/77f7ff01c227415475899c71d376455d.png"
+        type="image/png">
+
     <style>
-        /* Custom CSS for text alignment */
-        header, h2 {
-            text-align: center;
+        html {
+            scroll-behavior: smooth;
         }
 
-        body {
-            text-align: justify;
-            background-image: url("{{url_for('static', filename='portfolio-bg.jpg')}}"); /* Replace with your image URL */
+        #header {
+            background-image: url("{{url_for('static', filename='portfolio-bg.jpg')}}");
+            /* Replace with your image path */
             background-size: cover;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-            background-position: center;
-            color: #ffffff; /* Set text color to white for better readability */
+            background-position: bottom;
+            position: relative;
+            /* Required for stacking elements */
         }
 
-        hr {
-            background-color: white;
+        #header::before {
+            content: "";
+            background: rgba(0, 0, 0, 0.6);
+            /* Adjust the opacity (0.5 for 50% opacity) */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #header .container {
+            position: relative;
+            /* Required for stacking elements */
+            z-index: 1;
+            /* Place the content above the overlay */
+        }
+
+        .header-links a {
+            text-decoration: underline;
+            color: white;
+            margin: 0 30px;
+            /* Adjust the margin for spacing between links */
+        }
+
+        .header-separator {
+            color: white;
+        }
+
+        #header a:hover {
+            text-decoration: none;
         }
     </style>
+
 </head>
 
 <body>
-    <header class="container">
-        <h1 class="mt-4">SUHAS B KOWLIGI</h1>
-        <p class="lead">Computer Science Graduate Student</p>
-        <p>Email: <a href="mailto:sxk7070@mavs.uta.edu">sxk7070@mavs.uta.edu</a></p>
-        <p>Website: <a href="https://suhasbk.onrender.com/portfolio" target="_blank">https://suhasbk.onrender.com</a>
-        </p>
-        <p>Location: Arlington, TX</p>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Suhas Kowligi</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#education">Education</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#experience">Experience</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#skills">Skills</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#projects">Projects</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#achievements">Achievements</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header id="header" class="bg-primary text-white text-center py-5">
+        <div class="container">
+            <h1>Suhas Kowligi</h1>
+            <p><i class="fas fa-laptop-code"></i> Computer Science Graduate Student <i class="fas fa-laptop-code"></i>
+            </p>
+            <p>Arlington, TX</p>
+            <div class="header-links">
+                <a href="https://suhasbk.fly.dev" target="_blank">Portfolio Website</a>
+                <span class="header-separator"> - </span>
+                <a href="https://drive.google.com/file/d/1wDLuXtxKjuxr-RzIDFP4-GdRqCx7JfFs/view"
+                    target="_blank">Resume</a>
+                <span class="header-separator"> - </span>
+                <a href="https://github.com/SuhasBk" target="_blank">GitHub</a>
+                <span class="header-separator"> - </span>
+                <a href="https://www.linkedin.com/in/suhas-kowligi-b39a9415a" target="_blank">LinkedIn</a>
+            </div>
+        </div>
     </header>
-    <hr>
 
-    <section id="education" class="container mt-4">
-        <h2>Education</h2>
-        <div class="education-item">
-            <h3 class="mt-3">Master of Science, Computer Science</h3>
-            <p>University of Texas, Arlington, TX</p>
-            <p>Aug 2023 – Present</p>
-        </div>
-        <div class="education-item">
-            <h3 class="mt-3">Bachelor of Engineering, Information Science</h3>
-            <p>Nitte Meenakshi Institute of Technology, Bangalore, India</p>
-            <p>2016 - 2020</p>
-            <p>GPA: 3.68</p>
+    <!-- About Section -->
+    <section id="about" class="py-5" style="max-height: 500px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2 class="display-4">About Me</h2>
+                    <p>
+                        I am a highly motivated computer science graduate student currently pursuing my Master of
+                        Science in
+                        Computer Science at the University of Texas at Arlington. I have a strong passion for web
+                        development, backend development, and full-stack development.
+                    </p>
+                    <p>
+                        Throughout my academic and professional journey, I have gained valuable experience in various
+                        programming languages and technologies, including Java, Python, JavaScript, and more. I enjoy
+                        solving complex problems and creating innovative solutions.
+                    </p>
+                </div>
+                <div class="col-lg-6">
+                    <!-- Add a profile picture here if you have one -->
+                    <img src="{{url_for('static', filename='profile.png')}}" alt="Profile Picture"
+                        style="height: 40%; margin-left: 35%;" class="img-fluid rounded-circle">
+                </div>
+            </div>
         </div>
     </section>
-    <hr>
 
-    <section id="work" class="container mt-4">
-        <h2>Experience</h2>
-        <!-- Add your work experience items here -->
-        <div class="work-item">
-            <h3 class="mt-3">Senior Engineer</h3>
-            <p>Brillio, Bangalore, India</p>
-            <p>Sep 2020 - Aug 2023</p>
-            <ul>
-                <li>Full Stack Java Developer in a Cell Site Management project for Verizon.</li>
-                <li>Automated data integration with external vendors of Verizon using Shell Scripting on AWS Linux
-                    servers.</li>
-                <li>Streamlined inventory search using optimized SQL queries and UI performance for faster and accurate
-                    results.</li>
-                <li>Guided junior team members to debug micro-service architecture.</li>
-                <li>Received Employee of The Quarter and Employee of The Month recognition for exemplary work.</li>
-            </ul>
+
+    <!-- Education Section -->
+    <section id="education" class="py-5">
+        <div class="container">
+            <h2 class="display-4">Education</h2>
+
+            <!-- University of Texas at Arlington -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">University of Texas at Arlington</h4>
+                    <p class="card-text">Master of Science, Computer Science</p>
+                    <p class="card-text">Arlington, TX</p>
+                    <p class="card-text">2023 - Present</p>
+                    <p class="card-text">Relevant Courses: Design And Analysis of Algorithms, Data Analysis and
+                        Modeling, Web Data Management</p>
+                </div>
+            </div>
+
+            <!-- Nitte Meenakshi Institute of Technology -->
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Nitte Meenakshi Institute of Technology</h4>
+                    <p class="card-text">Bachelor of Engineering, Information Science (GPA: 3.68)</p>
+                    <p class="card-text">Bangalore, India</p>
+                    <p class="card-text">2016 - 2020</p>
+                    <p class="card-text">Relevant Courses: Data Structures using C, Graph Theory, Discrete Math,
+                        Computer Networks, FOSS and Cyber Laws</p>
+                </div>
+            </div>
         </div>
-        <!-- Add other work experience items similarly -->
     </section>
-    <hr>
 
-    <section id="skills" class="container mt-4">
-        <h2>Skills</h2>
-        <!-- Add your skills here -->
-        <div class="skill-item">
-            <h3 class="mt-3">Programming Languages</h3>
-            <p>Java, Python, JavaScript, SQL, C, TypeScript</p>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-5">
+        <div class="container">
+            <h2 class="display-4">Experience</h2>
+
+            <!-- Brillio LLC -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">Brillio LLC</h4>
+                    <p class="card-text">Senior Software Engineer</p>
+                    <p class="card-text">Bangalore, India</p>
+                    <p class="card-text">Sep 2020 - Aug 2023</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Full Stack Java Developer in a Cell Site Management project for
+                            Verizon.
+                        </li>
+                        <li class="list-group-item">Automated data integration with external vendors of Verizon using
+                            Shell
+                            Scripting on AWS Linux servers.</li>
+                        <li class="list-group-item">Streamlined inventory search optimizing API calls, SQL queries and
+                            UI/UX
+                            performance for faster and accurate results.</li>
+                        <li class="list-group-item">Guided junior team members to debug micro-service architecture.</li>
+                        <li class="list-group-item">Received Employee of The Quarter and Employee of The Month
+                            recognition
+                            for exemplary work.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- National Institute of Technology -->
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">National Institute of Technology</h4>
+                    <p class="card-text">Backend Engineer Intern</p>
+                    <p class="card-text">Surathkal, India</p>
+                    <p class="card-text">Jun 2019 - Aug 2019</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Worked as a backend Python/Java Developer for an IoT based
+                            Navigation-as-a-Service (NaaS) project.</li>
+                        <li class="list-group-item">Gained experience in technologies related to Bluetooth Low Energy
+                            (BLE),
+                            NoSQL MongoDB, and Android Mobile App development.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="skill-item">
-            <h3 class="mt-3">Tools and Frameworks</h3>
-            <p>Spring Boot, Django, React, jQuery, Selenium, Android Studio, BASH, Docker, PL/SQL, Mongo, Git, JIRA,
-                WebSocket, Kafka, Flask</p>
-        </div>
-        <!-- Add other skill items similarly -->
     </section>
-    <hr>
 
-    <section id="projects" class="container mt-4">
-        <h2>Projects</h2>
-        <!-- Add your project items here -->
-        <div class="project-item">
-            <h3 class="mt-3">StompChat</h3>
-            <p>Developed and deployed a Spring Boot based group chat application over WebSocket API. Utilized STOMP text
-                based protocol for transferring messages between client and server via a broker.</p>
-            <p>URL: <a href="https://chatstomp.fly.dev" target="_blank">https://chatstomp.fly.dev</a></p>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-5">
+        <div class="container">
+            <h2 class="display-4">Skills</h2>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Programming Languages:</h4>
+                    <ul>
+                        <li>Java</li>
+                        <li>Python</li>
+                        <li>JavaScript</li>
+                        <li>SQL</li>
+                        <li>C</li>
+                        <li>TypeScript</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h4>Tools and Frameworks:</h4>
+                    <ul>
+                        <li>Spring Boot</li>
+                        <li>Django</li>
+                        <li>React</li>
+                        <li>jQuery</li>
+                        <li>HTML</li>
+                        <li>CSS</li>
+                        <li>Selenium</li>
+                        <li>Android Studio</li>
+                        <li>BASH</li>
+                        <li>Docker</li>
+                        <li>PL/SQL</li>
+                        <li>Mongo</li>
+                        <li>Git</li>
+                        <li>JIRA</li>
+                        <li>WebSocket</li>
+                        <li>Apache Kafka</li>
+                        <li>Flask</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Certifications:</h4>
+                    <ul>
+                        <li>Scaled Agile Framework (SAFe 5) Practitioner - 2020</li>
+                        <li>Fundamentals of Backend Engineering Udemy Course - 15.5 hours</li>
+                        <li>Apache Kafka For Developer Using Spring Boot - 8 hours</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="project-item">
-            <h3 class="mt-3">ePaper Scraping</h3>
-            <p>Built a Spring Boot web application for fetching publicly available PDFs of local newspapers. Added email
-                service, subscription service based on users’ city preference along with a Telegram Bot - @HtToi_bot</p>
-            <p>URL: <a href="https://epapers.onrender.com" target="_blank">https://epapers.onrender.com</a></p>
-        </div>
-        <div class="project-item">
-            <h3 class="mt-3">CLI Music Player</h3>
-            <p>Created a Java - Selenium CLI application, which opens the YT Music/Saavn website in background process
-                and allows user to play, pause, repeat, fetch song lyrics and download songs from command-line.</p>
-            <p>URL: <a href="https://github.com/SuhasBk/CLIPlayer"
-                    target="_blank">https://github.com/SuhasBk/CLIPlayer</a></p>
-        </div>
-        <div class="project-item">
-            <h3 class="mt-3">YouTube Data Scraper</h3>
-            <p>Developed a Python script with BeautifulSoup to fetch YouTube search results along with video URLs for
-                streaming
-                and other metadata.</p>
-            <p>URL: <a href="https://github.com/SuhasBk/PythonScripts"
-                    target="_blank">https://github.com/SuhasBk/PythonScripts</a></p>
-        </div>
-        <!-- Add other project items similarly -->
     </section>
-    <hr>
 
-    <section id="awards" class="container mt-4">
-        <h2>Achievements</h2>
-        <!-- Add your achievement items here -->
-        <div class="award-item">
-            <h3 class="mt-3">Machine Learning-Based Ensemble Network Security - Publication</h3>
-            <p>Nov 2021</p>
-            <p>Awarded by Springer Journal</p>
-            <p>Summary: <a href="https://link.springer.com/chapter/10.1007/978-981-16-3342-3_1"
-                    target="_blank">https://link.springer.com/chapter/10.1007/978-981-16-3342-3_1</a></p>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-5">
+        <div class="container">
+            <h2 class="display-4">Projects</h2>
+
+            <!-- Project 1: Crypto-Steganography -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">Crypto-Steganography</h4>
+                    <p class="card-text">Academic Project - Information & Network Security</p>
+                    <a href="https://github.com/SuhasBk/Crypto-Stegano" class="btn btn-primary" target="_blank">GitHub
+                        Repository <i class="fas fa-external-link-alt"></i></a>
+                    <p class="mt-2 card-text">Python scripts to encrypt/decrypt and embed text secrets to a
+                        user-preferred image
+                        file and send it via mail using SMTP protocol. Implemented using Advanced Encryption Standard
+                        (AES)
+                        algorithm with Cipher Block Chaining (CBC).</p>
+                </div>
+            </div>
+
+            <!-- Project 2: ML-based Ensemble Network Security System -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">ML-based Ensemble Network Security System</h4>
+                    <p class="card-text">Academic Industry Project - Machine Learning</p>
+                    <p class="mt-2 card-text">Experimented with various ML algorithms such as Naive Bayes Classifier,
+                        K-NN
+                        Classifier, Logistic Regression, and Decision Tree Classifier. Implemented shell and Python
+                        scripts
+                        with the help of built-in Unix firewall CLI (iptables) to whitelist most frequent incoming
+                        connection requests in an internal network as a part of the Ensemble system.</p>
+                </div>
+            </div>
+
+            <!-- Project 3: StompChat -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">StompChat</h4>
+                    <p class="card-text">Personal Project</p>
+                    <a href="https://chatstomp-u0s3.onrender.com" class="btn btn-primary" target="_blank">Live Demo <i
+                            class="fas fa-external-link-alt"></i></a>
+                    <p class="mt-2 card-text">Developed and deployed a Java Spring Boot-based group chat application
+                        over
+                        WebSocket API. Utilized STOMP - text-based protocol for transferring messages between client and
+                        server via a message broker.</p>
+                </div>
+            </div>
+
+            <!-- Project 4: ePaper Scraping -->
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">ePaper Scraping</h4>
+                    <p class="card-text">Personal Project</p>
+                    <a href="https://epapers.onrender.com" class="btn btn-primary" target="_blank">Live Demo <i
+                            class="fas fa-external-link-alt"></i></a>
+                    <p class="mt-2 card-text">Built a Java Spring Boot web application for fetching publicly available
+                        PDFs of
+                        local newspapers. Added REST APIs, OAuth logins, email service, subscription service based on
+                        users’
+                        city preference along with a Telegram Bot - <a href="https://t.me/HtToi_bot"
+                            target="_blank">Telegram Bot</a>.</p>
+                </div>
+            </div>
         </div>
-        <div class="award-item">
-            <h3 class="mt-3">Employee of the Quarter</h3>
-            <p>Sep 2021</p>
-            <p>Awarded by Brillio</p>
-        </div>
-        <div class="award-item">
-            <h3 class="mt-3">Employee of the Month</h3>
-            <p>Oct 2022</p>
-            <p>Awarded by Brillio</p>
-        </div>
-        <!-- Add other achievement items similarly -->
     </section>
-    <hr>
 
-    <!-- Link to Bootstrap JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            // Add smooth scrolling to all links
-            $("a").on('click', function (event) {
-                if (this.hash !== "") {
-                    event.preventDefault();
+    <!-- Achievements Section -->
+    <section id="achievements" class="py-5">
+        <div class="container">
+            <h2 class="display-4">Achievements</h2>
 
-                    // Store hash
-                    var hash = this.hash;
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">Machine Learning-Based Ensemble Network Security - Publication</h4>
+                    <p class="card-text">Nov 2021</p>
+                    <a href="https://link.springer.com/chapter/10.1007/978-981-16-3342-3_1" class="btn btn-primary"
+                        target="_blank">Read Publication <i class="fas fa-external-link-alt"></i></a>
+                    <p class="mt-2 card-text">Published in Springer Journal</p>
+                </div>
+            </div>
 
-                    // Using jQuery's animate() method to add smooth page scroll
-                    $('html, body').animate({
-                        scrollTop: $(hash).offset().top
-                    }, 500, function () {
-                        // Add hash (#) to URL when done scrolling (default click behavior)
-                        window.location.hash = hash;
-                    });
-                } // End if
-            });
-        });
+            <!-- Add more achievements as needed -->
+        </div>
+    </section>
+
+
+    <!-- Footer Section -->
+    <footer class="bg-dark text-white text-center py-3">
+        <div class="container">
+            &copy; <span id="currentYear"></span> Suhas Kowligi | <a
+                href="mailto:sxk7070@mavs.uta.edu">sxk7070@mavs.uta.edu</a>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+    <script defer>
+        const currentYear = new Date().getFullYear();
+        document.getElementById('currentYear').textContent = currentYear;
     </script>
+
 </body>
 
 </html>
