@@ -49,8 +49,16 @@
             color: white;
         }
 
-        #header a:hover {
+        .header-links a:hover {
             text-decoration: none;
+        }
+
+        #profile-pic {
+            transition: all 0.5s;
+        }
+
+        #profile-pic:hover {
+            transform: scale(1.1);
         }
     </style>
 
@@ -60,7 +68,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="#">Suhas Kowligi</a>
+            <a class="navbar-brand" href="#">Suhas</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -99,8 +107,7 @@
             <div class="header-links">
                 <a href="https://suhasbk.fly.dev" target="_blank">Portfolio Website</a>
                 <span class="header-separator"> | </span>
-                <a href="https://drive.google.com/file/d/1wDLuXtxKjuxr-RzIDFP4-GdRqCx7JfFs/view"
-                    target="_blank">Résumé</a>
+                <a href="https://drive.google.com/file/d/1wDLuXtxKjuxr-RzIDFP4-GdRqCx7JfFs/view" target="_blank">Résumé</a>
                 <span class="header-separator"> | </span>
                 <a href="https://github.com/SuhasBk" target="_blank">GitHub</a>
                 <span class="header-separator"> | </span>
@@ -112,7 +119,7 @@
     </header>
 
     <!-- About Section -->
-    <section id="about" class="py-5">
+    <section id="about" class="py-5 bg-dark text-white">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
@@ -146,15 +153,14 @@
                     </p>
                 </div>
                 <div class="col-lg-6" style="text-align: center;">
-                    <img src="{{url_for('static', filename='profile.png')}}" alt="Profile Picture" class="img-fluid rounded-circle">
+                    <img id="profile-pic" src="{{url_for('static', filename='profile.png')}}" alt="Profile Picture" class="img-fluid rounded-circle">
                 </div>
             </div>
         </div>
     </section>
 
-
     <!-- Education Section -->
-    <section id="education" class="py-5">
+    <section id="education" class="py-5 bg-light">
         <div class="container">
             <h2 class="display-4">Education</h2>
 
@@ -184,9 +190,8 @@
         </div>
     </section>
 
-
     <!-- Experience Section -->
-    <section id="experience" class="py-5">
+    <section id="experience" class="py-5 bg-dark text-white">
         <div class="container">
             <h2 class="display-4">Experience</h2>
 
@@ -197,20 +202,13 @@
                     <p class="card-text">Senior Software Engineer</p>
                     <p class="card-text">Bangalore, India</p>
                     <p class="card-text">Sep 2020 - Aug 2023</p>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Full Stack Java Developer in a Cell Site Management project for
-                            Verizon.
+                    <ul class="list-group">
+                        <li class="list-group-item">👉 Full Stack Java Developer in a Cell Site Management project for Verizon.
                         </li>
-                        <li class="list-group-item">Automated data integration with external vendors of Verizon using
-                            Shell
-                            Scripting on AWS Linux servers.</li>
-                        <li class="list-group-item">Streamlined inventory search optimizing API calls, SQL queries and
-                            UI/UX
-                            performance for faster and accurate results.</li>
-                        <li class="list-group-item">Guided junior team members to debug micro-service architecture.</li>
-                        <li class="list-group-item">Received Employee of The Quarter and Employee of The Month
-                            recognition
-                            for exemplary work.</li>
+                        <li class="list-group-item">👉 Automated data integration with external vendors of Verizon using Shell Scripting on AWS Linux servers.</li>
+                        <li class="list-group-item">👉 Streamlined inventory search optimizing API calls, SQL queries and UI/UX performance for faster and accurate results.</li>
+                        <li class="list-group-item">👉 Guided junior team members to debug micro-service architecture.</li>
+                        <li class="list-group-item">👉 Received Employee of The Quarter and Employee of The Month recognition for exemplary work.</li>
                     </ul>
                 </div>
             </div>
@@ -222,18 +220,14 @@
                     <p class="card-text">Backend Engineer Intern</p>
                     <p class="card-text">Surathkal, India</p>
                     <p class="card-text">Jun 2019 - Aug 2019</p>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Worked as a backend Python/Java Developer for an IoT based
-                            Navigation-as-a-Service (NaaS) project.</li>
-                        <li class="list-group-item">Gained experience in technologies related to Bluetooth Low Energy
-                            (BLE),
-                            NoSQL MongoDB, and Android Mobile App development.</li>
+                    <ul class="list-group">
+                        <li class="list-group-item">👉 Worked as a backend Python/Java Developer for an IoT based Navigation-as-a-Service (NaaS) project.</li>
+                        <li class="list-group-item">👉 Gained experience in technologies related to Bluetooth Low Energy (BLE), NoSQL MongoDB, and Android Mobile App development.</li>
                     </ul>
                 </div>
             </div>
         </div>
     </section>
-
 
     <!-- Skills Section -->
     <section id="skills" class="py-5">
@@ -289,9 +283,8 @@
         </div>
     </section>
 
-
     <!-- Projects Section -->
-    <section id="projects" class="py-5">
+    <section id="projects" class="py-5 bg-dark text-white">
         <div class="container">
             <h2 class="display-4">Projects</h2>
 
@@ -329,7 +322,7 @@
                         Live Demo <i class="fas fa-external-link-alt"></i>
                     </a>
                     <p class="mt-2 card-text">
-                        Developed and deployed a Java Spring Boot-based group chat application over WebSocket API. Utilized STOMP - text-based protocol for transferring messages between client and server via a message broker.
+                        Developed and deployed a dockerized Java Spring Boot-based group chat application over WebSocket API. Utilized STOMP - text-based protocol for transferring messages between client and server via a message broker.
                     </p>
                 </div>
             </div>
@@ -350,7 +343,6 @@
         </div>
     </section>
 
-
     <!-- Achievements Section -->
     <section id="achievements" class="py-5">
         <div class="container">
@@ -360,13 +352,17 @@
                 <div class="card-body">
                     <h4 class="card-title">Machine Learning-Based Ensemble Network Security - Publication</h4>
                     <p class="card-text">Nov 2021</p>
-                    <a href="https://link.springer.com/chapter/10.1007/978-981-16-3342-3_1" class="btn btn-primary"
-                        target="_blank">Read Publication <i class="fas fa-external-link-alt"></i></a>
-                    <p class="mt-2 card-text">Published in Springer Journal</p>
+                    <a href="https://link.springer.com/chapter/10.1007/978-981-16-3342-3_1" class="btn btn-primary" target="_blank">Read Publication <i class="fas fa-external-link-alt"></i></a>
                 </div>
             </div>
 
-            <!-- Add more achievements as needed -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4 class="card-title">Open Source Contribution - Hacktoberfest 2023</h4>
+                    <p class="card-text">Oct 2023</p>
+                    <a href="https://github.com/Mrinank-Bhowmick/python-beginner-projects/pull/373" class="btn btn-primary" target="_blank">Pull Request <i class="fas fa-external-link-alt"></i></a>
+                </div>
+            </div>
         </div>
     </section>
 
