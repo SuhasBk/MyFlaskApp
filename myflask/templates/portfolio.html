@@ -19,17 +19,14 @@
 
         #header {
             background-image: url("{{url_for('static', filename='portfolio-bg.jpg')}}");
-            /* Replace with your image path */
             background-size: cover;
             background-position: bottom;
             position: relative;
-            /* Required for stacking elements */
         }
 
         #header::before {
             content: "";
             background: rgba(0, 0, 0, 0.6);
-            /* Adjust the opacity (0.5 for 50% opacity) */
             position: absolute;
             top: 0;
             left: 0;
@@ -39,16 +36,13 @@
 
         #header .container {
             position: relative;
-            /* Required for stacking elements */
             z-index: 1;
-            /* Place the content above the overlay */
         }
 
         .header-links a {
             text-decoration: underline;
             color: white;
             margin: 0 30px;
-            /* Adjust the margin for spacing between links */
         }
 
         .header-separator {
@@ -106,7 +100,7 @@
                 <a href="https://suhasbk.fly.dev" target="_blank">Portfolio Website</a>
                 <span class="header-separator"> | </span>
                 <a href="https://drive.google.com/file/d/1wDLuXtxKjuxr-RzIDFP4-GdRqCx7JfFs/view"
-                    target="_blank">Resume</a>
+                    target="_blank">Résumé</a>
                 <span class="header-separator"> | </span>
                 <a href="https://github.com/SuhasBk" target="_blank">GitHub</a>
                 <span class="header-separator"> | </span>
@@ -124,19 +118,34 @@
                 <div class="col-lg-6">
                     <h2 class="display-4">About Me</h2>
                     <p>
-                        I am a highly motivated computer science graduate student currently pursuing my Master of
-                        Science in
-                        Computer Science at the University of Texas at Arlington. I have a strong passion for web
-                        development, backend development, and full-stack development.
+                        I am a highly motivated computer science graduate student currently pursuing my Master of Science in Computer Science at
+                        the University of Texas at Arlington. I also have a significant 3-YOE experience as Senior Software Engineer with a strong background in computer science. My journey in the tech industry has been marked by notable achievements and impactful contributions.
+                    </p>
+                    <p> 
+                        My career took off at Brillio, where I served as a Senior Software Engineer from September 2020 to August 2023.
+                        During this time, I had the opportunity to work on a crucial Cell Site Management project for Verizon as a Full Stack
+                        Java Developer. I am proud to say that my dedication and exceptional work were acknowledged with prestigious awards, including Employee of The Quarter and Employee of The Month.
                     </p>
                     <p>
-                        Throughout my academic and professional journey, I have gained valuable experience in various
-                        programming languages and technologies, including Java, Python, JavaScript, and more. I enjoy
-                        solving complex problems and creating innovative solutions.
+                        Prior to my role at Brillio, I gained valuable experience as a Backend Engineer Intern at the National Institute of
+                        Technology. This internship provided me with hands-on experience in cutting-edge technology.
+                    </p>
+                    <p>
+                        My skills encompass a wide range of programming languages and tools, including Java, Python, JavaScript, SQL, C,
+                        TypeScript, and various frameworks such as Spring Boot, React, and more. I have also earned certifications,
+                        including the Scaled Agile Framework (SAFe 5) Practitioner and completion of the Fundamentals of Backend Engineering
+                        Udemy Course. I love automating mundane tasks and dockerizing them for deployment.
+                    </p>
+                    <p>
+                        One significant achievement in my career is the publication of a paper titled "Machine Learning-Based Ensemble Network
+                        Security." This research was published in a reputable journal, Springer Journal, in November 2021. You can read more
+                        about it <a href="https://link.springer.com/chapter/10.1007/978-981-16-3342-3_1" target="_blank">here</a>.
+                    </p>
+                    <p>
+                        Please feel free to take a look at my GitHub repository for open-source contributions!
                     </p>
                 </div>
                 <div class="col-lg-6" style="text-align: center;">
-                    <!-- Add a profile picture here if you have one -->
                     <img src="{{url_for('static', filename='profile.png')}}" alt="Profile Picture" class="img-fluid rounded-circle">
                 </div>
             </div>
@@ -291,13 +300,12 @@
                 <div class="card-body">
                     <h4 class="card-title">Crypto-Steganography</h4>
                     <p class="card-text">Academic Project - Information & Network Security</p>
-                    <a href="https://github.com/SuhasBk/Crypto-Stegano" class="btn btn-primary" target="_blank">GitHub
-                        Repository <i class="fas fa-external-link-alt"></i></a>
-                    <p class="mt-2 card-text">Python scripts to encrypt/decrypt and embed text secrets to a
-                        user-preferred image
-                        file and send it via mail using SMTP protocol. Implemented using Advanced Encryption Standard
-                        (AES)
-                        algorithm with Cipher Block Chaining (CBC).</p>
+                    <a href="https://github.com/SuhasBk/Crypto-Stegano" class="btn btn-primary" target="_blank">
+                        GitHub Repository <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <p class="mt-2 card-text">
+                        Python scripts to encrypt/decrypt and embed text secrets to a user-preferred image file and send it via mail using SMTP protocol. Implemented using Advanced Encryption Standard (AES) algorithm with Cipher Block Chaining (CBC).
+                    </p>
                 </div>
             </div>
 
@@ -306,12 +314,9 @@
                 <div class="card-body">
                     <h4 class="card-title">ML-based Ensemble Network Security System</h4>
                     <p class="card-text">Academic Industry Project - Machine Learning</p>
-                    <p class="mt-2 card-text">Experimented with various ML algorithms such as Naive Bayes Classifier,
-                        K-NN
-                        Classifier, Logistic Regression, and Decision Tree Classifier. Implemented shell and Python
-                        scripts
-                        with the help of built-in Unix firewall CLI (iptables) to whitelist most frequent incoming
-                        connection requests in an internal network as a part of the Ensemble system.</p>
+                    <p class="mt-2 card-text">
+                        Experimented with various ML algorithms such as Naive Bayes Classifier, K-NN Classifier, Logistic Regression, and Decision Tree Classifier. Implemented shell and Python scripts with the help of built-in Unix firewall CLI (iptables) to whitelist most frequent incoming connection requests in an internal network as a part of the Ensemble system.
+                    </p>
                 </div>
             </div>
 
@@ -320,12 +325,12 @@
                 <div class="card-body">
                     <h4 class="card-title">StompChat</h4>
                     <p class="card-text">Personal Project</p>
-                    <a href="https://chatstomp-u0s3.onrender.com" class="btn btn-primary" target="_blank">Live Demo <i
-                            class="fas fa-external-link-alt"></i></a>
-                    <p class="mt-2 card-text">Developed and deployed a Java Spring Boot-based group chat application
-                        over
-                        WebSocket API. Utilized STOMP - text-based protocol for transferring messages between client and
-                        server via a message broker.</p>
+                    <a href="https://chatstomp-u0s3.onrender.com" class="btn btn-primary" target="_blank">
+                        Live Demo <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <p class="mt-2 card-text">
+                        Developed and deployed a Java Spring Boot-based group chat application over WebSocket API. Utilized STOMP - text-based protocol for transferring messages between client and server via a message broker.
+                    </p>
                 </div>
             </div>
 
@@ -334,14 +339,12 @@
                 <div class="card-body">
                     <h4 class="card-title">ePaper Scraping</h4>
                     <p class="card-text">Personal Project</p>
-                    <a href="https://epapers.onrender.com" class="btn btn-primary" target="_blank">Live Demo <i
-                            class="fas fa-external-link-alt"></i></a>
-                    <p class="mt-2 card-text">Built a Java Spring Boot web application for fetching publicly available
-                        PDFs of
-                        local newspapers. Added REST APIs, OAuth logins, email service, subscription service based on
-                        users’
-                        city preference along with a Telegram Bot - <a href="https://t.me/HtToi_bot"
-                            target="_blank">Telegram Bot</a>.</p>
+                    <a href="https://epapers.onrender.com" class="btn btn-primary" target="_blank">
+                        Live Demo <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <p class="mt-2 card-text">
+                        Built and shipped a dockerized Java Spring Boot web application for fetching publicly available PDFs of local newspapers. Added REST APIs, OAuth logins, email service, subscription service based on users’ city preference along with a - <a href="https://t.me/HtToi_bot" target="_blank">Telegram Bot</a>.
+                    </p>
                 </div>
             </div>
         </div>
