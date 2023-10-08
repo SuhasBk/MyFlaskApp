@@ -34,7 +34,7 @@ body {
 }
 
 .header-links a {
-    text-decoration: underline;
+    text-decoration: none;
     color: white;
     transition: all 0.5s;
 }
