@@ -13,90 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
-
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Titillium Web', sans-serif;
-        }
-
-        #header {
-            background-image: url("{{url_for('static', filename='portfolio-bg.jpg')}}");
-            background-size: cover;
-            background-position: bottom;
-            position: relative;
-        }
-
-        #header::before {
-            content: "";
-            background: rgba(0, 0, 0, 0.6);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        #header .container {
-            position: relative;
-            z-index: 1;
-        }
-
-        .header-links {
-            display: flex; 
-            justify-content: space-evenly;
-        }
-
-        .header-links a {
-            text-decoration: underline;
-            color: white;
-            transition: all 0.5s;
-        }
-
-        .header-links a:hover {
-            text-decoration: none;
-            color:peru;
-            transform: scale(1.5);
-        }
-
-        .header-separator {
-            color: white;
-        }
-
-        #profile-pic {
-            transition: all 0.5s;
-        }
-
-        #profile-pic:hover {
-            transform: scale(1.1);
-        }
-
-        #welcome {
-            position: absolute;
-            z-index: 10;
-            text-align: center;
-            width: 100vw;
-            height: 100%;
-            background-color: rgba(0,0,0, 0.9);
-            padding-top: 20%;
-            color: white;
-            animation: hide_welcome 5s forwards;
-        }
-
-        @keyframes hide_welcome {
-            0% {
-                opacity: 1;
-                font-size: 3em;
-            }
-            100% {
-                opacity: 0;
-                visibility: hidden;
-            }
-        }
-    </style>
+    <link href="{{ url_for('static',filename='portfolio.css') }}" rel="stylesheet">
 
 </head>
 
@@ -312,7 +229,8 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <h4>Certifications:</h4>
+                    <h4>Certifications: &nbsp;<a href="https://drive.google.com/file/d/1-oJWhWelwlIh2b8JnXlidjmstyJmOIzw/view?usp=sharing" class="btn btn-dark"
+                        target="_blank">View <i class="fas fa-external-link-alt"></i></a></h4>
                     <ul>
                         <li>Scaled Agile Framework (SAFe 5) Practitioner - 2020</li>
                         <li>Fundamentals of Backend Engineering Udemy Course - 15.5 hours</li>
@@ -333,7 +251,7 @@
                 <div class="card-body">
                     <h4 class="card-title">Crypto-Steganography</h4>
                     <p class="card-text">Academic Project - Information & Network Security</p>
-                    <a href="https://github.com/SuhasBk/Crypto-Stegano" class="btn btn-primary" target="_blank">
+                    <a href="https://github.com/SuhasBk/Crypto-Stegano" class="btn btn-dark" target="_blank">
                         GitHub Repository <i class="fas fa-external-link-alt"></i>
                     </a>
                     <p class="mt-2 card-text">
@@ -358,7 +276,7 @@
                 <div class="card-body">
                     <h4 class="card-title">StompChat</h4>
                     <p class="card-text">Personal Project</p>
-                    <a href="https://chatstomp-u0s3.onrender.com" class="btn btn-primary" target="_blank">
+                    <a href="https://chatstomp-u0s3.onrender.com" class="btn btn-dark" target="_blank">
                         Live Demo <i class="fas fa-external-link-alt"></i>
                     </a>
                     <p class="mt-2 card-text">
@@ -372,13 +290,17 @@
                 <div class="card-body">
                     <h4 class="card-title">ePaper Scraping</h4>
                     <p class="card-text">Personal Project</p>
-                    <a href="https://epapers.onrender.com" class="btn btn-primary" target="_blank">
+                    <a href="https://epapers.onrender.com" class="btn btn-dark" target="_blank">
                         Live Demo <i class="fas fa-external-link-alt"></i>
                     </a>
                     <p class="mt-2 card-text">
                         Built and shipped a dockerized Java Spring Boot web application for fetching publicly available PDFs of local newspapers. Added REST APIs, OAuth logins, email service, subscription service based on users’ city preference along with a - <a href="https://t.me/HtToi_bot" target="_blank">Telegram Bot</a>.
                     </p>
                 </div>
+            </div>
+
+            <div class="card">
+
             </div>
         </div>
     </section>
@@ -392,7 +314,7 @@
                 <div class="card-body">
                     <h4 class="card-title">Machine Learning-Based Ensemble Network Security - Publication</h4>
                     <p class="card-text">Nov 2021</p>
-                    <a href="https://link.springer.com/chapter/10.1007/978-981-16-3342-3_1" class="btn btn-primary" target="_blank">Read Publication <i class="fas fa-external-link-alt"></i></a>
+                    <a href="https://link.springer.com/chapter/10.1007/978-981-16-3342-3_1" class="btn btn-dark" target="_blank">Read Publication <i class="fas fa-external-link-alt"></i></a>
                 </div>
             </div>
 
@@ -400,7 +322,7 @@
                 <div class="card-body">
                     <h4 class="card-title">Open Source Contribution - Hacktoberfest 2023</h4>
                     <p class="card-text">Oct 2023</p>
-                    <a href="https://github.com/Mrinank-Bhowmick/python-beginner-projects/pull/373" class="btn btn-primary" target="_blank">Pull Request <i class="fas fa-external-link-alt"></i></a>
+                    <a href="https://github.com/Mrinank-Bhowmick/python-beginner-projects/pull/373" class="btn btn-dark" target="_blank">Pull Request <i class="fas fa-external-link-alt"></i></a>
                 </div>
             </div>
         </div>
