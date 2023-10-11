@@ -165,7 +165,7 @@ class PortfolioMonitor(Resource):
             data = request.get_json()
             ipAddr = data['IP']
             print(ipAddr)
-            r = requests.post("http://localhost:8000/api/sendMail", json={
+            r = requests.post("https://epapers.onrender.com/api/sendMail", json={
                 'subject': 'Following IP address accessed your portfolio!',
                 'content': f'IP address: {ipAddr}'
             })
