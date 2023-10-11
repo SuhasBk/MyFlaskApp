@@ -14,6 +14,7 @@ import myflask.api
 from myflask.forms import (LoginForm, NewHandle, RegistrationForm, Search,UpdateForm)
 from myflask.models import Users
 from . import app, bcrypt, db
+from mail_service import portfolioMonitor
 
 @app.route("/",methods=['GET','POST'])
 @app.route("/home",methods=['GET','POST'])
@@ -60,6 +61,7 @@ def xkcd():
 
 @app.route("/portfolio", methods=['GET'])
 def portfolio():
+    Thread(target=portfolioMonitor, args=(request.url_root, request.remote_addr)).start()
     return render_template('portfolio.html')
 
 # lyrics scraper:

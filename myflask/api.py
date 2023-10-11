@@ -159,6 +159,18 @@ class YouTubeApi(Resource):
         else:
             return {'success':False}
 
+class PortfolioMonitor(Resource):
+    def post(self):
+        try:
+            data = request.get_json()
+            ipAddr = data['IP']
+            print(ipAddr)
+            r = requests.post("http://localhost:8000/api/sendMail", json={
+                'subject': 'Following IP address accessed your portfolio!',
+                'content': f'IP address: {ipAddr}'
+            })
+        except:
+            pass
 
 api.add_resource(ApiDoc, '/api')
 api.add_resource(CovidIndia, '/api/covid')
@@ -169,3 +181,4 @@ api.add_resource(Weather, '/api/weather')
 api.add_resource(WorldClock, '/api/clock')
 api.add_resource(XKCDApi, '/api/xkcd')
 api.add_resource(YouTubeApi, '/api/yt')
+api.add_resource(PortfolioMonitor, '/api/portfoliomonitor')
