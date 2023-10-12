@@ -414,7 +414,26 @@
 
     <script defer>
         const currentYear = new Date().getFullYear();
+        const IP = "{{ ip }}";
         document.getElementById('currentYear').textContent = currentYear;
+        // notify access
+        fetch("https://epapers.onrender.com/api/sendMail", { 
+            'method': 'POST', 
+            'body': JSON.stringify({ 
+                'subject': 'Following IP address accessed your portfolio!', 
+                'content': 
+                `<html>
+                    <body>
+                        <p>IP: ${IP}</p>
+                        <p>User-Agent: ${navigator.userAgent}</p>
+                    </body>
+                </html>
+                `
+            }), 
+            'headers': { 
+                'Content-Type': 'application/json' 
+            } 
+        });
     </script>
 
 </body>
