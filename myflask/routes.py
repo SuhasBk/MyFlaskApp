@@ -60,7 +60,7 @@ def xkcd():
 
 @app.route("/portfolio", methods=['GET'])
 def portfolio():
-    return render_template('portfolio.html', ip=request.remote_addr)
+    return render_template('portfolio.html', ip=request.headers.get('X-Forwarded-For'))
 
 # lyrics scraper:
 @app.route("/lyrics",methods=['GET','POST'])
