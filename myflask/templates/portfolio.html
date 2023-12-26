@@ -311,8 +311,7 @@
                 <div class="card-body">
                     <h3 class="card-title">ePaper Scraping</h3>
                     <p class="card-text">Personal Project</p>
-                    <a href="https://epapers.onrender.com" class="btn btn-dark" target="_blank">
-                        Live Demo <i class="fa-solid fa-newspaper"></i>
+                    <a href="https://epapers.onrender.com" class="btn btn-dark" target="_blank">Live Demo <i class="fa-solid fa-newspaper"></i>
                     </a>
                     <p class="mt-2 card-text">
                         Built and shipped a dockerized Java Spring Boot web application for fetching publicly available PDFs of local newspapers. Added REST APIs, OAuth logins, email service, subscription service based on users’ city preference along with a - <a class="btn btn-dark" href="https://t.me/HtToi_bot" target="_blank">Telegram Bot &nbsp;<i class="fa-brands fa-telegram"></i></a>.
@@ -329,24 +328,46 @@
                         GitHub Repository <i class="fa-brands fa-github"></i>
                     </a>
                     <p class="mt-2 card-text">
-                        Created a Java-Selenium CLI application, which opens the Saavn website in a background browser and allows users to play,
-                        pause, repeat, fetch song lyrics and also download songs right from the command-line.
+                        Created a Java-Selenium CLI application, which opens the Saavn website in a background browser and allows users to play, pause, repeat, fetch song lyrics and also download songs right from the command-line.
                     </p>
                 </div>
             </div>
 
             <!-- Project 6: Personalized Twitter Feed -->
-            <div class="card">
+            <div class="card mb-4">
                 <div class="card-body">
                     <h3 class="card-title">Personalized Twitter Feed</h3>
                     <p class="card-text">Personal Project</p>
-                    <a href="https://github.com/SuhasBk/twitterfeed" class="btn btn-dark" target="_blank">
-                        GitHub Repository <i class="fa-brands fa-github"></i>
+                    <a href="https://github.com/SuhasBk/twitterfeed" class="btn btn-dark" target="_blank">GitHub Repository <i class="fa-brands fa-github"></i>
                     </a>
                     <p class="mt-2 card-text">
-                        Personal Twitter - without the clutter. Developed and deployed a Django web application which allows users on the
-                        website to follow Tweets from their favorite people on Twitter. Includes user management, Twitter API integration,
-                        relational PostgreSQL database and Heroku deployment pipeline.
+                        Personal Twitter - without the clutter. Developed and deployed a Django web application which allows users on the website to follow Tweets from their favorite people on Twitter. Includes user management, Twitter API integration, relational PostgreSQL database and Heroku deployment pipeline.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Project 7: vGreeting Card -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title">vGreeting Card</h3>
+                    <p class="card-text">Personal Project</p>
+                    <a href="https://github.com/SuhasBk/vcard-microservices" class="btn btn-dark" target="_blank">GitHub Repository <i class="fa-brands fa-github"></i>
+                    </a>
+                    <p class="mt-2 card-text">
+                        Built a full-stack micro-service architecture based virtual greeting card application using Spring Boot and React UI library. Utilized Spring Cloud API Gateway, Eureka discovery service, Giphy's GIF service and MongoDB's Atlas cloud data storage.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Project 8: LibSeat -->
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">LibSeat</h3>
+                    <p class="card-text">Personal Project</p>
+                    <a href="https://libseat.fly.dev" class="btn btn-dark" target="_blank">Live Demo <i class="fa-solid fa-book-open"></i>
+                    </a>
+                    <p class="mt-2 card-text">
+                        Developed a Python script and a Flask web application to reserve study rooms in UTA Central Library. Students can choose available rooms and desired time slots conveniently without browsing the official website.
                     </p>
                 </div>
             </div>
@@ -422,23 +443,23 @@
         // notify access
         if (!IP.includes('127.0.0.1')) {
             fetch("https://epapers.onrender.com/api/sendMail", {
-                'method': 'POST',
-                'body': JSON.stringify({
-                    'subject': 'Following IP address accessed your portfolio!',
-                    'content':
-                        `<html>
-                            <body>
-                                <p>IP: ${IP}</p>
-                                <p>User-Agent: ${navigator.userAgent}</p>
-                            </body>
-                        </html>
-                        `
-                    }),
-                    'headers': {
-                        'Content-Type': 'application/json'
-                    }
-                });
-            }
+            'method': 'POST',
+            'body': JSON.stringify({
+                'subject': 'Following IP address accessed your portfolio!',
+                'content':
+                    `<html>
+                        <body>
+                            <p>IP: ${IP}</p>
+                            <p>User-Agent: ${navigator.userAgent}</p>
+                        </body>
+                    </html>
+                    `
+                }),
+                'headers': {
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
     </script>
 
 </body>
