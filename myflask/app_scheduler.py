@@ -16,7 +16,7 @@ class AppScheduler:
 
         self.scheduler.add_job(
             self.sideProjectsAlive,
-            trigger=CronTrigger(hour='7-21', minute='*/5', timezone=pytz.timezone('Asia/Kolkata')),
+            trigger=CronTrigger(hour='7-13', minute='*/5', timezone=pytz.timezone('Asia/Kolkata')),
             id='sideProjectsAlive',
             name='Keep Others Alive',
         )
