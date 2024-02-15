@@ -9,7 +9,7 @@
     <!-- Bootstrap CSS Link -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="icon" href="https://i.pinimg.com/originals/77/f7/ff/77f7ff01c227415475899c71d376455d.png"type="image/png">
+    <link rel="icon" href="https://clipartcraft.com/images/rocket-clipart-6.png"type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Titillium+Web:wght@300&display=swap" rel="stylesheet">
@@ -442,7 +442,7 @@
         document.getElementById('currentYear').textContent = currentYear;
         // notify access
         if (!IP.includes('127.0.0.1')) {
-            fetch("https://epapers.onrender.com/api/sendMail", {
+            fetch("/send_email", {
             'method': 'POST',
             'body': JSON.stringify({
                 'subject': 'Following IP address accessed your portfolio!',

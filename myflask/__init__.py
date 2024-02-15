@@ -1,20 +1,25 @@
-from flask import Flask,request,jsonify
+import os
+import atexit
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_restful import Api
 from flask_cors import CORS
-import os
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(16)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = os.getenv("EMAIL_ID")
+app.config['MAIL_PASSWORD'] = os.getenv("EMAIL_PASSWORD")
+
 api = Api(app)
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
-
+cors = CORS(app, resources={"/api/*": {"origins": "*"}})
 db = SQLAlchemy(app)
-
 bcrypt = Bcrypt(app)
-
-from myflask import routes
+mail = Mail(app)

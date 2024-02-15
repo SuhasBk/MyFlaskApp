@@ -1,19 +1,13 @@
-import datetime
 import os
-import random
 import re
-import sys
 import time
 import json
-from subprocess import PIPE, run
-from threading import Thread
 import requests
 from bs4 import BeautifulSoup
-from flask import (Flask, abort, flash, jsonify, redirect, render_template,request, url_for, send_file)
-import myflask.api
-from myflask.forms import (LoginForm, NewHandle, RegistrationForm, Search,UpdateForm)
-from myflask.models import Users
-from . import app, bcrypt, db
+from flask import abort, flash, redirect, render_template, request, url_for, send_file
+from . import app, bcrypt, db, mail, Message
+from .forms import LoginForm, NewHandle, RegistrationForm, Search,UpdateForm
+from .models import Users
 
 @app.route("/",methods=['GET','POST'])
 @app.route("/home",methods=['GET','POST'])
@@ -60,7 +54,13 @@ def xkcd():
 
 @app.route("/portfolio", methods=['GET'])
 def portfolio():
-    return render_template('portfolio.html', ip=request.headers.get('X-Forwarded-For'))
+    ip_headers = ['X-Forwarded-For', 'HTTP_X_REAL_IP', 'HTTP_CLIENT_IP', 'REMOTE_ADDR']
+    ip = None
+    for header in ip_headers:
+        ip = request.headers.get(header)
+        if ip:
+            break
+    return render_template('portfolio.html', ip=ip or 'Unknown')
 
 # lyrics scraper:
 @app.route("/lyrics",methods=['GET','POST'])
@@ -212,3 +212,20 @@ def refresh():
     db.drop_all()
     db.create_all()
     return redirect(url_for('home'))
+
+@app.route('/send_email',methods=['GET','POST'])
+def send_email():
+    if request.method == 'POST':
+        data = request.get_json()
+        subject = str(data['subject'])
+        content = str(data['content'])
+
+        msg = Message(subject=subject,
+                    sender=app.config['MAIL_USERNAME'],
+                    recipients=[app.config['MAIL_USERNAME']])
+        msg.body = content
+
+        mail.send(msg)
+        return 'OK'
+    else:
+        return abort(500)

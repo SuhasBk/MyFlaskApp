@@ -1,11 +1,11 @@
 email_validator
-magic-wormhole
 flask
 flask-cors
 flask-wtf
 flask-bcrypt
 flask-restful
 flask-sqlalchemy
+flask-mail
 gunicorn
 requests
 selenium
@@ -13,3 +13,4 @@ Pillow
 beautifulsoup4
 PyPDF2
 cryptography
+apscheduler

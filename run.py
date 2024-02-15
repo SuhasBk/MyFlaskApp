@@ -1,7 +1,9 @@
 #!/usr/local/bin/python3
-from myflask import app
 import sys
 import os
+from myflask import app
+from myflask import routes
+from myflask.app_scheduler import AppScheduler
 
 if __name__=='__main__':
     try:
@@ -11,6 +13,7 @@ if __name__=='__main__':
         ip = "0.0.0.0"
         port = 8000
     
-    debug = True if os.environ.get("HIDDEN_ID") == 'BATMAN' else False
-
-    app.run(host=ip,debug=debug,port=port)
+    app_scheduler = AppScheduler()
+    app_scheduler.start()
+    
+    app.run(host=ip,debug=False,port=port)
