@@ -142,7 +142,7 @@ class XKCDApi(Resource):
     def get(self):
         try:
             xkcd_http = requests.get("https://c.xkcd.com/random/comic/")
-            url = BeautifulSoup(xkcd_http.text, 'html.parser').select('img')[2].get('src')
+            url = BeautifulSoup(xkcd_http.text, 'html.parser').select('img')[1].get('src')
             img = 'http:'+url
             return {'success': True, 'img': img}
         except:

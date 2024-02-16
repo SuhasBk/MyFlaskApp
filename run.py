@@ -1,9 +1,9 @@
 #!/usr/local/bin/python3
 import sys
-import os
 from myflask import app
 from myflask import routes
 from myflask.app_scheduler import AppScheduler
+from myflask.api import api
 
 if __name__=='__main__':
     try:
