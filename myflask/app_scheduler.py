@@ -34,8 +34,11 @@ class AppScheduler:
 
     def keepSelfAlive(self):
         try:
+            chatstomp_url = os.getenv("CHATSTOMP_URL")
+            chatstomp_status = self.http_session.get(chatstomp_url).status_code
+
             status = self.http_session.get(self.self_url).status_code
-            if status != HTTPStatus.OK:
+            if status != HTTPStatus.OK or chatstomp_status != HTTPStatus.OK:
                 self.http_session.post(f"{self.self_url}/send_email", json={
                     'subject': 'PORTFOLIO GOING DOWN',
                     'content': 'Failing to keep PORTFOLIO alive.'
@@ -49,13 +52,10 @@ class AppScheduler:
             epapers_url = os.getenv("EPAPERS_HOSTNAME")
             epapers_status = self.http_session.get(epapers_url).status_code
 
-            chatstomp_url = os.getenv("CHATSTOMP_URL")
-            chatstomp_status = self.http_session.get(chatstomp_url).status_code
-
-            if epapers_status != HTTPStatus.OK or chatstomp_status != HTTPStatus.OK:
+            if epapers_status != HTTPStatus.OK:
                 self.http_session.post(f"{self.self_url}/send_email", json={
                     'subject': 'SIDE PROJECTS GOING DOWN',
-                    'content': f'Failing to keep EPAPERS - {epapers_url} and CHATSTOMP - {chatstomp_url} alive.'
+                    'content': f'Failing to keep EPAPERS - {epapers_url} alive.'
                 })
         except Exception as e:
             print("Whoops!", e)
